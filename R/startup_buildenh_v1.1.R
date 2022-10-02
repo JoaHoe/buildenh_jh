@@ -13,6 +13,9 @@ cat("version_number= ",v_nr,"\n")
 #depends: R-4.2.1
 #Copyright(C) 2022 Joachim Hoehle
 ###################################################################################
+cat("start of software package 'buildenh_jh' ","\n")
+
+cat("first program/script 'startup_buildenh.R' ","\n")
 
 #save your home directory
 old_dir <- setwd("./")
