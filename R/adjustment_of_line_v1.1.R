@@ -168,7 +168,7 @@ for (i in y2) {
 } #end for-loop
 print(B6)
 
-cat("manual correction of adjustment-parameter?", "\n")
+cat("correction of adjustment-parameter?", "\n")
 cat("if proc_mode='demo' -> type N", "\n")
 answ4 <- readline("type Y or N: ")
 
