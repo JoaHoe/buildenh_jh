@@ -220,7 +220,7 @@ line_reduce <- function() {
   # end preparation
   
   #n_pix2 <- min(B5_4dd_ord$n_pixel) #adapted to data
-  n_pix2 <- 35
+  n_pix2 #15/35/min(B5_4dd_ord$n_pixel)
   B5_4dd_ord[,8] <- 0
   names(B5_4dd_ord)[8] <- "dif_ro_pixel"
   B5_4dd_ord_red <- B5_4dd_ord
