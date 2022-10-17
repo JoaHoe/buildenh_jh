@@ -3,7 +3,7 @@ cat("version_number= ",v_nr,"\n")
 #description: extraction of one building  
 #from image "buildings of generated land cover map"
 #orthoimage: ISPRS data "Vaihingen" of areas: #7, #1
-#instruction: use plot of building numbers in 'support_extract_single_building' for selecting of object 
+#instruction: use plot of building numbers producible in 'support_extract_single_building' for selecting of object 
 #author: Joachim Hoehle
 cat("###########################################################################","\n")
 
@@ -120,7 +120,7 @@ shap1_A[,1] <- y
 shap1_A<-data.frame(shap1_A)
 shap1_A[,8:9] <- coor[,1:2]
 shap1_A[,10] <- coor[,5]
-shap2_A <- subset(shap1_A,shap1_A[,2] >= 3086) #removes buildings of area < 5m x 5m (3086 pixels)
+shap2_A <- subset(shap1_A,shap1_A[,2] >= 3086) #removes buildings of area < 5mx5m (3086 pixels)
 n8 <- nrow(shap2_A)
 cat('number of buildings after area-thresh-holding=',n8,'\n')
 rownames(shap2_A) <- 1:n8
