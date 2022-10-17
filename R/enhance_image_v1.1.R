@@ -14,7 +14,9 @@ shape <- 'diamond' #used in makeBrush
 w <- 2; h <- 2 #half width and height of the moving rectangular window (used in func 'thresh')
 offset <- 0.01 #thesholding offset from the average value (used in thresh)
 area_threshold <- 3086 #threshold for area of tolerated building (pixel)
-
+#calculation
+#area_threshold[m2]=area_threshold[pixel]*GSD^2
+#area_threshold[pixel]=area_threshold[m2]/GSD^2
 
 ##input of orthoimage with extracted buildings
 setwd(OrgClassResPathname)
