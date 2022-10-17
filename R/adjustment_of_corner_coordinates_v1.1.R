@@ -1,11 +1,11 @@
 ##name of program (script): adjustment of corner coordinates.R
 # description: calculation of final corner coordinates
-# angle theta is adjusted using weighted average
+# weighted average of the main direction (theta_av) is used 
 # ro-values are calculated by least-squares adjustment
-# average of standard deviation of residuals as quality control
+# average of standard deviation of residuals to be used as quality control
 cat("version_number= ",v_nr,"\n")
 # author: Joachim Hoehle
-# instructions: Use supplementing scripts in case of problems
+# instructions: use supplementing scripts in case of problems
 cat("##################################################################","\n")
 
 cat("start of program 'adjustment_of_corner_coordinates.R'","\n")
