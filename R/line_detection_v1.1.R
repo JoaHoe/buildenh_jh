@@ -1075,7 +1075,7 @@ if (cas == "4_long") {
 
 if (cas == "100_all") {
   print(B5_4)
-  cat("minimum length of line: 15 pixel (recommended), 35 (alternativ)")
+  cat("minimum length of line: 15 pixel (recommended), 35 (alternative)")
   n_pix <- readline("type minimum length of line= ") #manual input 15 (recommended) or 35 (alternativ)
   n_pix <- as.integer(n_pix)
   wd <- n_pix
