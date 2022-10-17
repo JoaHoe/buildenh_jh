@@ -45,9 +45,10 @@ if (Img_name == "ISPRS7") {
   OrgClassResFilename <- "ISPRS_#7_b.tiff" #extracted buildings
   OrgClassResPathname <- paste(home_dir,"/data",sep = "")
   OrgImgPathname <- paste(home_dir,"/data",sep = "")
-  OrgImgFilename <- "top_mosaic_09cm_area7.tif"
+  OrgImgFilename <- "top_mosaic_09cm_area7.tif"  #GSD=0.09m
   OrgGtsPathname <- paste(home_dir,"/data",sep = "")
-  OrgGtsFilename <- "gts_top_mosaic_09cm_area7.tif"
+  OrgGtsFilename <- "gts_top_mosaic_09cm_area7.tif" #GSD=0.09m
+  #GSD=Ground Sampling Distance
 } #end of image7
 
 if (Img_name == "ISPRS1") {
@@ -56,9 +57,10 @@ if (Img_name == "ISPRS1") {
   OrgClassResPathname <- paste(home_dir,"/data",sep = "")
   OrgClassResFilename <- "ISPRS_#1_b.tiff" #extracted buildings
   OrgImgPathname <- paste(home_dir,"/data",sep = "")
-  OrgImgFilename <- "top_mosaic_09cm_area1.tif"
-  OrgGtsPathname <- paste(home_dir,"/data",sep = "")
-  OrgGtsFilename <- "gts_top_mosaic_09cm_area1.tif"
+  OrgImgFilename <- "top_mosaic_09cm_area1.tif" #GSD=0.09m
+  OrgGtsPathname <- paste(home_dir,"/data",sep = "") 
+  OrgGtsFilename <- "gts_top_mosaic_09cm_area1.tif" #GSD=0.09m
+  #GSD=Ground Sampling Distance
 } #end of image1
 
 proc_mode <- "NA" #mode of processing
