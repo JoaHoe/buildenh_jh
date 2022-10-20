@@ -225,7 +225,7 @@ while (k1 < n_X){
     ro_index[i] <- round(ratio*(ro2[i] - ro_1) + 1) #calculation of ro_index
     if (ro_index[i] >= 1 && ro_index[i] <= n_ro ) {
       k2 <- ro_index[i]
-      H[i,k2] <- H[i,k2] + 1
+      H[i,k2] <- H[i,k2] + 1 #storage of points belonging to a line
     } #end ro index
   } #end loop i
 } #end loop k1
@@ -243,20 +243,21 @@ while (i < n_theta) {
     j <- j+1
     n1 <- n_ro*(i - 1) + j
     pointcloud[n1,1] <- i
-    pointcloud[n1,2] <- j #reduced parameter space
+    pointcloud[n1,2] <- j 
     pointcloud[n1,3] <- H[i,j]
   } #end loop j
 } #end loop i
 #end generation of point cloud (PC)
 
 A <- pointcloud
-B <- A[order(A[,3],decreasing = TRUE),]
-B[1:8,] 
+B <- A[order(A[,3],decreasing = TRUE),] #ordered point cloud
+##end of Hough-trans
 
 ## storage of B (8 longest lines)
+B[1:8,] 
 f1 <- paste("./data/",Img_name,"/parameter_space_b",bnr2,".txt",sep="")
 write.table(B,f1)
-#end of Hough-trans
+
 
 ##test for main direction
 #does first (longest) line have an orthogonal line (theta_ind + 90 or theta_ind -90) ?
