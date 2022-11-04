@@ -6,6 +6,7 @@ cat("version_number= ",v_nr,"\n")
 #output: file with segments of the outline in proper order
 #instructions: the method for sequence of lines is predicted by a Decision Tree
 #instructions: the suggested value may be wrong,in such case try another method  
+#GNU General Public License (GPL)
 ###############################################################################
 
 ## start of program 'sequence_of_lines.R'
