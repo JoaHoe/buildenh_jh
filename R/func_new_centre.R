@@ -1,6 +1,7 @@
 ##name of script: func_new_centre.R
 #purpose: digitize new center in plot of single object
 #function used in: support_sequence_of_lines.R
+#GNU General Public License (GPL)
 
 new_centre <- function() {
   cat("digitize new center in plot of single object","\n")
