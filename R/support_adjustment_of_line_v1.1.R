@@ -1,5 +1,6 @@
 ## name of script: support_adjustment_of_line.R
 ## purpose: supporting software for special objects
+## GNU General Public License (GPL)
 
 cat("version_number= ",v_nr,"\n")
 
