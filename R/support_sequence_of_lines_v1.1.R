@@ -1,6 +1,7 @@
 ##name of script: support_sequence_of_lines.R
 cat("version_number= ",v_nr,"\n") 
 ##purpose: supporting scripts to program 'sequence_of_lines.R'
+## GNU General Public License (GPL)
 
 ##contents:
 # 1.digitize and plot new center of object 
