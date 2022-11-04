@@ -4,6 +4,7 @@ cat("version_number= ",v_nr,"\n")
 #parameters are theta (angle) and ro (distance of line from origo)
 #residuals are orthogonal to the line
 #author: Joachim Hoehle
+#GNU General Public License (GPL)
 cat("###########################################################################","\n")
 
 cat("start of program 'adjustment_of_line.R'","\n")
