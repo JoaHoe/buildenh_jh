@@ -1,5 +1,6 @@
 ## name of script: support_enhance_image_v1.1.R
 ## supporting software for program "enhance_image.R"
+## GNU General Public License (GPL)
 cat("version_number= ",v_nr,"\n")
 ## instruction: run all programs in "demo" mode before using 'support_enhance_image.R'
 
