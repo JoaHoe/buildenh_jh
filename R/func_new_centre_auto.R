@@ -1,6 +1,7 @@
 #name of script: func_new_centre_auto.R
 #purpose: calculation of center of object
 #function used in: support_sequence_of_lines.R
+#GNU General Public License (GPL)
 
 new_centre_auto <- function() {
   b13_angle_df
