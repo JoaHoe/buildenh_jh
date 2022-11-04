@@ -2,6 +2,7 @@
 cat("version_number= ",v_nr,"\n")
 ## purpose: supporting software for special cases
 ## instruction: please activate function 'locator' where it is needed
+## GNU General Public License (GPL)
 
 ## contents:
 # 1.improving the ro-range in Hough space
