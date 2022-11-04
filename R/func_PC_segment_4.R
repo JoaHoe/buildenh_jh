@@ -1,6 +1,7 @@
 ##script: func_PC_segment_4.R
 #purpose: generation of PointClusters (PC) of one line segment
 #used in: line_detection.R
+#GNU General Public License (GPL)
 
 PC_segment_4 <- function(lnr) { 
   #browser()
