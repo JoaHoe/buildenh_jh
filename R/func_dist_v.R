@@ -1,6 +1,7 @@
 ## name of script: func_dist_v.R
 ## purpose: calculation of vector with distances 
 ## function used in: sequence_of_lines.R 
+##GNU General Public License (GPL)
 
 dist_v <- function(npx,b_angle_df_seq,refj) {
   #calculation of vector with distances
