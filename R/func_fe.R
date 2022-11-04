@@ -5,6 +5,7 @@
 #cat("select object-type: 1=extr_wd ,2=4_long, 3=100_all, 4=100_all+nonortho", "\n")
 #wd2: length of line, ces2: number of ortholines at the 8 longest lines, 
 #nonortho: number of nonortholines at the 8 longest lines 
+#GNU General Public License (GPL)
 
 fe <- function(wd2,ces2,nonortho) { 
   q <- 0
