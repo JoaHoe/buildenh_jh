@@ -1,6 +1,7 @@
 ## name of script: func_det_of_angle.R
 # purpose: determination of angle at corner points
 # function used in: spObj_sequence_of_lines.R & support_sequence_of_lines.R
+#GNU General Public License (GPL)
 
 det_of_angle <- function(corner_x,corner_y) { 
   alph <- (atan2(-(corner_y-yc),(corner_x-xc)))*omega # -dy/dx because alpha 
