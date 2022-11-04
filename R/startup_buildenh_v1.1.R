@@ -12,6 +12,7 @@ cat("version_number= ",v_nr,"\n")
 #instructions: new users may start by examples (processing mode = demo)
 #depends: R-4.2.1
 #Copyright(C) 2022 Joachim Hoehle
+#GNU General Public License (GPL)
 ###################################################################################
 cat("start of software package 'buildenh_jh' ","\n")
 
