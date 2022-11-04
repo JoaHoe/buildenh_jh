@@ -2,6 +2,7 @@
 #purpose: digitizing and marking of a single pixel in orthoimage-section
 #function used in: 'support_line_detection.R'
 #instructions: point to pixel and click by mouse 
+#GNU General Public License (GPL)
 
 locator2 <- function() {
   c9 <- locator(1) #standard function
