@@ -1,6 +1,7 @@
 ##name of script: func_dist_v2.R
 ##purpose: correction of midpoints which represent line segments
 ##function used in: "sequence of lines.R"
+##GNU General Public License (GPL)
 
 dist_v2 <- function(i, b_angle_df, all_PC) { #calculation of vector with distances
   np <- length(all_PC[[i]]$idx)
