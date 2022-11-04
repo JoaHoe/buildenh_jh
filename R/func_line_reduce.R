@@ -2,6 +2,7 @@
 #purpose: reduction of orthogonal lines
 #parameter: n_pix (length of smallest line segment [pixel]),
 #           thr (difference in ro-values between adjacent lines [pixel])
+#GNU General Public License (GPL)
 
 line_reduce <- function() { 
   k14 <- length(B5_4$lnr)
