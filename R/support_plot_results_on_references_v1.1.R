@@ -2,6 +2,7 @@
 cat("version_number= ",v_nr,"\n")
 ## purpose: supporting software for program "plot_results_on_references.R"
 ##instruction: run all programs in "demo"-mode before using supporting software
+## GNU General Public License (GPL)
 
 ## contents:
 
