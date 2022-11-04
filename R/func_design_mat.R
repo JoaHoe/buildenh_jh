@@ -1,6 +1,7 @@
 ##name of script: func_design_mat.R
 #purpose: solution for closed polygon
 #function 'design_mat(m,phi)'
+#GNU General Public License (GPL)
 
 design_mat <- function(m,phi) { 
   y <- 1 : (m-1)
