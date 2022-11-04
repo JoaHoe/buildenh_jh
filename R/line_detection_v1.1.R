@@ -9,6 +9,7 @@ cat("version_number= ",v_nr,"\n")
 #the default value (n_pix) may be adapted to the existing objects of the orthoimage
 #use 'Zoom' for evaluation of position
 #change eventually the default value for each object type ("extr_wd", "4_long", "100_all", "100_all+nonortho")
+#GNU General Public License (GPL)
 cat("#########################################################################","\n")
 
 cat("start of program 'line_detection.R'","\n")
