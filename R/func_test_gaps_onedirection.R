@@ -3,6 +3,7 @@
 #         by histogram and selects a continuous part of the PC
 #function used in: script 'func_reduce_pointset.R' 
 #author: Michael Höhle
+#GNU General Public License (GPL)
 
 test_gaps_onedirection <- function(hist) {
 
