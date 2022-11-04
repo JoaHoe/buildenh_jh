@@ -2,6 +2,7 @@
 #purpose: detect lines by measurement of one pixel for rectangular objects
 #function used in: support_line_detection.R
 #instructions: to be used after locator2()
+#GNU General Public License (GPL)
 
 detect_meas1 <- function() { 
   B5_4_ord <- B5_4[order(B5_4$ro_pixel,decreasing = FALSE),]
