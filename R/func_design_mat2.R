@@ -1,5 +1,6 @@
 ##function for generation of a design matrix
 #solution for open polygon
+#GNU General Public License (GPL)
 
 design_mat2 <- function(m,phi) { 
   y1 <- 1 : (m-1)
