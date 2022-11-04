@@ -2,6 +2,7 @@
 #purpose: detecting lines which are parallel/orthogonal 
 #         to main orientation
 #used in: line_detection.R
+#GNU General Public License (GPL)
 
 rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) { 
   B5_4
