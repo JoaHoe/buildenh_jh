@@ -1,4 +1,5 @@
 ## name of script: support_intersect_corner_points.R
+## GNU General Public License (GPL)
 cat("version_number= ",v_nr,"\n")
 ## purpose: supporting software for program "intersect_corner_points.R"
 
