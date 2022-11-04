@@ -1,5 +1,6 @@
 ## name of script: func_loadLib_op.R
 ## purpose: required open source R-packages 
+## GNU General Public License (GPL)
 
 loadLib_op <- function() { #required R-packages
   library("devtools")
