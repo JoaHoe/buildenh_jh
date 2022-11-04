@@ -1,6 +1,7 @@
 ## name of script: func_trans_H_res.R
 # purpose: transformation of the parameters in B (theta_index, ro_index, N) to other units (degrees, pixels)
 # used in: script 'sequence of lines.R'
+#GNU General Public License (GPL)
 
 trans_H_res <- function(B1,theta_step1,ro_step1,ro11,k1) {
   theta_ang <- (B1[i,2]-1)*theta_step1
