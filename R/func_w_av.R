@@ -1,6 +1,7 @@
 ## script:'func_w_av.R'
 #purpose: weighted average of theta-angle (theta_av)
 #used in: intersect_corner_points.R
+#GNU General Public License (GPL)
 
 #function
 w_av <- function(ang,len) { 
