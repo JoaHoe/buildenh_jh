@@ -6,6 +6,7 @@ cat("version_number= ",v_nr,"\n")
 #derivation of weighted average of main angle (theta)
 #using generic design matrix
 #author: Joachim Hoehle
+#GNU General Public License (GPL)
 cat("##############################################","\n")
 cat("start of program 'intersect_corner_points.R'","\n")
 setwd(home_dir)
