@@ -1,6 +1,7 @@
 ##name of script: func_detect_thet_len.R
 #purpose: determination of angle theta
 #function used in: 'support_line_detection.R'
+#GNU General Public License (GPL)
 
 detect_thet_len <- function() { 
   theta_index <- 18 # (=85 degrees)
