@@ -1,6 +1,6 @@
 ##name of script: func_adjust_coord.R
 #function for adjustment of corner coordinates
-
+#GNU General Public License (GPL)
 adjust_coord <- function(A,b) { 
   At <- t(A)
   AtA <- At %*% A
