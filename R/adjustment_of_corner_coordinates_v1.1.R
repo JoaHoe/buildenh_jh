@@ -6,6 +6,7 @@
 cat("version_number= ",v_nr,"\n")
 # author: Joachim Hoehle
 # instructions: use supplementing scripts in case of problems
+#GNU General Public License (GPL)
 cat("##################################################################","\n")
 
 cat("start of program 'adjustment_of_corner_coordinates.R'","\n")
