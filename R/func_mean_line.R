@@ -2,6 +2,7 @@
 #purpose: calculation of midpoint of PointCloud (PC) and
 #         angle between center of object to midpoint of PC
 #used in: sequence_of_lines.R
+#GNU General Public License (GPL)
 
 mean_line <- function(ln_num) {
   i <- ln_num #number of PC
