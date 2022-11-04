@@ -5,6 +5,7 @@ cat("version_number= ",v_nr,"\n")
 #orthoimage: ISPRS data "Vaihingen" of areas: #7, #1
 #instruction: use plot of building numbers producible in 'support_extract_single_building' for selecting of object 
 #author: Joachim Hoehle
+#GNU General Public License (GPL)
 cat("###########################################################################","\n")
 
 cat("start of program 'extract_single_building'","\n")
