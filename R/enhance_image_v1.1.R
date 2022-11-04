@@ -4,6 +4,7 @@ cat("version_number= ",v_nr,"\n")
 #ISPRS data (areas #7,#1), DT classification, training by images #26
 #author: Joachim Hoehle
 #instructions: scale of image has to be checked and eventually be corrected
+#GNU General Public License (GPL)
 ############################################################################
 
 cat("start of program 'enhance_image.R' ", "\n")
