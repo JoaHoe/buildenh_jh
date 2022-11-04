@@ -1,5 +1,7 @@
 ## name of script: support_extract_single_building.R
-## purpose: scripts for special cases 
+## purpose: scripts for special cases
+## GNU General Public License (GPL)
+
 cat("version_number= ",v_nr,"\n")
 
 ##contents:
