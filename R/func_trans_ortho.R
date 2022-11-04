@@ -2,6 +2,7 @@
 #purpose: calculation of transformation parameter
 #         with measurement of check points
 #function used in: support_line_detection.R
+#GNU General Public License (GPL)
 
 trans_ortho <- function() {
   mar=100 #distance from center of object
