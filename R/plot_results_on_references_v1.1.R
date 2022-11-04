@@ -4,6 +4,7 @@ cat("version_number= ",v_nr,"\n")
 #author: Joachim Hoehle
 #examples: ISPRS data: image ISPRS7/LCM1, ISPRS1/LCM2
 #instructions: use supplementing scripts for interactions if necessary 
+#GNU General Public License (GPL)
 cat("####################################################################","\n")
 cat("start of program 'plot_results_on_references.R'","\n")
 setwd(home_dir)
