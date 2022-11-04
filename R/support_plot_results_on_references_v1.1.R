@@ -183,7 +183,7 @@ print(intsec_linepair_vertex_coord2)
 
 #example 2: orthoimage #1
 #prj_title: ISPRS1_LCM2
-#objects/buildings: 4,5,7,18
+#objects/buildings: 4,5,7,18,9
 
 #plot of all buildings on graph
 setwd(home_dir)
