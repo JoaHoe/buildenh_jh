@@ -1,6 +1,7 @@
 #name of script: func_dist_PC.R
 #purpose: derivation of lengths from coordinates of intersected points
 #used in: intersect_corner_points.R
+#GNU General Public License (GPL)
 
 dist_PC <- function(P_red) {
   x_1 <- (P_red[1,2]) #change to first and last point
