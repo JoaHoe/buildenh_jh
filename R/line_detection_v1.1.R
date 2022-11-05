@@ -126,8 +126,6 @@ if (ro_rg == 1) { # 1 is default value
 } #end of ro_rg = 1
 #
 
-alpha <- alpha_math
-
 if(ro_rg == 2) {
   #procedure with rotation of coordinate system with angle of fitted ellipse (building should have a longer side)
   #solution fails when building is a squared area
@@ -135,11 +133,11 @@ if(ro_rg == 2) {
   if(alpha_math < 0){
     alpha <- 180 + alpha_math
   }
-  theta_appr <- alpha_math + 90
-  d_safety = 250 #safety value in [pel]
+  theta_appr <- alpha_math - 90
+  d_safety = 50 #safety value in [pel]
   theta1 <- theta_appr
   theta1_arc <- theta1/omega
-  theta2 <- theta1 - 90
+  theta2 <- theta1 + 90 
   theta2_arc <- theta2/omega
   alpha_rad <- alpha/omega
   max(pc2$col)
@@ -147,18 +145,18 @@ if(ro_rg == 2) {
   min(pc2$col)
   min(pc2$row)
   X <- max(pc2$col) 
-  Y <- (-max(pc2$row)) 
+  Y <- (-max(pc2$row)) #change to math-system
   ro1_max <- cos(theta1_arc) * X + sin(theta1_arc) * Y
-  ro1_max <- abs(ro1_max)
   ro2_max <- cos(theta2_arc) * X + sin(theta2_arc) * Y
-  ro2_max <- abs(ro2_max)
   X <- min(pc2$col)
-  Y <- (-min(pc2$row)) 
+  Y <- (-min(pc2$row)) #change to math-system
   ro1_min <- cos(theta1_arc) * X + sin(theta1_arc) * Y
-  ro1_min <- abs(ro1_min)
   ro2_min <- cos(theta2_arc) * X + sin(theta2_arc) * Y
-  ro2_min <- abs(ro2_min)
-  ro_range <- c(ro1_max, ro2_max, ro1_min, ro2_min) #ro1_max, ro1_min are negative when alpha > 90 degrees -> check ro-range!
+  ro_range <- c(ro1_max, ro2_max, ro1_min, ro2_min) 
+  if(alpha_math > 90) {
+    ro_range <- c(ro1_max, -ro2_max, ro1_min, -ro2_min) 
+  }
+  ro_range
   max_ro <- as.integer(max(ro_range))
   min_ro <- as.integer(min(ro_range))
   min_ro2 <- as.integer(min_ro - d_safety)
@@ -168,6 +166,7 @@ if(ro_rg == 2) {
   ro_1 <- ro[1]
   
   #plot
+  alpha <- alpha_math
   alpha_arc <- alpha/omega
   a = tan(alpha_arc)
   theta_ang <- alpha + 90
