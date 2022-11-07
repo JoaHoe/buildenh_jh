@@ -22,10 +22,11 @@ cat("first program/script 'startup_buildenh.R' ","\n")
 old_dir <- setwd("./")
 getwd()
 #
-home_dir <- "C:/Users/Joachim/OneDrive/Documents/GitHub/buildenh"
-home_dir2 <- "C:/Users/Joachim/OneDrive/Documents/GitHub/buildenh/R"
-#home_dir <- "C:/Users/Joachim/R_programs/buildenh_clone"
-#home_dir2 <- "C:/Users/Joachim/R_programs/buildenh_clone/R"
+#home_dir <- "C:/Users/Joachim/OneDrive/Documents/GitHub/buildenh"
+#home_dir2 <- "C:/Users/Joachim/OneDrive/Documents/GitHub/buildenh/R"
+home_dir <- "C:/Users/Joachim/R_programs/buildenh_jh/clone1"
+home_dir2 <- "C:/Users/Joachim/R_programs/buildenh_jh/clone1/R"
+
 ###################################################################################
 
 ## title of project (activate manually)
