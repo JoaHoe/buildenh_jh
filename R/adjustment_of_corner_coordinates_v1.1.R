@@ -233,7 +233,7 @@ intsec_linepair_vertex_coord [,1] <- paste(line_nrs$lnr,"_",line_nrs2,sep="")
 intsec_linepair_vertex_coord [,2] <- 1 : m2
 intsec_linepair_vertex_coord [,3:4] <- b_seri_xy2[1:m2,1:2]
 #
-
+print(intsec_linepair_vertex_coord)
 f5 <- paste("./results/",Img_name,"/b",bnr2,"_intsec_linepair_vertex_coord.txt",sep="")
 write.table (intsec_linepair_vertex_coord, f5)
 #
