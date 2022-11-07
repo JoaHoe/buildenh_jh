@@ -48,18 +48,24 @@ min(pc2$row)
 ##plot of origin, center of coordinates system and point cluster of extracted building (small scale, complete area)
 
 #plot in small scale (image #7)
-# x = 0; y = 0 #origo
-# plot(x,-y, pch=3, cex=2, col="black", asp=1, xlim=c(1,1887), ylim=c(-2557, -1), main=paste("b",bnr2))
-# #small scale (image #1)
-# #plot(x,-y, pch=3, cex=2, col="black", asp=1, xlim=c(1,1919), ylim=c(-2569, -1))
-# points(xc,-yc, pch=3, cex=1.5, col="red", asp=1) #centre of PC
-# points(pc2$col,-pc2$row, pch=".", cex=1.5, col="blue", asp=1) #PC
+x = 0; y = 0 #origo
+
+if (Img_name == "ISPRS7") {
+  plot(x,-y, pch=3, cex=2, col="black", asp=1, xlim=c(0,1887), ylim=c(-2557, 1000), main=paste("b",bnr2))
+}
+
+if (Img_name == "ISPRS1") {
+  plot(x,-y, pch=3, cex=2, col="black", asp=1, xlim=c(0,1919), ylim=c(-2569, 1000))
+}  
+points(xc,-yc, pch=3, cex=1.5, col="red", asp=1) #centre of PC
+points(pc2$col,-pc2$row, pch=".", cex=1.5, col="blue", asp=1) #PC
+# end plot in small scale
 
 #plot of graph in large scale
 par(mai = c(1.02,0.82,0.82,0.42)) #setup of margins/plot region [inches]
 r_max2 <- 1.1*r_max
 plot(xc,-yc, pch=3, cex=3, col="red", asp=1, xlim=c(xc-r_max2,xc+r_max2),
-     ylim=c(-yc-r_max2,-yc+r_max2), xlab="col", ylab="row", main=paste("b",bnr2))
+    ylim=c(-yc-r_max2,-yc+r_max2), xlab="col", ylab="row", main=paste("b",bnr2))
 points(xc,-yc, pch=3, cex=1.5, col="red", asp=1) #centre of PC
 points(pc2$col,-pc2$row, pch=".", cex=1.5, col="blue", asp=1) #PC
 #end of plot
@@ -96,9 +102,11 @@ cat("manual input required","\n")
 #manual input into console
 #ro_rg=0: range with Dis_min...Dis_max
 #ro_rg=1: range with 0...Dis_max
-#ro_rg=2: range calculated with alpha=angle of main axis of ellipse with x (mathematic definition), form of CC should not be squared!
+#ro_rg=2: range calculated with angle (alpha) 
+# of main axis of ellipse with x-axis (math. definition) 
+# form of CC should not be squared!
 
-ro_rg = 1 #default value
+ro_rg = 1 #default value:1
 ro_rg <- as.integer(ro_rg)
 cat("selected ro-range type=", ro_rg,"\n")
 
@@ -131,7 +139,7 @@ if(ro_rg == 2) {
   #solution fails when building is a squared area
   
   if(alpha_math < 0){
-    alpha <- 180 + alpha_math
+    alpha_math <- 180 + alpha_math
   }
   theta_appr <- alpha_math - 90
   d_safety = 50 #safety value in [pel]
@@ -147,26 +155,28 @@ if(ro_rg == 2) {
   X <- max(pc2$col) 
   Y <- (-max(pc2$row)) #change to math-system
   ro1_max <- cos(theta1_arc) * X + sin(theta1_arc) * Y
+  ro1_max <- abs(ro1_max)
   ro2_max <- cos(theta2_arc) * X + sin(theta2_arc) * Y
+  ro2_max <- abs(ro2_max)
   X <- min(pc2$col)
   Y <- (-min(pc2$row)) #change to math-system
   ro1_min <- cos(theta1_arc) * X + sin(theta1_arc) * Y
+  ro1_min <- abs(ro1_min)
   ro2_min <- cos(theta2_arc) * X + sin(theta2_arc) * Y
+  ro2_min <- abs(ro2_min)
   ro_range <- c(ro1_max, ro2_max, ro1_min, ro2_min) 
-  if(alpha_math > 90) {
-    ro_range <- c(ro1_max, -ro2_max, ro1_min, -ro2_min) 
-  }
   ro_range
   max_ro <- as.integer(max(ro_range))
   min_ro <- as.integer(min(ro_range))
   min_ro2 <- as.integer(min_ro - d_safety)
   max_ro2 <- as.integer(max_ro + d_safety)
   ro <- seq(min_ro2,max_ro2,by=ro_step)
+  ro
   n_ro <- length(ro)
   ro_1 <- ro[1]
   
-  #plot
-  alpha <- alpha_math
+  #plot graph
+  alpha <- alpha_math #alpha is here equal to alpha_math
   alpha_arc <- alpha/omega
   a = tan(alpha_arc)
   theta_ang <- alpha + 90
@@ -263,7 +273,9 @@ write.table(B,f1)
 #does first (longest) line have an orthogonal line (theta_ind + 90 or theta_ind -90) ?
 B1 <- B
 cat("detected line segments (theta_index, ro_index, N), ordered with respect to length of line (N):","\n")
-B2 <- subset(B1,B1[,3] >= 80) # ~56*k, K ~ 1.64 (k is determined empirically) 
+#B2 <- subset(B1,B1[,3] >= 80) # ~56*k, K ~ 1.64 (k is determined empirically) 
+#B2 <- subset(B1,B1[,3] >= 57) # ~35*k, K ~ 1.64 (k is determined empirically) 
+B2 <- subset(B1,B1[,3] >= 41) # ~25*k, K ~ 1.64 (k is determined empirically) 
 nrow(B2)
 head(B2)
 max(B2[,1], na.rm = FALSE) #theta_index
@@ -286,7 +298,7 @@ if (theta_ref_ind <= 19) {
 
 if (hn$counts[(alph_ref_ind-1)] < 2 || hn$counts[(theta_ref_ind-1)] < 2) {
    cat("warning: two ortho_lines of length >= 92 pseudo-pixel (~5m) do not exist!","\n")
-   stop("stop -> select ro_rg = 1")
+   stop("stop -> select ro_rg = 2")
 }
 
 ##loop for check plot of extracted point clusters (optional)
@@ -877,8 +889,8 @@ if (cas == "4_long") {
   B5_4[1:8,]
   #n_pix must be changed according to available PCs in B5_4$n_pixel
   #n_pix must be longer than in 'extr_wd'
-  #n_pix <- 25  #length of segment (2.3m) default value
-  n_pix <- 35 #length of segment (3.2m) alternative 
+  n_pix <- 25  #length of segment (2.3m) default value
+  #n_pix <- 35 #length of segment (3.2m) alternative 
   #n_pix <- 56 #length of segment (5.0) alternative 
   #n_pix <- 78 #length of segment (7.0m) alternative 
   
