@@ -1,4 +1,5 @@
 ##name of script: spObj_line_detection.R
+#GNU General Public License (GPL)
 cat("version_number= ",v_nr,"\n")
 #purpose: dealing with special objects at line detection 
 #instructions: change of default values may be required
