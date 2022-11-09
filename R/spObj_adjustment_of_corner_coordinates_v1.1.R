@@ -1,4 +1,6 @@
 ##name of program: spObj_adjustment_of_corner_coordinates.R
+#GNU General Public License (GPL)
+
 cat("version_number= ",v_nr,"\n")
 
 
