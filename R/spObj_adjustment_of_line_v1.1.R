@@ -1,4 +1,5 @@
 ##name of script: spObj_adjustment_of_line.R
+#GNU General Public License (GPL)
 cat("version_number= ",v_nr,"\n")
 
 
