@@ -161,7 +161,7 @@ if(ro_rg == 2) {
   X <- min(pc2$col)
   Y <- (-min(pc2$row)) #change to math-system
   ro1_min <- cos(theta1_arc) * X + sin(theta1_arc) * Y
-  ro1_min <- abs(ro1_min)
+  ro1_min <- abs(ro1_min) #same as in Hough-trans
   ro2_min <- cos(theta2_arc) * X + sin(theta2_arc) * Y
   ro2_min <- abs(ro2_min)
   ro_range <- c(ro1_max, ro2_max, ro1_min, ro2_min) 
@@ -273,9 +273,9 @@ write.table(B,f1)
 #does first (longest) line have an orthogonal line (theta_ind + 90 or theta_ind -90) ?
 B1 <- B
 cat("detected line segments (theta_index, ro_index, N), ordered with respect to length of line (N):","\n")
-#B2 <- subset(B1,B1[,3] >= 80) # ~56*k, K ~ 1.64 (k is determined empirically) 
-#B2 <- subset(B1,B1[,3] >= 57) # ~35*k, K ~ 1.64 (k is determined empirically) 
-B2 <- subset(B1,B1[,3] >= 41) # ~25*k, K ~ 1.64 (k is determined empirically) 
+#B2 <- subset(B1,B1[,3] >= 80) # 56*k, K ~ 1.64 (k is determined empirically) 
+#B2 <- subset(B1,B1[,3] >= 57) # 35*k, K ~ 1.64 (k is determined empirically) 
+B2 <- subset(B1,B1[,3] >= 41) # 25*k, K ~ 1.64 (k is determined empirically) 
 nrow(B2)
 head(B2)
 max(B2[,1], na.rm = FALSE) #theta_index
@@ -297,7 +297,7 @@ if (theta_ref_ind <= 19) {
 } #end if-else
 
 if (hn$counts[(alph_ref_ind-1)] < 2 || hn$counts[(theta_ref_ind-1)] < 2) {
-   cat("warning: two ortho_lines of length >= 92 pseudo-pixel (~5m) do not exist!","\n")
+   cat("warning: two ortho_lines of length >= 41 pseudo-pixel (~2.3m) do not exist!","\n")
    stop("stop -> select ro_rg = 2")
 }
 
