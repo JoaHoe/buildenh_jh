@@ -81,7 +81,8 @@ proc_mode <- "NA" #mode of processing
 # install.packages('tiff')
 # install.packages('stringr')
 # install.packages('usethis')
-#
+# install.packages('rpart')
+# install.packages('nlme')
 
 ##loading of libraries 
 setwd(home_dir2)
