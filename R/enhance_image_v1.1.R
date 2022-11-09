@@ -69,7 +69,7 @@ display(LCM_b, "raster")
 #end of "generation of refined class building"
 
 #scaling of image?
-cat("Is scaling necessary? type Y or N","\n") 
+#cat("Is scaling necessary? type Y or N","\n") 
 #answ <- readline("Is scaling necessary? ") #activate if required
 
 answ = "Y" #remove this line for other projects than "ISPRS7" and "ISPRS1"
