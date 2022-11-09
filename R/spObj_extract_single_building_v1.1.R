@@ -1,4 +1,5 @@
 ##name of script: spObj_extract_single_building.R
+#GNU General Public License (GPL)
 cat("version_number= ",v_nr,"\n")
 #purpose: partition of special objects 
 ######################################################################
