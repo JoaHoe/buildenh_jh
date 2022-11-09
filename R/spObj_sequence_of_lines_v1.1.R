@@ -1,5 +1,6 @@
 ##name of script: spObj_sequence_of_lines.R
 cat("version_number= ",v_nr,"\n")
+#GNU General Public License (GPL)
 #purpose: dealing with special objects 
 #correction of position of line-centers, angle of line and sequence of lines 
 #instruction: if corrections in the positions are required -> use interactive detection of lines in 'support_line_detection.R' 
