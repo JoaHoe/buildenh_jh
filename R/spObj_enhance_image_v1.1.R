@@ -1,4 +1,6 @@
 ## name of program: spObj_enhance_image.R
+#GNU General Public License (GPL)
+
 cat("version_number= ",v_nr,"\n")
 # purpose: scaling of image 
 # ISPRS data "Vaihingen", area#7, area#1
