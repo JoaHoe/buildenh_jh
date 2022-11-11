@@ -201,6 +201,12 @@ if (Img_name == "ISPRS1") {
     B5_4e_4long2 <- B5_4e_4long
   } #end b5
   
+  ##b10
+  #cas='100_all'
+  if (bnr2 == 10 && p_pos == "cor_det") { 
+    B5_6R4 <- B5_6[-c(2,6,7,8,11,12,13,18),]
+    row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
+  } #end b10
   
   #b11
   #cas="100_all+nonortho"
