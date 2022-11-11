@@ -60,7 +60,7 @@ save(theta_step, ro_step, ro, ro_1, n_theta, n_ro, ro_rg, file="./data/ISPRS7/H_
 #determination of theta_ind
 #result must be > 0
 
-dir_meas <- locator(2,type="p")
+dir_meas <- locator(2)
 x_ang <- (dir_meas$y[1] - dir_meas$y[2]) / (dir_meas$x[1] - dir_meas$x[2])
 alpha_meas <- atan(x_ang) * omega
 alpha_math <- (-alpha_meas) #change to math-system
@@ -77,9 +77,13 @@ theta_ind # theta_ind > 0 ?
 if (theta_ind < 0) {
   theta_ind <- theta_ind + 18
 }
+cat("theta_ind=", theta_ind, "\n")
 
-alph_ind <- theta_ind + 90/5 
+alph_ind <- theta_ind + 90/5
+cat("alph_ind=", alph_ind, "\n")
+
 alph_ind2 <- theta_ind - 90/5 #theta_ind2 > 0 ?
+cat("alph_ind2=", alph_ind2, "\n")
 #end of script 2
 ################################################################################################
 
