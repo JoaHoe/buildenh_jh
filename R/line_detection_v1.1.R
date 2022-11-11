@@ -273,9 +273,9 @@ write.table(B,f1)
 #does first (longest) line have an orthogonal line (theta_ind + 90 or theta_ind -90) ?
 B1 <- B
 cat("detected line segments (theta_index, ro_index, N), ordered with respect to length of line (N):","\n")
-#B2 <- subset(B1,B1[,3] >= 80) # 56*k, K ~ 1.64 (k is determined empirically) 
-#B2 <- subset(B1,B1[,3] >= 57) # 35*k, K ~ 1.64 (k is determined empirically) 
-B2 <- subset(B1,B1[,3] >= 41) # 25*k, K ~ 1.64 (k is determined empirically) 
+B2 <- subset(B1,B1[,3] >= 80) # 56*k, k ~ 1.64 (k is determined empirically) 
+#B2 <- subset(B1,B1[,3] >= 57) # 35*k, k ~ 1.64 (k is determined empirically) 
+#B2 <- subset(B1,B1[,3] >= 41) # 25*k, k ~ 1.64 (k is determined empirically) 
 nrow(B2)
 head(B2)
 max(B2[,1], na.rm = FALSE) #theta_index
@@ -296,7 +296,7 @@ if (theta_ref_ind <= 19) {
   alph_ref_ind <- theta_ref_ind - 18
 } #end if-else
 
-if (hn$counts[(alph_ref_ind-1)] < 2 || hn$counts[(theta_ref_ind-1)] < 2) {
+if (hn$counts[(alph_ref_ind)] < 2 || hn$counts[(theta_ref_ind)] < 2) {
    cat("warning: two ortho_lines of length >= 41 pseudo-pixel (~2.3m) do not exist!","\n")
    stop("stop -> select ro_rg = 2")
 }
@@ -370,6 +370,9 @@ options(digits = 8)
 names(B0) <- c("lnr","theta_index","ro_index","N")
 B0[1:8,]
 kf <- B0[lnr,4]/d_line #scale factor to convert into number of pixel
+if (kf < 1) {
+  kf = k
+}
 #end of calculation of the scale factor 'k'
 
 wd <- 15 #width of building
@@ -436,9 +439,11 @@ while (i <= n_lnr) {
   head(P_red)
   x_m <- mean(P_red[,2])
   y_m <- mean(-P_red[,3]) #change to math-system
-  i <- i + 1
-  points((P_red[,2]),(-P_red[,3]), pch=".", asp=1, cex=2.0, col="blue") #see 'Plots' (plot)
+  
+  points(P[,2],(-P[,3]), pch=".", asp=1, cex=2.0, col="red") #see 'Plots' (plot))
+  points(P_red[,2],(-P_red[,3]), pch=".", asp=1, cex=2.0, col="black") #see 'Plots' (plot)
   points(x_m, y_m, pch=16, asp=1, cex=1.0, col="red")
+  i <- i + 1
 } #end loop while
 
 #plot of ref-line of Hough trans results onto graph (math-system)
@@ -889,9 +894,9 @@ if (cas == "4_long") {
   B5_4[1:8,]
   #n_pix must be changed according to available PCs in B5_4$n_pixel
   #n_pix must be longer than in 'extr_wd'
-  n_pix <- 25  #length of segment (2.3m) default value
+  #n_pix <- 25  #length of segment (2.3m) default value
   #n_pix <- 35 #length of segment (3.2m) alternative 
-  #n_pix <- 56 #length of segment (5.0) alternative 
+  n_pix <- 56 #length of segment (5.0) alternative 
   #n_pix <- 78 #length of segment (7.0m) alternative 
   
   cat("length of segment= n_pix",n_pix,"\n")
@@ -1127,7 +1132,7 @@ if (cas == "100_all") {
     centers_PC[n,1] <- lnr
     centers_PC[n,2] <- x_m
     centers_PC[n,3] <- y_m
-    centers_PC[n,4] <- n_P
+    centers_PC[n,4] <- round(n_P/kf)
   } #end of for-loop
   
   centers_PC
@@ -1173,7 +1178,7 @@ if (cas == "100_all") {
     # plotting of lines
     coef2 <- c(b2_img,a_img)
     
-    if (is.finite(a)) {
+    if (is.finite(a_img)) {
       abline(coef2, col="white", lty=1, lwd=2, asp=1)
     }  else {
       ro_l1 <- B4$ro_pixel[lnr]
@@ -1181,11 +1186,11 @@ if (cas == "100_all") {
       ro_l3 <- round(ro_l2 - orig_x)
       lines(c(ro_l3,ro_l3),c(0, (wind_y - orig_y)),col="blue")
     } #end if-else
-    coef <- c(b,a)
+    #coef <- c(b,a)
     
-    if (is.finite(a)) {
-      abline(coef, col="blue", lty=1, lwd=2, asp=1)
-    }
+    # if (is.finite(a)) {
+    #   abline(coef, col="blue", lty=1, lwd=2, asp=1)
+    # }
     
     cat("#","\n")
   } #end for-loop (large scale)
