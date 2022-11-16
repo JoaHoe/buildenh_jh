@@ -3,16 +3,16 @@
 ## GNU General Public License (GPL)
 
 loadLib_op <- function() { #required R-packages
-  library("devtools")
+  #library("devtools")
   library("EBImage")
-  library("knitr")
-  library("roxygen2")
+  #library("knitr")
+  #library("roxygen2")
   library("spatstat")
-  library("stringr")
-  library("testthat")
+  #library("stringr")
+  #library("testthat")
   library("tiff")
   library("nlme")
-  library("usethis")
+  #library("usethis")
   library("rpart")
 } #end of function 'loadLib_op()'
 
