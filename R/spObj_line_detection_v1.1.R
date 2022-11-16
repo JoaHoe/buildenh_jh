@@ -214,8 +214,51 @@ if (Img_name == "ISPRS1") {
   if (bnr2 == 11 && p_pos == "cor_det") { 
     lnr_det3[5] <- 182 #correction to be made
     lnr_det5 <- lnr_det3 
-  } #end b11 
-    
+  } #end b11
+  
+  #b13
+  if (bnr2 == 13 && p_pos == "cor_det") { 
+      #cas='100_all'
+      B5_6R4 <- B5_6[-c(6,7),]
+      row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
+  } #end b13
+  
+  #b15
+  if (bnr2 == 15 && p_pos == "cor_det") { 
+    #cas='100_all'
+    B5_6R4 <- B5_6[-c(1,6,7),]
+    row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
+  } #end b15
+  
+  #b17
+  if (bnr2 == 17 && p_pos == "cor_det") { 
+    #cas='100_all'
+    B5_6R4 <- B5_6[-c(2,3,5,7),]
+    row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
+  } #end b17
+  
+  #b21
+  if (bnr2 == 21 && p_pos == "cor_det") { 
+    #cas='100_all'
+    B5_6
+    B5_6R4 <- B5_6[-c(1,2,5,6,7),]
+    row.names(B5_6R4) <- 1 : nrow(B5_6R4)
+    n_index <- nrow(B5_6R4) + 1
+    B5_6R4[n_index,1:7] <- B4[524,1:7]
+    B5_6R4[n_index,8] <- 1
+    row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
+    B5_6R4
+  } #end b21
+  
+  #b22
+  if (bnr2 == 22 && p_pos == "cor_det") { 
+    #cas='100_all'
+    B5_6
+    B5_6R4 <- B5_6[-c(2,3,6,8,10,11,13,14,16,17),]
+    row.names(B5_6R4) <- 1 : nrow(B5_6R4)
+    B5_6R4
+  } #end b22
+  
 } #end image ISPRS1
 
 ##end script 'spObj_line_detection'
