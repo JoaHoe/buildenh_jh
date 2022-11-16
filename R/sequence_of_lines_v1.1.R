@@ -211,7 +211,8 @@ if (sek == "Mpts") {
   
   ##ordering of the angles which represent line segments
   b13_angle_df2_seq <- b13_angle_df2[order(b13_angle_df2$alpha, decreasing = FALSE),]
-  b13_angle_df2_seq 
+  b13_angle_df2_seq
+  row.names(b13_angle_df2_seq) <- 1 : nrow(b13_angle_df2_seq)
 
 #plot of midpoints in large scale
   r_max2 <- 1.1*r_max
@@ -794,7 +795,6 @@ if (sek == "bdr_follow") {
   main=paste("b ",bnr2, sep=(""))) #large scale
   points(pc3$col, -pc3$row, pch=20, asp=1, cex=0.3, col="black") # original pixel cloud for building
   points(b13_angle_df2$x_centre,-b13_angle_df2$y_centre, asp=1, pch=20,col="green", cex=1.5)
-  
   #
   b13_angle_df2
   b_angle_df_seq_red <- b13_angle_df2
