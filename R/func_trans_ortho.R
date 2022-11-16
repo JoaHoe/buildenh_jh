@@ -5,7 +5,7 @@
 #GNU General Public License (GPL)
 
 trans_ortho <- function() {
-  mar=100 #distance from center of object
+  mar=50 #distance from center of object
   
   #check point 1
   x1 <- xc - mar 
@@ -27,7 +27,7 @@ trans_ortho <- function() {
   c2 <- locator(1) #right upper control point (2)
   c7 <- locator(1) #check point (center of object )
   #
-  #calculation of transformation-parameter
+  #calculation of transformation-parameter (plane)
   dX <- x2 - x1
   dY <- y2 - y1
   dx <- c2$x - c1$x
@@ -53,7 +53,8 @@ trans_ortho <- function() {
   D[1,2] <- -b1
   D[2,1] <- b1
   D[2,2] <- a1
-  L1 <- list(D,tr_lat)
+  kf2 <- sqrt(a1^2+b1^2)
+  L1 <- list(D,tr_lat,kf2)
   return(L1)
 } #end of function 'trans_ortho()'
 
