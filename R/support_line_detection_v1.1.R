@@ -168,6 +168,7 @@ D[2,2] <- L1[[1]][2,2]
 a0 <- L1[[2]][1]
 b0 <- L1[[2]][2]
 tr_lat <- c(a0,b0)
+kf2 <- L1[[3]]
 #
 
 # measurement of new points (results: x,y)
@@ -178,7 +179,7 @@ detect_meas1()
 
 #plot of detected line into enlarged orthoimage
 B5_4_ord #use of ref-line (lnr_ref)
-i=35 #index in B5_4_ord (value for i has to be changed)
+i=22 #index in B5_4_ord (value for i has to be changed)
 B5_4_ord[i,]
 cat("PC_nr=", B5_4_ord$lnr[i], "\n")
 y <- (-y) #adapt to img_system
