@@ -895,10 +895,10 @@ if (cas == "4_long") {
   B5_4[1:8,]
   #n_pix must be changed according to available PCs in B5_4$n_pixel
   #n_pix must be longer than in 'extr_wd'
-  n_pix <- 25  #length of segment (2.3m) default value
-  #n_pix <- 35 #length of segment (3.2m) alternative 
+  n_pix <- 35 #length of segment (3.2m) default value 
   #n_pix <- 56 #length of segment (5.0) alternative 
-  #n_pix <- 78 #length of segment (7.0m) alternative 
+  #n_pix <- 25  #length of segment (2.3m) alternative
+  #n_pix <- 78 #length of segment (7.0m) alternative
   
   cat("length of segment= n_pix",n_pix,"\n")
   wd <- n_pix #wd = width of building [pixel] 
@@ -1459,10 +1459,10 @@ plot(x,-y, pch=3, cex=2, col="red", asp=1, xlim=c(xc - r_max2,xc + r_max2),
      ylim=c(-(yc + r_max2),-(yc - r_max2)), ann = TRUE, axes = TRUE, 
      main=paste("b ",bnr2, sep=("")))
 points(pc3$col, -pc3$row, pch=20, asp=1, cex=0.5, col="red")
-points(xc-mar,-(yc+mar), pch=3, asp=1, cex=2, col="red")
-points(xc+mar,-(yc+mar), pch=3, asp=1, cex=2, col="red")
-points(xc-mar,-(yc-mar), pch=3, asp=1, cex=2, col="red")
-points(xc+mar,-(yc-mar), pch=3, asp=1, cex=2, col="red")
+points(xc-mar,-(yc+mar), pch=3, asp=1, cex=1, col="green")
+points(xc+mar,-(yc+mar), pch=3, asp=1, cex=1, col="green")
+points(xc-mar,-(yc-mar), pch=3, asp=1, cex=1, col="green")
+points(xc+mar,-(yc-mar), pch=3, asp=1, cex=1, col="green")
 
 #loop PC plotting
 lnr_det7
