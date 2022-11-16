@@ -219,7 +219,7 @@ answ <- readline("Is the position of all midpoints correct? type N if it is not:
 
 if (answ == "N") {
   midpoints
-  n_RepPoint <- 8 #row number of midpoint to be corrected (PC_4), must be changed
+  n_RepPoint <- 6 #row number (index) of midpoint to be corrected (PC_4), must be changed
   n_RepPoint <- as.integer(n_RepPoint)
   b13_angle_df$nr_center <- midpoints[,1]
   b13_angle_df
@@ -245,20 +245,20 @@ if (answ == "N") {
     i <- i+1
   }
   
-  i <- 150 #r-value, determined from graph (manual operation)
+  i <- 25 #r-value, determined from graph (manual operation)
   x <- i
   y <- r_dist[i]
   points(x,y,pch=20,col="cyan",cex=1.8)
   np <- nrow(all_PC[[n_RepPoint]])
   all_PC2 <- all_PC
   all_PC2[[n_RepPoint]]$dist <- round(r_dist)
-  i <- 150 #determined from graph
+  i <- 25 #determined from graph
   r_dist[i]
   x_centre <- all_PC2[[n_RepPoint]]$x[i]
   y_centre <- all_PC2[[n_RepPoint]]$y[i]
   
   #plot
-  points(x_centre,-y_centre,pch=20,col="green",cex=1.5)
+  points(x_centre,-y_centre,pch=20,col="red",cex=1.5)
   b13_angle_df$x_centre[n_RepPoint] <- x_centre
   b13_angle_df$y_centre[n_RepPoint] <- y_centre
   b13_angle_df
@@ -270,13 +270,13 @@ if (answ == "N") {
 #center of object/building
 xc <- plotPar[1]
 yc <- plotPar[2]
-x_centre <- b13_angle_df2[7,3] #to be transferred to spObj_sequence_of_lines_v1.1.R
-y_centre <- b13_angle_df2[7,4] #to be transferred to spObj_sequence_of_lines_v1.1.R
+x_centre <- b13_angle_df[6,3] #to be transferred to spObj_sequence_of_lines_v1.1.R
+y_centre <- b13_angle_df[6,4] #to be transferred to spObj_sequence_of_lines_v1.1.R
 
 #correction of angle for new midpoint
 alpha <- det_of_angle(x_centre, y_centre) #call of function
-b13_angle_df2$alpha[7] <- alpha #correction
-b13_angle_df2
+b13_angle_df$alpha[6] <- alpha #correction
+b13_angle_df
 
 #end of script 9 (correction of angle for midpoint of segment)
 ################################################################################
