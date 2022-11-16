@@ -273,9 +273,10 @@ write.table(B,f1)
 #does first (longest) line have an orthogonal line (theta_ind + 90 or theta_ind -90) ?
 B1 <- B
 cat("detected line segments (theta_index, ro_index, N), ordered with respect to length of line (N):","\n")
-B2 <- subset(B1,B1[,3] >= 80) # 56*k, k ~ 1.64 (k is determined empirically) 
+#B2 <- subset(B1,B1[,3] >= 80) # 56*k, k ~ 1.64 (k is determined empirically) 
 #B2 <- subset(B1,B1[,3] >= 57) # 35*k, k ~ 1.64 (k is determined empirically) 
 #B2 <- subset(B1,B1[,3] >= 41) # 25*k, k ~ 1.64 (k is determined empirically) 
+B2 <- subset(B1,B1[,3] >= 20) # 10*k, k ~ 1.99 (kf2 is measured) 
 nrow(B2)
 head(B2)
 max(B2[,1], na.rm = FALSE) #theta_index
@@ -375,7 +376,7 @@ if (kf < 1) {
 }
 #end of calculation of the scale factor 'k'
 
-wd <- 15 #width of building
+wd <- 10 #width of building
 B2 <- subset(B0, round(B0[,4]/kf) >= wd) # minimum length of side, assumed with 15 pixel (=1.4m)
 n1 <- length(B2[,1])
 B3 <- matrix(nrow=n1,ncol=7)
@@ -495,7 +496,7 @@ alph_ref_ind <- alph_ref/theta_step + 1
 alph_ref_arc <- alph_ref/omega
 theta_ref_arc <- theta_ref/omega
 r_max <- plotPar[3]
-lol <- wd # minimum length of line segment [pixels]
+lol <- 10 # minimum length of line segment [pixels]
 i=0
 B5_2 <- matrix(nrow=k13,ncol=7)
 B5_2[,1:7] <- 0
@@ -739,7 +740,7 @@ if (proc_mode == "demo") {
 ty <- readline("type object type= ") #manual input
 ty <- as.integer(ty)
 cas <- switch(ty,"extr_wd", "4_long", "100_all", "100_all+nonortho")
-#
+###############################################################
 
 ## Search of orthogonal lines -> specified length (wd)
 
@@ -894,9 +895,9 @@ if (cas == "4_long") {
   B5_4[1:8,]
   #n_pix must be changed according to available PCs in B5_4$n_pixel
   #n_pix must be longer than in 'extr_wd'
-  #n_pix <- 25  #length of segment (2.3m) default value
+  n_pix <- 25  #length of segment (2.3m) default value
   #n_pix <- 35 #length of segment (3.2m) alternative 
-  n_pix <- 56 #length of segment (5.0) alternative 
+  #n_pix <- 56 #length of segment (5.0) alternative 
   #n_pix <- 78 #length of segment (7.0m) alternative 
   
   cat("length of segment= n_pix",n_pix,"\n")
@@ -1093,7 +1094,7 @@ if (cas == "4_long") {
 
 if (cas == "100_all") {
   print(B5_4)
-  cat("minimum length of line: 15 pixel (recommended), 35 (alternative)")
+  cat("minimum length of line: 15 pixel (recommended), 10, 35 (alternative)")
   n_pix <- readline("type minimum length of line= ") #manual input 15 (recommended) or 35 (alternativ)
   n_pix <- as.integer(n_pix)
   wd <- n_pix
@@ -1150,7 +1151,7 @@ if (cas == "100_all") {
     points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.3, col="red")
     x <- centers_PC[i,2]
     y <- centers_PC[i,3]
-    points(x-orig_x,-(y-orig_y_math),pch=18, asp=1, cex=1.3, col="blue")
+    points(x-orig_x,-(y-orig_y_math),pch=18, asp=1, cex=1.3, col="red")
   } #end for-loop
   # end of check plot
 
@@ -1158,7 +1159,7 @@ if (cas == "100_all") {
   n1=1
   for (n1 in vec3) {
     cat("PC_nr=", B5_6$lnr[n1], "\n")
-    #browser()
+    browser()
     theta_angle <- B5_6$theta_angle[n1]
     theta_math <- (180 - theta_angle) #theta of oriented line
     x <- centers_PC[n1,2]
@@ -1179,7 +1180,7 @@ if (cas == "100_all") {
     coef2 <- c(b2_img,a_img)
     
     if (is.finite(a_img)) {
-      abline(coef2, col="white", lty=1, lwd=2, asp=1)
+      abline(coef2, col="blue", lty=1, lwd=2, asp=1)
     }  else {
       ro_l1 <- B4$ro_pixel[lnr]
       ro_l2 <- ro_l1 + ro_1
@@ -1453,7 +1454,7 @@ par('usr')
 x <- xc
 y <- yc
 r_max2 <- 1.1 * r_max
-mar <- 100 
+mar <- 30 
 plot(x,-y, pch=3, cex=2, col="red", asp=1, xlim=c(xc - r_max2,xc + r_max2), 
      ylim=c(-(yc + r_max2),-(yc - r_max2)), ann = TRUE, axes = TRUE, 
      main=paste("b ",bnr2, sep=("")))
