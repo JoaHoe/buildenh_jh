@@ -259,6 +259,16 @@ if (Img_name == "ISPRS1") {
     B5_6R4
   } #end b22
   
+  #b25
+  if (bnr2 == 25 && p_pos == "cor_det") { 
+    #cas='100_all'
+    B5_6
+    B5_6R4 <- B5_6[-c(2,3,6,7),]
+    row.names(B5_6R4) <- 1 : nrow(B5_6R4)
+    B5_6R4
+  } #end b25
+  
+  
 } #end image ISPRS1
 
 ##end script 'spObj_line_detection'
