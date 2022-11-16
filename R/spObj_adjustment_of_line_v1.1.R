@@ -32,8 +32,14 @@ if (Img_name == "ISPRS7") {
 
 ##buildings of orthoimage ISPRS_#1
 
-if (Img_name == "ISPRS1") {  
- #no corrections 
+if (Img_name == "ISPRS1") {
+  
+  #b21
+  if (bnr2 == 21 && p_pos == "cor_adj_line") {   
+    B6$ro_adj[2] <- B6$ro_pixel[2] #correction of ro (line 524)
+    B6$theta_adj[2] <- B6$theta_ang[2] #correction of theta (line 524)
+  } 
+  
 } #end of Img_name = "ISPRS1"
 
 ##end of script 'spObj_adjustment_of_line.R' 
