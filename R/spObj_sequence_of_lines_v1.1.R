@@ -248,7 +248,15 @@ if (Img_name == "ISPRS7") {
 ##orthoimage ISPRS_#1
 
 if (Img_name == "ISPRS1") {
-  #no corrections
+  
+  #b22
+  if (bnr2 == 22 && p_pos == "cor_pos") {  
+    #determine new position by 'support_line_detection.R', #6
+    #or with angle by 'support_sequence_of_lines.R', #9
+    b13_angle_df[6,3:4] <- c(1487, 1423) #manually derived
+    b13_angle_df2 <- b13_angle_df
+  } #end b22
+  
 } #end of ISPRS1
 
 ##end of script 'spObj_sequence_of_lines.R'
