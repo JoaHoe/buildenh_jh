@@ -21,7 +21,7 @@ H_param
 ro_rg
 ro_1
 
-##input of DT
+##input of DT (derived from ISPRS data,image #7)
 load(paste("./data/tt_prior_sek.RData",sep = ""))
 accSample3_new2 <- accSample3_train
 accSample3_new3 <- accSample3_new2[1,]
@@ -582,11 +582,6 @@ b13_angle_df2
     write.table(all_PC[[i]], fname8)
   } #end loop out put of list all_PC
 
-  #reset original center of object
-  #xc <- xc_original
-  #yc <- yc_original
-
-
   # output of sequence (sek = "Mpts+dist")
   setwd(home_dir)
   fname9 <- paste("./data/", Img_name,"/b",bnr2,"_case.txt", sep="")
@@ -725,9 +720,9 @@ if (sek == "bdr_follow") {
   points(pc3$col, -pc3$row, pch=20, asp=1, cex=0.3, col="cyan") # original pointcloud for building
 
   for (i in vec_y) {
-  cat("nr_center= ",b13_angle_df2$nr_center[i],"\n")
-  #browser()
-  points(b13_angle_df2$x_centre[i],-b13_angle_df2$y_centre[i], asp=1, pch=20,col="blue", cex=1.5)
+    cat("nr_center= ",b13_angle_df2$nr_center[i],"\n")
+    #browser()
+    points(b13_angle_df2$x_centre[i],-b13_angle_df2$y_centre[i], asp=1, pch=20,col="blue", cex=1.5)
   }
   
 ##correction of midpoints which represent line segments
@@ -757,7 +752,7 @@ if (sek == "bdr_follow") {
 
   if (answ == "N") {
     if (part == "2parts_1") {
-      bnr2 <- bnr2*10+1 #bnr2 of left part
+      bnr2 <- bnr2*10+1 #bnr2 of first part
       bnr2_part <- bnr2
       p_pos <- "cor_pos"
       setwd(home_dir2)
@@ -1016,13 +1011,27 @@ if (sek == "bdr_follow") {
   #check
   n_det5 <- length(lnr_det5)
   if (n_seq != n_det5) {
-    #stop("lines are not correctly detected -> correct positions by 'support_line_detection.R'")
+    stop("lines are not correctly detected -> correct positions by 'support_line_detection.R'")
     cat("lines are not correctly detected -> correct sequence manually","\n") 
     p_pos <- "cor_sek"
     setwd(home_dir2)
     source(paste("spObj_sequence_of_lines_v",v_nr,".R",sep=""))
-    sequence_seg <- sequence_seg2
-    }
+    sequence_seg2
+  } else {
+    cat ("sequence = ",sequence_seg, "\n")   
+  }
+  
+  cat("Is the sequence of lines correct?","\n")
+  answ <- readline("type Y or N:  ") #manual input
+  if (answ == "N") {
+    p_pos <- "cor_sek"
+    setwd(home_dir2)
+    source(paste("spObj_sequence_of_lines_v",v_nr,".R",sep=""))
+    sequence_seg2  
+  } else {
+    sequence_seg2 <- sequence_seg #sequence is correct
+  }
+  
 } #end sek = "bdr_follow" 
 
 #end of route 'bdr-follow'
@@ -1041,7 +1050,7 @@ if (sek == "Mpts+dist") {
 }
 
 if (sek == "bdr_follow") {
-  PC_nr <- sequence_seg
+  PC_nr <- sequence_seg2
 } #end if
 
 
