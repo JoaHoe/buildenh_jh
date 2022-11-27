@@ -257,6 +257,22 @@ if (Img_name == "ISPRS1") {
     b13_angle_df2 <- b13_angle_df
   } #end b22
   
+  #b271
+  if (bnr2 == 271 && p_pos == "cor_pos") {  
+    #determine new position by 'support_line_detection.R', #6
+    #or with angle by 'support_sequence_of_lines.R', #9
+    b13_angle_df
+    b13_angle_df[1,3:4] <- c(582,1672)
+    b13_angle_df[4,3:4] <- c(571,1721) #manually derived
+    b13_angle_df[5,3:4] <- c(456,2199) #manually derived
+    b13_angle_df[6,3:4] <- c(546,1808) #manually derived
+    b13_angle_df[10,3:4] <- c(651,2006) #manually derived
+    b13_angle_df[12,3:4] <- c(626,1840) #manually derived
+    b13_angle_df[13,3:4] <- c(633,1749) #manually derived
+    b13_angle_df2 <- b13_angle_df
+    b13_angle_df2
+  } #end b271
+  
 } #end of ISPRS1
 
 ##end of script 'spObj_sequence_of_lines.R'
