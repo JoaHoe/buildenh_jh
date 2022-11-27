@@ -41,7 +41,6 @@ n_PC <- length(B6$lnr)
 B7 <- B6
 B7[,] <- 0
 B7$lnr <- lnr_seq
-
 ## establish sequence of lines in B7
 
 #loop
