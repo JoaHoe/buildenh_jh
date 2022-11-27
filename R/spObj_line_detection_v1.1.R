@@ -268,7 +268,33 @@ if (Img_name == "ISPRS1") {
     B5_6R4
   } #end b25
   
+  #b271
+  if (bnr2 == 271 && p_pos == "cor_det") { 
+    #cas='100_all+nonortho'
+    B5_6
+    B5_6R4 <- B5_6[-c(2,3,4,6,7,10,11,12,13),]
+    row.names(B5_6R4) <- 1 : nrow(B5_6R4)
+    B5_6R4
+  } #end b271
   
+  #b28
+  if (bnr2 == 28 && p_pos == "cor_det") { 
+    #cas='100_all'
+    B5_6
+    B5_6R4 <- B5_6[-c(2,5),]
+    row.names(B5_6R4) <- 1 : nrow(B5_6R4)
+    B5_6R4
+  } #end b28
+  
+  #b29
+  if (bnr2 == 29 && p_pos == "cor_det") { 
+    #cas='100_all'
+    B5_6
+    B5_6R4 <- B5_6[-c(2,3,6,7),]
+    row.names(B5_6R4) <- 1 : nrow(B5_6R4)
+    B5_6R4
+  } #end b29
+
 } #end image ISPRS1
 
 ##end script 'spObj_line_detection'
