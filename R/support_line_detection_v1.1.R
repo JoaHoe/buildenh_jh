@@ -7,11 +7,13 @@ cat("version_number= ",v_nr,"\n")
 ## contents:
 # 1.improving the ro-range in Hough space
 # 2.manual detection of line orientation
-# 3.search of lines (lnr) with theta_index
+# 3.search of lines (lnr) with theta_index and plot of line
 # 4.determination of approximate line orientation (theta_appr) from angle (alpha_math) 
 # 5.search of lines with 'theta_appr + 90?' and 'theta_appr - 90?' 
 # 6.interactive detection of rectangular lines by measurement of one pixel in enlarged image 
 # 7.estimation of object type (cas)
+# 8.determination of line number (lnr) by theta_index and ro_index
+# 9.calculation of ro_ind using theta_index and measured point
 ################################################################################
 
 ## 1.improving the ro-range in Hough-space
@@ -87,7 +89,7 @@ cat("alph_ind2=", alph_ind2, "\n")
 #end of script 2
 ################################################################################################
 
-## 3.search of lines (lnr) with theta_index
+## 3.search of lines (lnr) with theta_index and plot of line
 theta_ind <- readline("type theta_index= ")
 theta_ind <- as.integer(theta_ind)
 
@@ -112,6 +114,84 @@ for (i in vec) {
     cat("lnr= ",i,"\n")
   }
 } #end search of lines with alph_index2
+#
+
+##plot of lines
+lnr <- readline("type line number: ") 
+lnr <- as.integer(lnr)
+#lnr_ref <- lnr
+#
+
+n_lnr <- lnr #lnr_ref must be smaller than 10 (otherwise: change n_lnr)
+
+##plot of selected lnr_ref
+#i=lnr
+
+#loop
+#while (i <= n_lnr) { 
+  L_new  <- PC_segment_4(lnr)  
+  P <- L_new[[1]]
+  n_P <- L_new[[2]]
+  P <- P[1:n_P,]
+  P <- as.data.frame(P)
+  names(P) <- c("idx","x","y")
+  P_red <- reduce_pointset(P) #new
+  head(P_red)
+  x_m <- mean(P_red[,2])
+  y_m <- mean(-P_red[,3]) #change to math-system
+  
+  points(P[,2],(-P[,3]), pch=".", asp=1, cex=2.0, col="red") #see 'Plots' (plot))
+  points(P_red[,2],(-P_red[,3]), pch=".", asp=1, cex=2.0, col="black") #see 'Plots' (plot)
+  points(x_m, y_m, pch=16, asp=1, cex=1.0, col="red")
+  #i <- i + 1
+#} #end loop while
+
+#plot of ref-line of Hough trans results onto graph (math-system)
+theta_math <- 180 - B4$theta_angle[lnr]
+#theta_math <- 360 - B4$theta_angle[lnr_ref]
+cat("theta_math= ", theta_math,"\n")
+a <- -1/tan(theta_math/omega)
+cat("a=",a,"\n")
+x <- x_m
+y <- y_m 
+p2 <- round(x*cos(theta_math/omega) + y*sin(theta_math/omega))
+b <- round(p2/sin(theta_math/omega))
+cat("b= ", b, "\n")
+coef = c(b,a)
+
+#plot onto graph
+
+# if(is.finite(b)) {
+#   abline(coef, col="blue", lty=1, lwd=2, asp=1) #ref line 
+# } else {
+#   ro_l1 <- B4$ro_pixel[lnr] #changed
+#   ro_l2 <- ro_l1+ro_1
+#   lines(c(ro_l2,ro_l2),c(0,-1500),col="green")
+# } # end of plotting line
+
+#calculation of intercept (b2) at image extract
+orig_y_math <- (-orig_y) #change to math-system
+b_math <- (-b)
+y1 <- a * orig_x + b_math
+b2_math <- y1 - orig_y_math
+cat("b2_math=", b2_math, "\n")
+
+#change to image-system
+b2_img <- round(-b2_math)
+a_img <- (-a)
+coef2 <- c(b2_img,a_img)
+
+if (is.finite(a)) {
+  abline(coef2, col="yellow", lty=1, lwd=2, asp=1)
+} else {
+  ro_l1 <- B4$ro_pixel[lnr]
+  ro_l2 <- ro_l1 + ro_1
+  ro_l3 <- round(ro_l2 - orig_x)
+  lines(c(ro_l3,ro_l3),c(0, (wind_y - orig_y)),col="red")
+}
+
+
+
 
 #end of script 3
 ################################################################################################
@@ -174,7 +254,7 @@ kf2 <- L1[[3]]
 # measurement of new points (results: x,y)
 locator2() #measurement and marking of a pixel's position
 
-#determination of lines by measuring one pixel
+#determination of ortholines by measuring one pixel
 detect_meas1() 
 
 #plot of detected line into enlarged orthoimage
@@ -223,14 +303,15 @@ if (is.finite(a)) {
 
 ##plot of detected nonortho-line onto enlarged orthoimage
 
-B2 #all lines after Hought trans
-i=136 #index in B2 (value for i has to be changed)
-B2[i,]
-cat("PC_nr=", B2[i,1], "\n")
-theta_img <- (B2[i,2] - 1) * ro_step
+B #all lines after Hought trans
+i=1293 #index in B2 (value for i has to be changed)
+i=as.integer(i)
+B[i,]
+cat("PC_nr=", i, "\n")
+theta_img <- (B[i,1] - 1) * theta_step
 
 #
-lnr <- i #longest PC
+lnr <- i #number of point cloud (PC)
 PC_seg_P_nP <- PC_segment_4(lnr)
 P <- PC_seg_P_nP[[1]] 
 n_P <- PC_seg_P_nP[[2]]
@@ -244,9 +325,9 @@ P <- read.table(f) #point cloud of first line
 head(P)
 names(P) <- c("idx","x","y")
 nrow1 <- nrow(P)
-#points(P[,2],-P[,3], pch=20, asp=1, cex=0.5, col="red") #point 
+points(P[,2]-orig_x,P[,3]+orig_y, pch=20, asp=1, cex=1.5, col="yellow") #point 
 P_red <- reduce_pointset(P)
-points(P_red[,2]-orig_x,P_red[,3]-orig_y, pch='.', asp=3, cex=3, col="blue")
+points(P_red[,2]-orig_x,P_red[,3]+orig_y, pch='.', asp=3, cex=3, col="blue")
 x_m <- mean(P_red[,2])
 y_m <- mean(P_red[,3]) 
 #
@@ -254,14 +335,14 @@ y_m <- mean(P_red[,3])
 y_m <- (-y_m) #adapt to math-system
 x <- round(x_m)
 y <- round(y_m)
-
+points(x-orig_x,-(y-orig_y), pch=20, asp=1, cex=1.5, col="orange") #point 
 #angles
 theta_math <- 180 - theta_img #change to math-system
 cat("theta_math= ", theta_math, "\n")
 theta_math_arc <- theta_math/omega
 a = (-1/tan(theta_math_arc))
 cat("a= ",a,"\n")
-ro_pixel <- (B2[i,3]-1)*5
+ro_pixel <- (B2[i,3]-1)*ro_step
 
 p2 <- round(x*cos(theta_math_arc) + y*sin(theta_math_arc)) #sign may be '+' or '-'
 b <- p2/sin(theta_math_arc)
@@ -355,6 +436,151 @@ fe(max_pix,n_ortholines_1,n_nonortholines) #call of function
 
 #end of script 7 (estimation of object type (cas))
 #######################################################################
+
+## 8: determination of line number (lnr) by theta_index and ro_index
+
+img_uds <- img_ref[orig_x : wind_x,orig_y:wind_y,1:3]
+display(img_uds, method = "raster")
+#display(img_uds,method = "browser") #display enables zooming
+points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.3, col="red")
+points(as.integer(pc3$col-orig_x), as.integer(pc3$row-orig_y), 
+       pch=20, asp=1, cex=0.3, col="green")
+#determine of transformation parameter
+#determination of transformation parameter by means of orthoimage (large scale)
+#measure two control 2 points (left lower, right upper) and one checkpoint (middle)
+L1 <- trans_ortho() #
+
+#transformation parameter
+D <- matrix(nrow=2, ncol=2)
+D[1,1] <- L1[[1]][1,1]
+D[1,2] <- L1[[1]][1,2]
+D[2,1] <- L1[[1]][2,1]
+D[2,2] <- L1[[1]][2,2]
+a0 <- L1[[2]][1]
+b0 <- L1[[2]][2]
+tr_lat <- c(a0,b0)
+kf2 <- L1[[3]]
+
+#measurement of two points to determine theta and ro
+c10 <- locator(2) #standard function
+c10
+
+pts10 <- c(c10$x[1],c10$y[1],c10$x[2],c10$y[2])
+pts10
+loc1 <- c(c10$x[1],c10$y[1]) #first point
+loc2 <- c(c10$x[2],c10$y[2]) #second point
+print(tr_lat)
+print(D)
+#transformation to image-system (small scale)
+pts11 <- tr_lat + D%*%loc1 #first point
+pts12 <- tr_lat + D%*%loc2 #second point
+
+x11 <- pts11[1,1] #x of first point
+y11 <- pts11[2,1] #y of first point
+x <<- x11
+y <<- y11
+#coordinates of first point, small scale
+cat("x_coordinate= ",x,sep = "","\n") 
+cat("y_coordinate= ",y,sep = "","\n")
+
+#plot of first point in uds
+points(x-orig_x,y-orig_y,pch=3, asp =1, cex=1,asp=1, col="red") #large scale
+
+#second point
+x12 <- pts12[1,1]
+y12 <- pts12[2,1]
+x <<- x12
+y <<- y12
+cat("x_coordinate= ",x,sep = "","\n") #small scale
+cat("y_coordinate= ",y,sep = "","\n") #small scale
+#plot of second point in uds
+points(x-orig_x,y-orig_y,pch=3, asp =1, cex=1,asp=1, col="red") #large scale
+#mean between the two points
+x <- (x11+x12)/2
+y <- (y11+y12)/2
+#plot of mean point in uds 
+points(x-orig_x,y-orig_y,pch=3, asp =1, cex=1,asp=1, col="blue") #large scale
+
+#
+x_ang <- (y11 - y12)/(x11 - x12)
+
+alpha_meas <- atan(x_ang) * omega
+alpha_math <- (-alpha_meas) #change to math-system
+theta_math <- alpha_math + 90
+theta_img <- 180 - theta_math
+theta_ind <- round(theta_img/5) + 1
+theta_ind
+x
+y
+theta_img = (theta_ind-1)*5 
+theta_math = 180 - theta_img
+theta_math_arc=theta_math/omega
+y <- -y #change to math_system
+ro_math <- round(x*cos(theta_math_arc) + y*sin(theta_math_arc))
+ro_ind <- abs(round(ro_math/5)) + 1
+cat("ro_index= ", ro_ind, "\n")
+b <- ro_math/sin(theta_math_arc)
+#
+b_img <- (-b) #change to img_system
+a = (-1/tan(theta_math_arc))
+cat("a= ",a,"\n")
+a_img <- (-a) #change to img_system
+coef <- c(b_img,a_img)
+#abline(coef, col="yellow", lty=1, lwd=2, asp=1) #plot in orthoimage (small scale)
+#
+#calculation by intercept for image extract (math_system)
+orig_y_math <- -orig_y
+
+b2 <- a * orig_x + b - orig_y_math 
+
+#change of parameters to image_system
+b2_img <- (-b2)
+a_img <- (-a)
+coef2 <- c(b2_img,a_img)
+
+# plot
+#lnr=8 #to be determined in support_line_detection #9
+if (is.finite(a_img)) {
+  abline(coef2, col="red", lty=1, lwd=2, asp=1)
+}  else {
+  ro_l1 <- B2$ro_pixel[lnr]
+  ro_l2 <- ro_l1 + ro_1
+  ro_l3 <- round(ro_l2 - orig_x)
+  lines(c(ro_l3,ro_l3),c(0,(wind_y - orig_y)),col="red")
+} #end if-else
+#head(B2)
+
+#search of line numbers (lnr) with theta_index and ro_ind + plot of line
+theta_ind <- readline("type theta_index= ")
+theta_ind <- as.integer(theta_ind)
+ro_ind <- readline("type ro_index= ") #determined evtl. from roof ridge 
+ro_ind <- as.integer(ro_ind)
+#
+head(B2)
+vec <- 1 : length(B2[,1])
+for (i in vec) {
+  if (B2[i,2] == theta_ind && B2[i,3] == ro_ind) {
+    print(B2[i, ])
+  }
+  
+} #end search of line numbers with theta_index & ro_index
+
+## 9:calculation of ro_ind using theta_index and measured point
+theta_ind=17
+#change value
+
+x #point (mean, img_system)
+y #point (mean, img_system) check!
+theta_img = (theta_ind-1)*5 
+theta_math = 180 - theta_img
+theta_math_arc=theta_math/omega
+y <- -y #change to math_system
+ro_math <- round(x*cos(theta_math_arc) + y*sin(theta_math_arc))
+ro_ind <- abs(round(ro_math/5)) + 1
+cat("ro_index= ", ro_ind, "\n")
+
+#end of test
+#############################################################################################################
 
 
 ##end of support_line_detection.R
