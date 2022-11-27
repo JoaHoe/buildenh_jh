@@ -40,6 +40,16 @@ if (Img_name == "ISPRS1") {
     B6$theta_adj[2] <- B6$theta_ang[2] #correction of theta (line 524)
   } 
   
+  #b271
+  if (bnr2 == 271 && p_pos == "cor_adj_line") { 
+    #B6$theta_adj[4] <- B6$theta_ang[4] #correction of theta (line 982)
+    #B6$ro_adj[4] <- B6$ro_pixel[4] #correction of ro (line 982)
+    #B6$theta_adj[10] <- B6$theta_ang[10] #correction of theta (line 1053)
+    #B6$ro_adj[10] <- B6$ro_pixel[10] #correction of ro (line 1053)
+    #B6$theta_adj[11] <- B6$theta_ang[11] #correction of theta (line 283)
+    #B6$ro_adj[11] <- B6$ro_pixel[11] #correction of ro (line 283)
+  } #end b271
+  
 } #end of Img_name = "ISPRS1"
 
 ##end of script 'spObj_adjustment_of_line.R' 
