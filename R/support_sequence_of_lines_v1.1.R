@@ -15,7 +15,6 @@ cat("version_number= ",v_nr,"\n")
 # 7.determination of scale
 # 8.calculation of center of segment
 # 9.correction of line-midpoint-position and calculation of angle
-# 10.estimation of object-type (cas)
 ################################################################################
 
 ## 1.digitize and plot new center of object
@@ -219,7 +218,7 @@ answ <- readline("Is the position of all midpoints correct? type N if it is not:
 
 if (answ == "N") {
   midpoints
-  n_RepPoint <- 6 #row number (index) of midpoint to be corrected (PC_4), must be changed
+  n_RepPoint <- 12 #row number (index) of midpoint to be corrected (PC_4), must be changed
   n_RepPoint <- as.integer(n_RepPoint)
   b13_angle_df$nr_center <- midpoints[,1]
   b13_angle_df
@@ -245,14 +244,14 @@ if (answ == "N") {
     i <- i+1
   }
   
-  i <- 25 #r-value, determined from graph (manual operation)
+  i <- 50 #r-value, determined from graph (manual operation)
   x <- i
   y <- r_dist[i]
   points(x,y,pch=20,col="cyan",cex=1.8)
   np <- nrow(all_PC[[n_RepPoint]])
   all_PC2 <- all_PC
   all_PC2[[n_RepPoint]]$dist <- round(r_dist)
-  i <- 25 #determined from graph
+  i <- 50 #determined from graph
   r_dist[i]
   x_centre <- all_PC2[[n_RepPoint]]$x[i]
   y_centre <- all_PC2[[n_RepPoint]]$y[i]
