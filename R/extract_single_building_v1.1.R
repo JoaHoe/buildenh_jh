@@ -206,7 +206,7 @@ points(xc+r_max, yc-r_max, pch=16, cex=1.5, col="black", asp=1) #point for scali
 points(xc, yc, pch = 3, cex=1.5, col = "red", asp=1) #centre of PC
 #
 
-##output as image
+##output as tiff-image
 file1 <-  paste('./data/',Img_name,'/images/b',bnr2,'_new8.tif',sep = "")
 tiff(file1, width=578, height=578, units="px", bg = "white")
 r_max2 <- round(1.1*r_max)
