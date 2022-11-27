@@ -2,7 +2,6 @@
 #purpose: generation of PointClusters (PC) of one line segment
 #used in: line_detection.R
 #GNU General Public License (GPL)
-
 PC_segment_4 <- function(lnr) { 
   #browser()
   i <- 0
@@ -10,7 +9,7 @@ PC_segment_4 <- function(lnr) {
     i <- i + 1
     H[,] <- 0
   }
-  #end H null-stellung
+  #end H null-setting
   
   ratio <- (n_ro - 1)/(ro[n_ro] - ro[1])
   X <- pc2$col
@@ -29,7 +28,7 @@ PC_segment_4 <- function(lnr) {
     k1 <- k1+1
     i <- 0
     while (i < n_theta) {
-      i<-i+1
+      i <- i+1
       ro2[i] <- cos(theta_rad[i])*X[k1] + sin(theta_rad[i])*Y[k1]
       ro2[i] <- abs(ro2[i])
       ro_index[i] <- round(ratio*(ro2[i]-ro_1)+1) 
