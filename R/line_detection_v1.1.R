@@ -11,7 +11,7 @@ cat("version_number= ",v_nr,"\n")
 #change eventually the default value for each object type ("extr_wd", "4_long", "100_all", "100_all+nonortho")
 #GNU General Public License (GPL)
 cat("#########################################################################","\n")
-
+#stop("manual processing")
 cat("start of program 'line_detection.R'","\n")
 setwd(home_dir)
 
@@ -276,7 +276,7 @@ cat("detected line segments (theta_index, ro_index, N), ordered with respect to 
 #B2 <- subset(B1,B1[,3] >= 80) # 56*k, k ~ 1.64 (k is determined empirically) 
 #B2 <- subset(B1,B1[,3] >= 57) # 35*k, k ~ 1.64 (k is determined empirically) 
 #B2 <- subset(B1,B1[,3] >= 41) # 25*k, k ~ 1.64 (k is determined empirically) 
-B2 <- subset(B1,B1[,3] >= 20) # 10*k, k ~ 1.99 (kf2 is measured) 
+B2 <- subset(B1,B1[,3] >= 20) #  12*k, k ~ 1.64 (k is determined empirically) 
 nrow(B2)
 head(B2)
 max(B2[,1], na.rm = FALSE) #theta_index
@@ -376,7 +376,7 @@ if (kf < 1) {
 }
 #end of calculation of the scale factor 'k'
 
-wd <- 10 #width of building
+wd <- 10 #width of building [pixel]
 B2 <- subset(B0, round(B0[,4]/kf) >= wd) # minimum length of side, assumed with 15 pixel (=1.4m)
 n1 <- length(B2[,1])
 B3 <- matrix(nrow=n1,ncol=7)
@@ -421,31 +421,22 @@ if (Img_name == "ISPRS1" && proc_mode == "demo") {
 lnr <- readline("type reference line number: ") 
 lnr <- as.integer(lnr)
 lnr_ref <- lnr
-#
-
-n_lnr <- lnr_ref #lnr_ref must be smaller than 10 (otherwise: change n_lnr)
 
 ##plot of selected lnr_ref
-i=1
-
-#loop
-while (i <= n_lnr) { 
-  L_new  <- PC_segment_4(lnr_ref)  
-  P <- L_new[[1]]
-  n_P <- L_new[[2]]
-  P <- P[1:n_P,]
-  P <- as.data.frame(P)
-  names(P) <- c("idx","x","y")
-  P_red <- reduce_pointset(P) #new
-  head(P_red)
-  x_m <- mean(P_red[,2])
-  y_m <- mean(-P_red[,3]) #change to math-system
-  
-  points(P[,2],(-P[,3]), pch=".", asp=1, cex=2.0, col="red") #see 'Plots' (plot))
-  points(P_red[,2],(-P_red[,3]), pch=".", asp=1, cex=2.0, col="black") #see 'Plots' (plot)
-  points(x_m, y_m, pch=16, asp=1, cex=1.0, col="red")
-  i <- i + 1
-} #end loop while
+L_new  <- PC_segment_4(lnr_ref)  
+P <- L_new[[1]]
+n_P <- L_new[[2]]
+P <- P[1:n_P,]
+P <- as.data.frame(P)
+names(P) <- c("idx","x","y")
+P_red <- reduce_pointset(P) #new
+head(P_red)
+x_m <- mean(P_red[,2])
+y_m <- mean(-P_red[,3]) #change to math-system
+#
+points(P[,2],(-P[,3]), pch=".", asp=1, cex=2.0, col="green") #see 'Plots' (plot))
+points(P_red[,2],(-P_red[,3]), pch=".", asp=1, cex=2.0, col="yellow") #see 'Plots' (plot)
+points(x_m, y_m, pch=16, asp=1, cex=1.0, col="red")
 
 #plot of ref-line of Hough trans results onto graph (math-system)
 theta_math <- 180 - B4$theta_angle[lnr_ref]
@@ -459,11 +450,10 @@ p2 <- round(x*cos(theta_math/omega) + y*sin(theta_math/omega))
 b <- round(p2/sin(theta_math/omega))
 cat("b= ", b, "\n")
 coef = c(b,a)
-
 #plot onto graph
 
 if(is.finite(b)) {
-  abline(coef, col="blue", lty=1, lwd=2, asp=1) #ref line 
+  abline(coef, col="red", lty=1, lwd=2, asp=1) #ref line 
 } else {
   ro_l1 <- B4$ro_pixel[lnr_ref] #changed
   ro_l2 <- ro_l1+ro_1
@@ -480,6 +470,7 @@ if(is.finite(b)) {
 
 k13 <- nrow(B4)
 theta_ref <- B4$theta_angle[lnr_ref] #reference line
+ro_ref <- B4$ro_pixel[lnr_ref]
 theta_ref_ind <- B4$theta_index[lnr_ref] #changed
 cat("theta_ref=",theta_ref,"degrees","\n")
 setwd(home_dir)
@@ -571,7 +562,7 @@ points(as.integer(pc3$col-orig_x), as.integer(pc3$row-orig_y), pch=20, asp=1, ce
 ##plot of pixel cloud (PC) in enlarged orthoimage (image-system)
 lnr <- lnr_ref
 n_lnr <- lnr #change to number of longest lines to be plotted
-i=1
+#i=175
 
 #loop
 while (i <= n_lnr) { #plot of lnr_ref
@@ -595,7 +586,7 @@ while (i <= n_lnr) { #plot of lnr_ref
 
 ##plotting of approximate ref-line in orthoimage (small scale)
 
-# check of building outline by means of orthoimage
+# check of building outline by means of orthoimage (small scale)
 setwd(OrgImgPathname)
 img_ref <- readImage(OrgImgFilename)
 img_x_max <- dim(img_ref)[1]
@@ -612,7 +603,7 @@ cat("theta_math= ", theta_math,"\n")
 ro_ref <- B4$ro_pixel[lnr_ref] + ro_1
 p <- ro_ref
 x <- x_m
-y <- (-y_m)
+y <- y_m #y in math_system
 p2 <- round(x*cos(theta_math/omega) + y*sin(theta_math/omega))
 alpha <- theta_math - 90
 a <- tan(alpha/omega)
@@ -734,7 +725,7 @@ if (ty == 0) {
 }
 
 if (proc_mode == "demo") { 
-  cat("if demo - type 4", "\n")
+  cat("if demo (ISPRS7) - type 4 (ISPRS7)", "\n")
 }
 
 ty <- readline("type object type= ") #manual input
@@ -1117,7 +1108,6 @@ if (cas == "100_all") {
   centers_PC <- matrix(nrow=n_lnr3, ncol=4)
   centers_PC[,] <- 0
   centers_PC
-  vec3 <- 1 : n_lnr3
   
   #loop
   for (n in vec3) {
@@ -1187,12 +1177,7 @@ if (cas == "100_all") {
       ro_l3 <- round(ro_l2 - orig_x)
       lines(c(ro_l3,ro_l3),c(0, (wind_y - orig_y)),col="blue")
     } #end if-else
-    #coef <- c(b,a)
-    
-    # if (is.finite(a)) {
-    #   abline(coef, col="blue", lty=1, lwd=2, asp=1)
-    # }
-    
+
     cat("#","\n")
   } #end for-loop (large scale)
 
@@ -1236,6 +1221,7 @@ if (cas == "100_all") {
 ###########################################################################
 
 ##case: 100_all + addition of non-orthogonal lines 
+#stop("manual action for case '100_all+addition of non-orthogonal lines' ")
 
 if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
   cat("define minimum size of line segment: 15 pixel (recommended) or 35 (alternativ)","\n")
@@ -1257,7 +1243,7 @@ if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
   cat("parameter of line segments (unsorted):","\n")
   print(B5_6) #parameter of line segments (unsorted)
   lnr_det3 <- B5_6$lnr
-  
+  lnr_det3
   ## Derivation of PCs and plotting of detected line segments
   theta <- seq(0,175, by=theta_step)
   theta_rad<-theta/omega
@@ -1279,11 +1265,12 @@ if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
   # end intro
   
   lnr_det3
+  
   if (proc_mode == "demo" ||
       proc_mode == "auto" ||
       proc_mode == "obj_wise") {
     
-    vec <- 1 : 3 #max 2 additional lines
+    vec <- 1 : 10 #max 9 additional lines
     n_nonortholines2 <- 0
 
     for (i in vec) {
@@ -1295,43 +1282,136 @@ if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
         cat("if demo -> type 3 RETURN, 4 RETURN, 0 RETURN", "\n")
       } 
       
-      if (Img_name == "ISPRS1") { 
-        cat("if demo -> type 1 RETURN, 136 RETURN, 0 RETURN", "\n")
-      } 
+      # if (Img_name == "ISPRS1") { 
+      #   cat("if demo -> type 1 RETURN, 136 RETURN, 0 RETURN", "\n")
+      # } 
       
       add_nr <- readline("type the label of an additional non-orthogonal line= ") #manual input at the console
       add_nr <- as.integer(add_nr)
       
       if (add_nr > 0) {
-        n_nonortholines2 <-  n_nonortholines2 + 1
-        lnr_det3[n_ortholines2 + n_nonortholines2] <- add_nr
-      } else { break
-        } #end if-else
-      lnr_det3
-    } #end for-loop
+         n_nonortholines2 <-  n_nonortholines2 + 1
+         lnr_det3[n_ortholines2 + n_nonortholines2] <- add_nr
+      } else { 
+         break
+      } #end if-else
+    } #end i-loop
+    lnr_det3
+    n_total <- length(lnr_det3)
+    vec_nr <- lnr_det3[(n_ortholines2+1):(n_ortholines2+n_nonortholines)]
+    #
+    ## plot image detail
+    display(img_uds, method = "raster")
+    n_lnr3 <- length(lnr_det3)
+    vec3 <- 1 : n_lnr3
+    #
+    centers_PC <- matrix(nrow=n_lnr3, ncol=4)
+    centers_PC[,] <- 0
+    centers_PC
     
-    p_pos <- "cor_det" 
-    setwd(home_dir2)
-    source(paste("spObj_line_detection_v",v_nr,".R",sep = ""))
+    vec <- 1 : n_nonortholines2
+    for (n1 in vec) {
+      B5_6[n_ortholines2+n1,] <- c(0,0,0,0,0,0,0)
+    }
+    B5_6$lnr[(n_ortholines2+1):(n_ortholines2+n_nonortholines)] <- vec_nr
+    B5_6
+    #loop
+    for (n in vec3) {
+      #browser() #with interaction?
+      lnr <- lnr_det3[n]
+      cat("lnr= ",lnr,"\n")
+      PC_seg_P_nP <- PC_segment_4(lnr) #call of function
+      P <- PC_seg_P_nP[[1]]
+      n_P <- PC_seg_P_nP[[2]]
+      x_m <- mean(P[,2])
+      y_m <- mean(-P[,3])
+      points(x_m,y_m, pch=20, asp=1, cex=1.5, col="blue")
+      centers_PC[n,1] <- lnr
+      centers_PC[n,2] <- x_m
+      centers_PC[n,3] <- y_m
+      centers_PC[n,4] <- round(n_P/kf)
+    } #end of for-loop
+    
+    centers_PC
+    ## plot centers of line at image extract
+    #loop
+    for (i in vec3) {
+      cat("i=",i,"\n")
+      #browser()
+      points((pc3$col - orig_x),(pc3$row - orig_y), pch='.', asp=1, cex=2, col = "green")
+      points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.3, col="red")
+      x <- centers_PC[i,2]
+      y <- centers_PC[i,3]
+      points(x-orig_x,-(y-orig_y_math),pch=18, asp=1, cex=1.3, col="red")
+    } #end for-loop
+    # end of check plot
+    
+    #loop for plotting approximate lines
+    #n1=1
+    for (n1 in vec3) {
+      cat("PC_nr=", B5_6$lnr[n1], "\n")
+      #browser()
+      theta_angle <- B5_6$theta_angle[n1]
+      theta_math <- (180 - theta_angle) #theta of oriented line
+      x <- centers_PC[n1,2]
+      y <- centers_PC[n1,3]
+      p2<- round(x * cos(theta_math/omega) + y * sin(theta_math/omega))
+      a <- -1/tan(theta_math/omega)
+      b <- round(p2/sin(theta_math/omega))
+      
+      #calculation of intercept for image extract (math_system)
+      y1_math <- a * orig_x + b
+      y1_math <- round(y1_math) #change to math-system
+      orig_y_math <- (-orig_y) #change to math_system
+      b2 <- y1_math - orig_y_math
+      a_img <- -a #change to img-system
+      b2_img <- (-b2)
+      
+      # plotting of lines
+      coef2 <- c(b2_img,a_img)
+      
+      if (is.finite(a_img)) {
+        abline(coef2, col="blue", lty=1, lwd=2, asp=1)
+      }  else {
+        ro_l1 <- B4$ro_pixel[lnr]
+        ro_l2 <- ro_l1 + ro_1
+        ro_l3 <- round(ro_l2 - orig_x)
+        lines(c(ro_l3,ro_l3),c(0, (wind_y - orig_y)),col="blue")
+      } #end if-else
+      
+      cat("#","\n")
+    } #end for-loop (large scale)
+    
+    cat("correction of detected lines?" , "\n") #100_all+nonortho
+    answ <- readline("type Y or N: ")
+    answ  
+    if (answ == "Y") { 
+        p_pos <- "cor_det" 
+        setwd(home_dir2)
+        source(paste("spObj_line_detection_v",v_nr,".R",sep = ""))
+        B5_6R4
+        lnr_det5 <- B5_6R4$lnr
+    } #end if
+      
+    #} #end if (all proc_modes)
+  
+    # if (part == "2parts_1") {
+    #   p_pos <- "cor_det"
+    #   setwd(home_dir2)
+    #   source(paste("spObj_line_detection_v",v_nr,".R",sep = ""))
+    # }
+    # 
+    # if (part == "2parts_2") {
+    #   p_pos <- "cor_det"
+    #   setwd(home_dir2)
+    #   source(paste("spObj_line_detection_v",v_nr,".R",sep = ""))
+    # }
   } #end if (all proc_modes)
   
   lnr_det5
-  #n_nonortholines2
-
-  if (part == "2parts_1") {
-    p_pos <- "cor_det"
-    setwd(home_dir2)
-    source(paste("spObj_line_detection_v",v_nr,".R",sep = ""))
-  }
-
-  if (part == "2parts_2") {
-    p_pos <- "cor_det"
-    setwd(home_dir2)
-    source(paste("spObj_line_detection_v",v_nr,".R",sep = ""))
-  }
-  
-  lnr_det5
-  n_nonortholines2
+  n_nonortholines
+  n_remlines <- n_total-n_ortholines2
+  n_remainortholines <- n_ortholines2 - n_remlines #number of remaining ortholines
   
   #generation of matrix B5_6 with non-orthogonal lines
   B5_6[,] <- 0
@@ -1397,14 +1477,16 @@ if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
   B5_6 
   B5_6[,8] <- 0
   names(B5_6)[8] <- "ortho"
-  len <- length(B5_6$ortho)
-  vec <- 1 : len
-  
+  #len <- length(B5_6$ortho)
+  #vec <- 1 : len
+  vec <- 1 : n_remainortholines
   #loop
+  i=1
   for (i in vec) {
-    if (B5_6$theta_angle[i] == theta_ref || B5_6$theta_angle[i] == alph_ref) {  
-      B5_6$ortho[i] <- 1
-    } 
+    if (B5_6$theta_angle[i] == theta_ref ||
+        B5_6$theta_angle[i] == alph_ref) {
+        B5_6$ortho[i] <- 1
+    } #end if
   } #end i-loop 
   B5_6
   
@@ -1515,7 +1597,7 @@ for (i in len) {
 #B5_6[8,6] <- 255
 B5_6
 #loop for plotting into graph
-n1=1
+#n1=1
 for (n1 in len) {
   cat("PC_nr=", B5_6$lnr[n1], "\n")
   #browser()
@@ -1607,7 +1689,7 @@ points(as.integer(pc3$col-orig_x), as.integer(pc3$row-orig_y), pch=20, asp=1, ce
 
 # loop
 len
-n1=1
+#n1=1
 for (n1 in len) {
   cat("PC_nr=", B5_6$lnr[n1], "\n")
   #browser()
@@ -1615,7 +1697,7 @@ for (n1 in len) {
   theta_math <- (180 - theta_angle) #theta of oriented line
   x <- centers_PC[n1,2]
   y <- centers_PC[n1,3]
-  points(x-orig_x,-(y-orig_y_math),pch=18, asp=1, cex=1.3, col="red")
+  points(x-orig_x,-(y-orig_y_math),pch=18, asp=1, cex=1.3, col="blue")
   
   #calculation of p2 in math-system with oriented line
   p2 <- round(x*cos(theta_math/omega) + y*sin(theta_math/omega)) #math-system
@@ -1637,7 +1719,7 @@ for (n1 in len) {
   coef2 <- c(b2_img,a_img)
   
   if (is.finite(a)) {
-    abline(coef2, col="white", lty=1, lwd=2, asp=1)
+    abline(coef2, col="red", lty=1, lwd=2, asp=1)
   }  else {
     ro_l1 <- B4$ro_pixel[lnr]
     ro_l2 <- ro_l1 + ro_1
@@ -1737,7 +1819,6 @@ n_x <- length(PC_nr)
 vec_y <- 1 : n_x
 
 #loop
-i=1
 
 for (i in vec_y) {
   cat("i=",i,"\n")
@@ -1747,7 +1828,7 @@ for (i in vec_y) {
   points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.3, col="red")
   x <- centers_PC[i,2]
   y <- centers_PC[i,3]
-  points(x-orig_x,-(y-orig_y_math),pch=18, asp=1, cex=1.3, col="red")
+  points(x-orig_x,-(y-orig_y_math),pch=18, asp=1, cex=1.3, col="blue")
 } #end for-loop
 # end of check plot
 
