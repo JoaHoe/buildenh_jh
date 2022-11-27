@@ -72,15 +72,8 @@ proc_mode <- "NA" #mode of processing
 # if (!require("BiocManager", quietly = TRUE))
 #   install.packages("BiocManager")
 # BiocManager::install("EBImage")
-#
-# install.packages('roxygen2')
-# install.packages('devtools')
-# install.packages('testthat')
-# install.packages('knitr')
 # install.packages('spatstat')
 # install.packages('tiff')
-# install.packages('stringr')
-# install.packages('usethis')
 # install.packages('rpart')
 # install.packages('nlme')
 
