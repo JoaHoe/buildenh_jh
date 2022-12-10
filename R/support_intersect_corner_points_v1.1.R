@@ -153,10 +153,15 @@ if (bnr2 == 18) { #line number must be adopted
 ## 4.manual generation of theta average
 
 #input
-ang1 <- c(82.611, 78.385, 174.080-90) #theta angles (must be adopted)
-len1 <- c(48,25,44) #length of lines
+
+#ISPRS1_b36
+ang1 <- c(79.9345,81.9270,171.2564-90) #theta angles (must be adopted)
+len1 <- c(176,56,28) #length of lines
 theta_average <- w_av(ang1,len1)
-#
+
+ang1 <- c(161.7411-90,70.0149,72.7405) #theta angles (must be adopted)
+len1 <- c(176,56,28) #length of lines
+theta_average2 <- w_av(ang1,len1)
 #end of script 4 (manual generation of theta average)
 ###############################################################################
 
