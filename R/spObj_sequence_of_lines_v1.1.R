@@ -254,7 +254,7 @@ if (Img_name == "ISPRS1") {
     #determine new position by 'support_line_detection.R', #6
     #or with angle by 'support_sequence_of_lines.R', #9
     b13_angle_df[6,3:4] <- c(1487, 1423) #manually derived
-    b13_angle_df2 <- b13_angle_df
+    b13_angle_df3 <- b13_angle_df
   } #end b22
   
   #b271
@@ -269,9 +269,35 @@ if (Img_name == "ISPRS1") {
     b13_angle_df[10,3:4] <- c(651,2006) #manually derived
     b13_angle_df[12,3:4] <- c(626,1840) #manually derived
     b13_angle_df[13,3:4] <- c(633,1749) #manually derived
-    b13_angle_df2 <- b13_angle_df
-    b13_angle_df2
+    b13_angle_df3 <- b13_angle_df
+    b13_angle_df3
   } #end b271
+  
+  #b35
+  if (bnr2 == 35 && p_pos == "cor_pos") {  
+    #determine new position by 'support_line_detection.R', #6
+    #or with angle by 'support_sequence_of_lines.R', #9
+    #manually derivation
+    b13_angle_df2
+    b13_angle_df2[1,3:4] <- c(928, 2000) #6
+    b13_angle_df2[2,3:4] <- c(1032, 1973) #32
+    b13_angle_df2[5,3:4] <- c(1000, 1989) #126 
+    b13_angle_df2[6,3:4] <- c(904, 2127) #126
+    b13_angle_df3 <- b13_angle_df2
+  } #end b35
+  
+  #b36
+  if (bnr2 == 36 && p_pos == "cor_pos") {  
+    #determine new position by 'support_line_detection.R', #6
+    #or with angle by 'support_sequence_of_lines.R', #9
+    #manually derivation
+    b13_angle_df2
+    b13_angle_df2[4,3:4] <- c(800, 2108) #255
+    b13_angle_df2[5,3:4] <- c(852, 2122) #7
+    b13_angle_df2[6,3:4] <- c(811, 2194) #74
+    b13_angle_df3 <- b13_angle_df2
+  } #end b36
+  
   
 } #end of ISPRS1
 
