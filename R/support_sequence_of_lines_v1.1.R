@@ -214,7 +214,7 @@ coo2 <- new_centre_auto() #call of function (contained in: func_loadLib_jh.R)
 
 ## 9.correction of midpoint position and calculation of angle
 
-answ <- readline("Is the position of all midpoints correct? type N if it is not:  ")
+answ <- readline("Is the position of all midpoints correct? ")
 
 if (answ == "N") {
   midpoints
