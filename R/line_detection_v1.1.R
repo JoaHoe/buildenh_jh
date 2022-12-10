@@ -433,10 +433,13 @@ P_red <- reduce_pointset(P) #new
 head(P_red)
 x_m <- mean(P_red[,2])
 y_m <- mean(-P_red[,3]) #change to math-system
-#
+#plot
+plot(xc,-yc, pch=3, cex=3, col="red", asp=1, xlim=c(xc-r_max2,xc+r_max2),
+     ylim=c(-yc-r_max2,-yc+r_max2), xlab="col", ylab="row", main=paste("b",bnr2))
+points(pc3$col, -pc3$row, pch=20, asp=1, cex=0.5, col="green")
 points(P[,2],(-P[,3]), pch=".", asp=1, cex=2.0, col="green") #see 'Plots' (plot))
-points(P_red[,2],(-P_red[,3]), pch=".", asp=1, cex=2.0, col="yellow") #see 'Plots' (plot)
-points(x_m, y_m, pch=16, asp=1, cex=1.0, col="red")
+points(P_red[,2],(-P_red[,3]), pch=".", asp=1, cex=2.0, col="red") #see 'Plots' (plot)
+points(x_m, y_m, pch=16, asp=1, cex=1.0, col="blue")
 
 #plot of ref-line of Hough trans results onto graph (math-system)
 theta_math <- 180 - B4$theta_angle[lnr_ref]
@@ -451,13 +454,12 @@ b <- round(p2/sin(theta_math/omega))
 cat("b= ", b, "\n")
 coef = c(b,a)
 #plot onto graph
-
-if(is.finite(b)) {
+if(is.finite(a)) {
   abline(coef, col="red", lty=1, lwd=2, asp=1) #ref line 
 } else {
   ro_l1 <- B4$ro_pixel[lnr_ref] #changed
   ro_l2 <- ro_l1+ro_1
-  lines(c(ro_l2,ro_l2),c(0,-1500),col="green")
+  lines(c(ro_l2,ro_l2),c(0,-2569),col="green") #(ISPRS1)
 } # end of plotting reference-line
 # end of all input
 
@@ -467,7 +469,7 @@ if(is.finite(b)) {
 #select ref line, usually the first (longest) line
 #joint search for parallel and orthogonal lines with 'theta_angle' and 'theta_angle-90' degrees
 #minimum length of line segment (wd=n_pix=lol): 15 pixels
-
+#stop("manual test")
 k13 <- nrow(B4)
 theta_ref <- B4$theta_angle[lnr_ref] #reference line
 ro_ref <- B4$ro_pixel[lnr_ref]
@@ -538,7 +540,8 @@ if (orig_x < 0) { #solves problem at edge of orthoimage
 if (orig_y < 0) {
   orig_y = 0 
 }
-
+orig_x
+orig_y
 wind_x <- as.integer(orig_x + 2.4 * r_max)
 wind_y <- as.integer(orig_y + 2.4 * r_max)
 
@@ -560,13 +563,15 @@ points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.3, col="red")
 points(as.integer(pc3$col-orig_x), as.integer(pc3$row-orig_y), pch=20, asp=1, cex=0.2, col="green")
 
 ##plot of pixel cloud (PC) in enlarged orthoimage (image-system)
-lnr <- lnr_ref
-n_lnr <- lnr #change to number of longest lines to be plotted
-#i=175
+#lnr <- lnr_ref
+#lnr <- 94 #change to number of longest lines to be plotted
+n_lnr <- 1 
 
 #loop
-while (i <= n_lnr) { #plot of lnr_ref
+lnr=1
+while (lnr <= n_lnr) { #plot of lnr
   #browser() #to be used for editing
+  cat("lnr= ", lnr, "\n")
   L_new  <- PC_segment_4(lnr) #change to 'PC_segment_4(i)' if several lines must be plotted
   P <- L_new[[1]]
   n_P <- L_new[[2]]
@@ -578,9 +583,9 @@ while (i <= n_lnr) { #plot of lnr_ref
   head(P_red)
   x_m <- mean(P_red[,2])
   y_m <- mean(P_red[,3]) 
-  i <- i + 1
-  points((P_red[,2]-orig_x),(P_red[,3]-orig_y), pch=".", asp=1, cex=2.0, col="red") #see 'Plots' (plot)
-  points(x_m-orig_x, y_m-orig_y, pch=16, asp=1, cex=1.0, col="blue")
+  points((P_red[,2]-orig_x),(P_red[,3]-orig_y), pch=".", asp=1, cex=1.0, col="blue") #see 'Plots' (plot)
+  points(x_m-orig_x, y_m-orig_y, pch=16, asp=1, cex=1.0, col="red")
+  lnr <- lnr + 1
 } #end loop while
 #
 
@@ -595,54 +600,139 @@ display(img_ref,method = "raster")
 #display(img_ref) #plot in browser-mode
 points(pc3$col, pc3$row, pch=20, asp=1, cex=0.2, col="white")
 points(xc,yc,pch=3, asp=1, cex=1.5, col="red")
+#window
+fr <- matrix(nrow=5, ncol=2)
+orig_y <- abs(orig_y)
+fr[1,1] <- orig_x
+fr[1,2] <- orig_y
+fr[2,1] <- wind_x
+fr[2,2] <- orig_y
+fr[3,1] <- wind_x
+fr[3,2] <- wind_y
+fr[4,1] <- orig_x
+fr[4,2] <- wind_y
+fr[5,1] <- orig_x
+fr[5,2] <- orig_y
+#
+lines(fr, type="l", asp=1, lwd=2, lty=1, col="yellow")
 
-#plot of ref line in orthoimage
+#plot of ref line in orthoimage (small scale)
 theta_math <- 180 - B4$theta_angle[lnr_ref]
 theta_math #theta_ref_math
 cat("theta_math= ", theta_math,"\n")
 ro_ref <- B4$ro_pixel[lnr_ref] + ro_1
 p <- ro_ref
 x <- x_m
-y <- y_m #y in math_system
+y <- -y_m #y in math_system
 p2 <- round(x*cos(theta_math/omega) + y*sin(theta_math/omega))
 alpha <- theta_math - 90
 a <- tan(alpha/omega)
-gamma <- alpha - 90
-b <- round (p2/sin(gamma/omega))
+#gamma <- alpha - 90
+gamma <- 90 - alpha #changed
+b <- round (p2/sin(gamma/omega)) 
 cat("b= ", b, "\n")
 
 #change to img-system
 a_img <- (-a)
-coef=c(b,a_img)
-
-if (is.finite(a)) {
+b_img <- (-b)
+coef=c(b_img,a_img)
+# 
+if (is.finite(b)) {
   abline(coef, col="green", lty=1, lwd=2, asp=1) #plot in small scale
-}
-
-
-display(img_uds, "raster")
-#display(img_uds, "browser")
-
-#calculation of intercept (b2) at image extract
-orig_y_math <- (-orig_y) #change to math-system
-b_math <- (-b)
-y1 <- a * orig_x + b_math
-b2_math <- y1 - orig_y_math
-cat("b2_math=", b2_math, "\n")
-
-#change to image-system
-b2_img <- round(-b2_math)
-a_img <- (-a)
-coef2 <- c(b2_img,a_img)
-
-if (is.finite(a)) {
-  abline(coef2, col="green", lty=1, lwd=2, asp=1)
 } else {
-  ro_l1 <- B4$ro_pixel[lnr]
+  #ro_l1 <- B4$ro_pixel[lnr_ref] #changed
+  ro_l1 <- abs(p2) #change to img-system
   ro_l2 <- ro_l1 + ro_1
-  ro_l3 <- round(ro_l2 - orig_x)
-  lines(c(ro_l3,ro_l3),c(0, (wind_y - orig_y)),col="red")
+  lines(c(ro_l2,ro_l2),c(0,img_y_max),col="green") #(ISPRS1)
 }
+
+#large scale (checking of special lines)
+n_lnr <- 1
+
+#loop
+lnr=1
+while (lnr <= n_lnr) { #plot of lnr
+  #browser() #to be used for editing
+  display(img_uds, "raster")
+  points(pc3$col-orig_x, pc3$row-orig_y, pch=20, asp=1, cex=0.2, col="white")
+  points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.5, col="red")
+  cat("lnr= ", lnr,"\n")
+  L_new  <- PC_segment_4(lnr) #change to 'PC_segment_4(i)' if several lines must be plotted
+  P <- L_new[[1]]
+  n_P <- L_new[[2]]
+  P <- P[1:n_P,]
+  #
+  P <- as.data.frame(P)
+  names(P) <- c("idx","x","y")
+  #stop("manual action")
+  #P_red <- subset(P,x>800) #new for PC7 only
+  P_red <- reduce_pointset(P) #new
+  #P_red <- subset(P,x>xc) #new for PC255, PC74 only
+  head(P_red)
+  x_m <- mean(P_red[,2])
+  cat("x_m=", x_m,"\n")
+  y_m <- mean(P_red[,3])
+  cat("y_m=", y_m,"\n")
+  points((P_red[,2]-orig_x),(P_red[,3]-orig_y), pch=".", asp=1, cex=1.0, col="red") #see 'Plots' (plot)
+  #points((P[,2]-orig_x),(P[,3]-orig_y), pch=".", asp=1, cex=1.0, col="blue") #see 'Plots' (plot)
+  points(x_m-orig_x, y_m-orig_y, pch=16, asp=1, cex=1.0, col="red")
+  #lnr <- lnr + 1
+#} #end loop while
+
+  #display(img_uds, "raster")
+  #display(img_uds, "browser")
+  #points(pc3$col-orig_x, pc3$row-orig_y, pch=20, asp=1, cex=0.2, col="white")
+  #points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.5, col="red")
+  
+  #plotting of line
+  theta_math <- 180 - B4$theta_angle[lnr]
+  theta_math #theta_ref_math
+  #cat("theta_math= ", theta_math,"\n")
+  p <- B4$ro_pixel[lnr] + ro_1
+  x <- x_m
+  y <- -y_m #y in math_system
+  p2 <- round(x*cos(theta_math/omega) + y*sin(theta_math/omega))
+  alpha <- theta_math - 90
+  a <- tan(alpha/omega)
+  #gamma <- alpha - 90
+  gamma <- 90 - alpha #changed
+  b <- round (p2/sin(gamma/omega)) 
+  cat("b= ", b, "\n")
+  b_math <- b #new
+  # #change to img-system
+  # a_img <- (-a)
+  # b_img <- (-b)
+  # coef=c(b_img,a_img)
+  # 
+  # if (is.finite(b)) {
+  #   abline(coef, col="green", lty=1, lwd=2, asp=1) #plot in small scale
+  # } else {
+  #   #ro_l1 <- B4$ro_pixel[lnr_ref] #changed
+  #   ro_l1 <- abs(p2) #change to img-system
+  #   ro_l2 <- ro_l1 + ro_1
+  #   lines(c(ro_l2,ro_l2),c(0,img_y_max),col="green") #(ISPRS1)
+  # }
+  #calculation of intercept (b2) at image extract
+  orig_y_math <- (-orig_y) #change to math-system
+  #b_math <- (-b_img)
+  b2_math <- b_math - orig_y_math + a*orig_x
+  cat("b2_math=", b2_math, "\n")
+  
+  #change to image-system
+  b2_img <- round(-b2_math)
+  a_img <- (-a)
+  coef2 <- c(b2_img,a_img)
+  
+  if (is.finite(a) && is.finite(b)) {
+    abline(coef2, col="green", lty=1, lwd=2, asp=1)
+  } else {
+    ro_l1 <- B4$ro_pixel[lnr]
+    ro_l2 <- ro_l1 + ro_1
+    ro_l3 <- round(ro_l2 - orig_x)
+    lines(c(ro_l3,ro_l3),c(0, (wind_y-orig_y)),col="red",lwd=2)
+  }
+  lnr <- lnr + 1
+} #end loop while
 
 #parameters of longest detected lines
 n_longest_lines <- 10 #number of longest lines after Hough trans (default)
@@ -731,6 +821,7 @@ if (proc_mode == "demo") {
 ty <- readline("type object type= ") #manual input
 ty <- as.integer(ty)
 cas <- switch(ty,"extr_wd", "4_long", "100_all", "100_all+nonortho")
+cat("case= ", cas, "\n")
 ###############################################################
 
 ## Search of orthogonal lines -> specified length (wd)
@@ -881,15 +972,27 @@ if (cas == "extr_wd") {
 #########################################################
 
 ## use of longer extreme lines
+img_uds <- img_ref[orig_x : wind_x,orig_y:wind_y,1:3]
+display(img_uds, method = "raster")
+#display(img_uds,method = "browser") #enables zooming
+points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.3, col="red")
+points(as.integer(pc3$col-orig_x), as.integer(pc3$row-orig_y), pch=20, asp=1, cex=0.2, col="green")
 
 if (cas == "4_long") { 
   B5_4[1:8,]
   #n_pix must be changed according to available PCs in B5_4$n_pixel
   #n_pix must be longer than in 'extr_wd'
-  n_pix <- 35 #length of segment (3.2m) default value 
+  #n_pix <- 35 #length of segment (3.2m) default value 
   #n_pix <- 56 #length of segment (5.0) alternative 
   #n_pix <- 25  #length of segment (2.3m) alternative
   #n_pix <- 78 #length of segment (7.0m) alternative
+  cat("define minimum size of line segment: 15 pixel (recommended) or 35 or 56 (alternativ)","\n")
+  n_pix <- readline("type minimm size of line - if demo - type 35: ") #manual input
+  n_pix <- as.integer(n_pix)
+  wd <- n_pix
+  #thr <- 10 #default value
+  cat("n_pix=",n_pix,"pixels","\n")
+  #cat("thr=",thr,"pixels","\n")
   
   cat("length of segment= n_pix",n_pix,"\n")
   wd <- n_pix #wd = width of building [pixel] 
@@ -1060,7 +1163,6 @@ if (cas == "4_long") {
   print(B5_4e_4long)
   cat("correction of lines","\n") 
   answ3 <- readline("are four long lines of proper ro-values detected? type Y or N: ")
-  
   if (answ3 =="N") {
     setwd(home_dir2)
     p_pos <- "cor_det" #correction of detected lines for "cas="4_long"
@@ -1079,7 +1181,7 @@ if (cas == "4_long") {
 } #end cas="4_long"
 #########################################################
 
-##More than 4 line segments at the object (cas="100_all")?
+##More than 4 orthogonal line segments at the object (cas="100_all")?
 #automated solution of outline with more than 4 line segments
 #with removal of "shorter_line"
 
@@ -1149,7 +1251,7 @@ if (cas == "100_all") {
   n1=1
   for (n1 in vec3) {
     cat("PC_nr=", B5_6$lnr[n1], "\n")
-    browser()
+    #browser()
     theta_angle <- B5_6$theta_angle[n1]
     theta_math <- (180 - theta_angle) #theta of oriented line
     x <- centers_PC[n1,2]
@@ -1170,7 +1272,7 @@ if (cas == "100_all") {
     coef2 <- c(b2_img,a_img)
     
     if (is.finite(a_img)) {
-      abline(coef2, col="blue", lty=1, lwd=2, asp=1)
+      abline(coef2, col="red", lty=1, lwd=2, asp=1)
     }  else {
       ro_l1 <- B4$ro_pixel[lnr]
       ro_l2 <- ro_l1 + ro_1
@@ -1181,7 +1283,7 @@ if (cas == "100_all") {
     cat("#","\n")
   } #end for-loop (large scale)
 
-  cat("correction of detected lines?" , "\n")
+  cat("correction of detected lines?" , "\n") #case: "100_all"
   answ <- readline("type Y or N: ")
   
   if (answ == "Y") {
@@ -1298,7 +1400,7 @@ if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
     } #end i-loop
     lnr_det3
     n_total <- length(lnr_det3)
-    vec_nr <- lnr_det3[(n_ortholines2+1):(n_ortholines2+n_nonortholines)]
+    vec_nr <- lnr_det3[(n_ortholines2+1):(n_ortholines2+n_nonortholines2)]
     #
     ## plot image detail
     display(img_uds, method = "raster")
@@ -1313,8 +1415,9 @@ if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
     for (n1 in vec) {
       B5_6[n_ortholines2+n1,] <- c(0,0,0,0,0,0,0)
     }
-    B5_6$lnr[(n_ortholines2+1):(n_ortholines2+n_nonortholines)] <- vec_nr
+    B5_6$lnr[(n_ortholines2+1):(n_ortholines2+n_nonortholines2)] <- vec_nr
     B5_6
+    #display(img_ref)
     #loop
     for (n in vec3) {
       #browser() #with interaction?
@@ -1325,7 +1428,7 @@ if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
       n_P <- PC_seg_P_nP[[2]]
       x_m <- mean(P[,2])
       y_m <- mean(-P[,3])
-      points(x_m,y_m, pch=20, asp=1, cex=1.5, col="blue")
+      #points(x_m,y_m, pch=20, asp=1, cex=1.5, col="blue")
       centers_PC[n,1] <- lnr
       centers_PC[n,2] <- x_m
       centers_PC[n,3] <- y_m
@@ -1477,16 +1580,17 @@ if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
   B5_6 
   B5_6[,8] <- 0
   names(B5_6)[8] <- "ortho"
-  #len <- length(B5_6$ortho)
-  #vec <- 1 : len
-  vec <- 1 : n_remainortholines
+  len <- length(B5_6$lnr)
+  vec <- 1 : len
   #loop
   i=1
-  for (i in vec) {
+  for (i in vec) { 
     if (B5_6$theta_angle[i] == theta_ref ||
         B5_6$theta_angle[i] == alph_ref) {
         B5_6$ortho[i] <- 1
-    } #end if
+    } else {
+      B5_6$ortho[i] <- 0
+    } #end if-else
   } #end i-loop 
   B5_6
   
@@ -1594,7 +1698,6 @@ for (i in len) {
   } #end else-if
 } #end for-loop   
 
-#B5_6[8,6] <- 255
 B5_6
 #loop for plotting into graph
 #n1=1
@@ -1689,7 +1792,7 @@ points(as.integer(pc3$col-orig_x), as.integer(pc3$row-orig_y), pch=20, asp=1, ce
 
 # loop
 len
-#n1=1
+n1=1
 for (n1 in len) {
   cat("PC_nr=", B5_6$lnr[n1], "\n")
   #browser()
