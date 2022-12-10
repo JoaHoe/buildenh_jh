@@ -101,6 +101,7 @@ for (i in vec) {
 } #end search of lines with theta_index
 
 ##search of lines (lnr) with alph_index
+alph_ind <- theta_ind + 18
 vec <- 1 : length(B2[,1])
 
 for (i in vec) {
@@ -138,11 +139,11 @@ n_lnr <- lnr #lnr_ref must be smaller than 10 (otherwise: change n_lnr)
   P_red <- reduce_pointset(P) #new
   head(P_red)
   x_m <- mean(P_red[,2])
-  y_m <- mean(-P_red[,3]) #change to math-system
+  y_m <- mean(P_red[,3]) #change to math-system
   
-  points(P[,2],(-P[,3]), pch=".", asp=1, cex=2.0, col="red") #see 'Plots' (plot))
-  points(P_red[,2],(-P_red[,3]), pch=".", asp=1, cex=2.0, col="black") #see 'Plots' (plot)
-  points(x_m, y_m, pch=16, asp=1, cex=1.0, col="red")
+  points(P[,2]-orig_x,(P[,3]-orig_y), pch=".", asp=1, cex=2.0, col="red") #see 'Plots' (plot))
+  points(P_red[,2]-orig_x,(P_red[,3]-orig_y), pch=".", asp=1, cex=2.0, col="black") #see 'Plots' (plot)
+  points(x_m-orig_x, y_m-orig_y, pch=16, asp=1, cex=2.0, col="blue")
   #i <- i + 1
 #} #end loop while
 
@@ -225,7 +226,7 @@ for (i in vec){
 ###########################################################################################################
 
 
-## 6.interactive detection of lines by measurement of one pixel in enlarged orthoimage 
+## 6.interactive detection of ortho-lines by measurement of one pixel in enlarged orthoimage 
 
 #display enlarged ortho_image and PC of building outline
 img_uds <- img_ref[orig_x : wind_x,orig_y:wind_y,1:3]
@@ -259,10 +260,10 @@ detect_meas1()
 
 #plot of detected line into enlarged orthoimage
 B5_4_ord #use of ref-line (lnr_ref)
-i=22 #index in B5_4_ord (value for i has to be changed)
+i=14 #index in B5_4_ord (value for i has to be changed)
 B5_4_ord[i,]
 cat("PC_nr=", B5_4_ord$lnr[i], "\n")
-y <- (-y) #adapt to img_system
+y <- (-y) #adapt to math_system #img_system
 
 #coordinates
 x
@@ -282,7 +283,8 @@ b <- p2/sin(theta_math_arc)
 orig_y <- (-orig_y) #change to math-system
 
 #calculation by intercept for image extract (math_system)
-b2 <- a*orig_x + b - orig_y 
+b2 <- a*orig_x + b - orig_y #original
+#b2 <- +a*orig_x + b + orig_y 
 
 #change of parameter to image_system
 b2_img <- (-b2)
@@ -302,9 +304,8 @@ if (is.finite(a)) {
 #
 
 ##plot of detected nonortho-line onto enlarged orthoimage
-
 B #all lines after Hought trans
-i=1293 #index in B2 (value for i has to be changed)
+i=5 #index in B2 (value for i has to be changed)
 i=as.integer(i)
 B[i,]
 cat("PC_nr=", i, "\n")
@@ -358,7 +359,7 @@ coef2 <- c(b2_img,a_img)
 
 # plot
 if (is.finite(a)) {
-  abline(coef2, col="red", lty=1, lwd=2, asp=1)
+  abline(coef2, col="blue", lty=1, lwd=2, asp=1)
 }  else {
   ro_l1 <- B5_4_ord$ro_pixel[i]
   ro_l2 <- ro_l1 + ro_1
@@ -461,7 +462,7 @@ b0 <- L1[[2]][2]
 tr_lat <- c(a0,b0)
 kf2 <- L1[[3]]
 
-#measurement of two points to determine theta and ro
+#measurement of two points to determine theta and ro and line number
 c10 <- locator(2) #standard function
 c10
 
@@ -566,8 +567,7 @@ for (i in vec) {
 } #end search of line numbers with theta_index & ro_index
 
 ## 9:calculation of ro_ind using theta_index and measured point
-theta_ind=17
-#change value
+theta_ind=15 #change value
 
 x #point (mean, img_system)
 y #point (mean, img_system) check!
