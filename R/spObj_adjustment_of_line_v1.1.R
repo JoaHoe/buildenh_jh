@@ -1,5 +1,6 @@
 ##name of script: spObj_adjustment_of_line.R
 #GNU General Public License (GPL)
+cat("start of spObj_adjustment of line ","\n")
 cat("version_number= ",v_nr,"\n")
 
 
@@ -50,7 +51,53 @@ if (Img_name == "ISPRS1") {
     #B6$ro_adj[11] <- B6$ro_pixel[11] #correction of ro (line 283)
   } #end b271
   
-} #end of Img_name = "ISPRS1"
+  #b36
+  if (bnr2==36 && p_pos == "cor_adj_line") {
+    #stop("new code")
+    i # index of PC, which must be corrected
+    cat("PC_nr= ",PC_numb[i],"\n") #PC_nr, which must be corrected
+    #fname9 <- paste("./data/",Img_name,"/res_PC_nr_",PC_numb[i],".txt",sep="") 
+    #setwd(home_dir)
+    #residuals <- read.table(fname9) 
+    res1
+    residuals <- matrix(nrow=length(res1), ncol=2)
+    residuals[,1] <- 1 : length(res1)
+    residuals[,2] <- round(t(res1),digits=1)
+    residuals <- as.data.frame(residuals)
+    #
+    cat("PC_number= ",PC_numb[i],"\n")
+    nrow(all_PC[[i]])
+    #nrow(residuals)
+    vec <- 1 : nrow(residuals)
+    thr_res #3xthr_line
+    #remove gross errors
+    nrs_errors <- rep(0,nrow(residuals))
+    if (nrow(residuals) == nrow(all_PC[[i]])) {
+      n2 <- 1
+      for (n1 in vec) { 
+        #cat("n1= ",n1,"\n")
+        if (residuals$V2[n1] > thr_res) {
+          cat("index of wrong pixel= ",n1,"\n")
+          nrs_errors[n2] <- residuals$V1[n1]
+          n2 <- n2 + 1
+        } #end if 
+      } #end for
+    } #end if
+    nrs_errors
+    nrs_errors <- nrs_errors[nrs_errors > 0]
+    nrs_errors #numbers of errors, to be transfered into correction vector (not done yet!)
+    all_PC[[i]] <- all_PC[[i]][-nrs_errors,]
+    all_PC[[i]]
+    
+    #store corrected PC
+    setwd(home_dir)
+    fname8 <- paste("./data/",Img_name,"/all_PC$PC_nr",PC_numb[i],".txt", sep=(""))
+    write.table(all_PC[[i]],fname8)
+    #start again adjustment of line
+    setwd(home_dir2)
+    source(paste("adjustment_of_line_v",v_nr,".R",sep="")) 
+   } #end of bnr2=36
+  } #end of Img_name = "ISPRS1"
 
 ##end of script 'spObj_adjustment_of_line.R' 
 
