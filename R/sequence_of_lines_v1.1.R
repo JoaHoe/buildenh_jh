@@ -194,11 +194,12 @@ if (sek == "Mpts") {
     b13_angle_df2
     setwd(home_dir2)
     source(paste("spObj_sequence_of_lines_v",v_nr,".R",sep="")) #correction of position
-  } else { #answ="Yes"
-    b13_angle_df2
+    b13_angle_df3
+  } else { #no correction
+    b13_angle_df3 <- b13_angle_df2
   } #end if-else  
   
-  b13_angle_df2
+  b13_angle_df3
   #
   
   ##plot 
@@ -210,7 +211,7 @@ if (sek == "Mpts") {
   #
   
   ##ordering of the angles which represent line segments
-  b13_angle_df2_seq <- b13_angle_df2[order(b13_angle_df2$alpha, decreasing = FALSE),]
+  b13_angle_df2_seq <- b13_angle_df3[order(b13_angle_df3$alpha, decreasing = FALSE),]
   b13_angle_df2_seq
   row.names(b13_angle_df2_seq) <- 1 : nrow(b13_angle_df2_seq)
 
@@ -1060,6 +1061,16 @@ PC_nr #solution for sequence of lines (PC)
 f4 <- paste("./data/",Img_name,"/b",bnr2,"_PC_nr.txt",sep="")
 setwd(home_dir)
 write.table(PC_nr,file=f4)
+
+#new
+##preparation
+x3 <- length(PC_nr)
+all_PC <- list() #generation of a list
+for (i in 1:x3){
+  all_PC[[i]] <- "PC"
+}
+all_PC
+#
 cat("end of 'sequence of lines.R' - continue with 'adjustment_of_line.R' ","\n")
 cat("####################################################################","\n")
 
