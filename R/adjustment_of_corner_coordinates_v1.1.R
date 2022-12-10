@@ -57,7 +57,7 @@ for (i in z) {
 # 
 
 for (i in z) {
-  if (B8S$ortho[i] == 1 && B8$theta_ang[i] > 90)
+  if (B8S$ortho[i] == 1 && B8$theta_ang[i] >= 90)
     B8S$theta_adj[i] <- B8S$theta_adj[i] + 90
 } # end loop
 
@@ -110,8 +110,9 @@ if (n_nonortholines2 > 0) { #special object
   setwd(home_dir2)
   source(paste("spObj_adjustment_of_corner_coordinates_v",v_nr,".R",sep = "")) 
 } #end if
-B8
 
+B8 <- B8S
+B8
 phi_deg <- B8$theta_adj
 phi_deg <- (-phi_deg) #change to math-system
 options(digits=6)
