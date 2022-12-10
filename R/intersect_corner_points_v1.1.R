@@ -30,7 +30,7 @@ n_pts <- length(PC_nr) #number of points (vertices)
 lnr_seq <- PC_nr
 
 #thresholds
-thr_theta_av <- 2.0 # [degrees], used for check of theta_av
+thr_theta_av = 2.0 # [degrees], used for check of theta_av
 
 ## start of program
 setwd(home_dir)
@@ -271,7 +271,7 @@ if (cas != "100_all+nonortho") {
   #loop
   i=1
   for (i in z) { 
-    if (B6_seq$theta_ang[i] == theta_ref || B6_seq$theta_ang[i] == (theta_ref - 90)) {
+    if (B6_seq$theta_ang[i] == theta_ref || B6_seq$theta_ang[i] == alph_ref) {
       B6_seq$ortho[i] <- 1
     } else {
       B6_seq$ortho[i] <- 0
@@ -366,9 +366,9 @@ if (cas == "100_all+nonortho") {
       np_vec2[i] <- B6_seq$np[i]
     } 
   } #end for-loop
-  
+  theta_vec2
   theta_vec_red2 <- subset(theta_vec2, theta_vec2 > 0)
-  theta_vec_red2
+  theta_vec_red2 
   n_theta_main2 <- length(theta_vec_red2)
   #
   ang2 <- theta_vec_red2
@@ -379,13 +379,28 @@ if (cas == "100_all+nonortho") {
   theta_average2 <- w_av(ang2,len2) #call of function
   theta_av2 <- theta_average2
   cat("theta_av2 = ",theta_average2, " degree", sep = "","\n") #second main direction
-  f <- paste("./data/",Img_name,"/theta_av2_b", bnr2,".txt",sep="")
-  write.table(theta_av2,file=f)
+  # f <- paste("./data/",Img_name,"/theta_av2_b", bnr2,".txt",sep="")
+  # write.table(theta_av2,file=f)
   
 } #end if cas == "100_all+nonortho" 
-  
-##output of weighted average of angle (theta_av)
+
+cat("is n_nonortholines > 2 ?","\n" )
+answ <- readline("type Y or N: ")
+
+if (answ=="Y") {
+  p_pos = "cor_theta_av2"
+  setwd(home_dir2)
+  source(paste("spObj_intersect_corner_points_v",v_nr,".R",sep=""))
+}
+theta_av2_mod
+
+##output of weighted average of angle (theta_av2)
 setwd(home_dir)
+f <- paste("./data/",Img_name,"/theta_av2_b", bnr2,".txt",sep="")
+write.table(theta_av2_mod,file=f)
+
+##output of weighted average of angle (theta_av)
+#setwd(home_dir)
 f <- paste("./data/",Img_name,"/theta_av_b", bnr2,".txt",sep="")
 write.table(theta_average,file=f)  
   
