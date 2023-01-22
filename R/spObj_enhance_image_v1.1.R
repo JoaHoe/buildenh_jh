@@ -34,6 +34,7 @@ if (Img_name == "ISPRS1") {
   LCM_b_1 <- readImage(paste("./data/",Img_name,"/images/LCM_cart_enh_b3.jpg",sep = ""))
   #par("mai") #margins in inches
   #par("usr") #users plotting region (default: x1=0, x2=1, y1=0, y2=1)
+  display(LCM_b_1)
   LCM_b_netto <- LCM_b_1[130:1819,147:2408]  #cut out of net-image
   display(LCM_b_netto)
   mx <- 1.136175 #determined by manual measurements 
@@ -49,4 +50,19 @@ if (Img_name == "ISPRS1") {
 #end of script 'spObj_enhance_image.R'
 
 ########################################################################################
-
+#test:generation of scaled image in color
+setwd(OrgClassResPathname)
+LCM_b <-readImage(OrgClassResFilename)
+display(LCM_b) #display by "Viewer"
+dim(LCM_b)
+LCM_b_netto <- LCM_b[130:1819,147:2408,1:3]  #cut out of net-image
+display(LCM_b_netto)
+mx <- 1.136175 #determined by manual measurements 
+my <- 1.136223 #determined by manual measurements
+m1 = matrix(c(mx, 0, 0, 0, my, 0), nrow=3)
+LCM_b_2 <- EBImage::affine(LCM_b_netto, m1, filter='bilinear', output.dim=c(1919,2569))
+display(LCM_b_2,"raster")
+#display(LCM_b_2)
+dim(LCM_b_2)
+setwd(home_dir)
+writeImage(LCM_b_2,paste("./data/",Img_name,"/images/LCM_cart_enh_b3_scaled_2_col.jpg",sep = "")) #scaled affine
