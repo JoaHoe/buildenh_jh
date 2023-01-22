@@ -58,7 +58,9 @@ save(theta_step, ro_step, ro, ro_1, n_theta, n_ro, ro_rg, file="./data/ISPRS7/H_
 
 ######################################################################################################
 
-## 2.manual determination of line orientation in orthoimage (large scale) 
+## 2.manual determination of line-orientation 
+
+#in orthoimage (large scale) 
 #determination of theta_ind
 #result must be > 0
 
@@ -81,40 +83,50 @@ if (theta_ind < 0) {
 }
 cat("theta_ind=", theta_ind, "\n")
 
-alph_ind <- theta_ind + 90/5
-cat("alph_ind=", alph_ind, "\n")
+alph_ind1 <- theta_ind + 90/5
+cat("alph_ind1=", alph_ind1, "\n")
 
 alph_ind2 <- theta_ind - 90/5 #theta_ind2 > 0 ?
 cat("alph_ind2=", alph_ind2, "\n")
+
+theta_ind2 <- alph_ind2 - 90/5 #theta_ind2 > 0 ?
+cat("theta_ind2=", theta_ind2, "\n")
 #end of script 2
 ################################################################################################
 
 ## 3.search of lines (lnr) with theta_index and plot of line
 theta_ind <- readline("type theta_index= ")
 theta_ind <- as.integer(theta_ind)
-
+thr_line_seg
+ct=0
 vec <- 1 : length(B2[,1])
+
 for (i in vec) {
-  if (B2[i,2] == theta_ind && B2[i,4]/kf > n_pix) { #kf=scale factor 
+  if (B2[i,1] == theta_ind && B2[i,3]/k >= thr_line_seg) { #k=approximate scale factor 
+    cat("i= ", i,"\n")
     print(B2[i, ])
+    ct <- ct + 1
   }
-} #end search of lines with theta_index
+}#end search of lines with theta_index
+cat("counts= ",ct,"\n")
 
 ##search of lines (lnr) with alph_index
 alph_ind <- theta_ind + 18
 vec <- 1 : length(B2[,1])
+ct=0
+vec <- 1 : length(B2[,1])
 
 for (i in vec) {
-  if (B2[i,2] == alph_ind) {
-    cat("lnr= ",i,"\n")
+  if (B2[i,2] == alph_ind && B2[i,4]/kf >= 10) { #kf=scale factor 
+    cat("i= ", i,"\n")
+    print(B2[i,])
+    ct <- ct + 1
   }
 } #end search of lines with alph_index
 
-for (i in vec) {
-  if (B2[i,2] == alph_ind2) {
-    cat("lnr= ",i,"\n")
-  }
-} #end search of lines with alph_index2
+cat("counts= ",ct,"\n")
+
+#end search of lines with alph_index
 #
 
 ##plot of lines
@@ -149,13 +161,20 @@ n_lnr <- lnr #lnr_ref must be smaller than 10 (otherwise: change n_lnr)
 
 #plot of ref-line of Hough trans results onto graph (math-system)
 theta_math <- 180 - B4$theta_angle[lnr]
+
+if (theta_math >= 180) {
+  theta_math <- theta_math - 180  
+}
+
+theta_math
 #theta_math <- 360 - B4$theta_angle[lnr_ref]
 cat("theta_math= ", theta_math,"\n")
 a <- -1/tan(theta_math/omega)
 cat("a=",a,"\n")
 x <- x_m
 y <- y_m 
-p2 <- round(x*cos(theta_math/omega) + y*sin(theta_math/omega))
+y_math <- (-y_m) #change to math_system
+p2 <- round(x*cos(theta_math/omega) + y_math*sin(theta_math/omega))
 b <- round(p2/sin(theta_math/omega))
 cat("b= ", b, "\n")
 coef = c(b,a)
@@ -163,7 +182,7 @@ coef = c(b,a)
 #plot onto graph
 
 # if(is.finite(b)) {
-#   abline(coef, col="blue", lty=1, lwd=2, asp=1) #ref line 
+#   abline(coef, col="blue", lty=1, lwd=2, asp=1) #ref line
 # } else {
 #   ro_l1 <- B4$ro_pixel[lnr] #changed
 #   ro_l2 <- ro_l1+ro_1
@@ -172,27 +191,26 @@ coef = c(b,a)
 
 #calculation of intercept (b2) at image extract
 orig_y_math <- (-orig_y) #change to math-system
-b_math <- (-b)
+b_math <- (b)
+b_math
 y1 <- a * orig_x + b_math
 b2_math <- y1 - orig_y_math
 cat("b2_math=", b2_math, "\n")
 
 #change to image-system
 b2_img <- round(-b2_math)
+b2_img
 a_img <- (-a)
+a_img
 coef2 <- c(b2_img,a_img)
 
-if (is.finite(a)) {
-  abline(coef2, col="yellow", lty=1, lwd=2, asp=1)
+if (is.finite(a_img) && is.finite(b2_img)) {
+  abline(coef2, col="red", lty=1, lwd=3, asp=1)
 } else {
   ro_l1 <- B4$ro_pixel[lnr]
-  ro_l2 <- ro_l1 + ro_1
-  ro_l3 <- round(ro_l2 - orig_x)
-  lines(c(ro_l3,ro_l3),c(0, (wind_y - orig_y)),col="red")
+  ro_l3 <- round(ro_l1 - orig_x)
+  lines(c(ro_l3,ro_l3),c(0,wind_y-orig_y),col="red",lty=1,lwd=3,asp=1)
 }
-
-
-
 
 #end of script 3
 ################################################################################################
@@ -226,7 +244,8 @@ for (i in vec){
 ###########################################################################################################
 
 
-## 6.interactive detection of ortho-lines by measurement of one pixel in enlarged orthoimage 
+## 6.interactive detection of ortho-lines 
+# by measurement of one pixel in enlarged orthoimage 
 
 #display enlarged ortho_image and PC of building outline
 img_uds <- img_ref[orig_x : wind_x,orig_y:wind_y,1:3]
@@ -255,12 +274,13 @@ kf2 <- L1[[3]]
 # measurement of new points (results: x,y)
 locator2() #measurement and marking of a pixel's position
 
-#determination of ortholines by measuring one pixel
+#determination of ortholines 
 detect_meas1() 
+
 
 #plot of detected line into enlarged orthoimage
 B5_4_ord #use of ref-line (lnr_ref)
-i=14 #index in B5_4_ord (value for i has to be changed)
+i=44 #index in B5_4_ord (value for i has to be changed)
 B5_4_ord[i,]
 cat("PC_nr=", B5_4_ord$lnr[i], "\n")
 y <- (-y) #adapt to math_system #img_system
@@ -294,14 +314,14 @@ coef2 <- c(b2_img,a_img)
 
 # plot
 if (is.finite(a)) {
-  abline(coef2, col="red", lty=1, lwd=2, asp=1)
+  abline(coef2, col="blue", lty=1, lwd=2, asp=1)
 }  else {
   ro_l1 <- B5_4_ord$ro_pixel[i]
   ro_l2 <- ro_l1 + ro_1
   ro_l3 <- round(ro_l2 - orig_x)
   lines(c(ro_l3,ro_l3),c(0, (wind_y - orig_y)),col="red")
 } #end if-else
-#
+############################################################
 
 ##plot of detected nonortho-line onto enlarged orthoimage
 B #all lines after Hought trans
@@ -438,7 +458,9 @@ fe(max_pix,n_ortholines_1,n_nonortholines) #call of function
 #end of script 7 (estimation of object type (cas))
 #######################################################################
 
-## 8: determination of line number (lnr) by theta_index and ro_index
+## 8: determination of line number (lnr) 
+# by means of theta_index and ro_index
+#in orthoimage (large scale)
 
 img_uds <- img_ref[orig_x : wind_x,orig_y:wind_y,1:3]
 display(img_uds, method = "raster")
@@ -565,12 +587,21 @@ for (i in vec) {
   }
   
 } #end search of line numbers with theta_index & ro_index
+#
+head(B0)
+vec <- 1 : length(B0[,1])
+for (i in vec) {
+  if (B0[i,2] == theta_ind && B0[i,3] == ro_ind) {
+    print(B0[i, ])
+  }
+  
+} #end search of line numbers with theta_index & ro_index
 
-## 9:calculation of ro_ind using theta_index and measured point
+## 9:calculation of ro_ind using theta_index and one measured point
+
 theta_ind=15 #change value
-
-x #point (mean, img_system)
-y #point (mean, img_system) check!
+x=1261.0 #point (mean, img_system)
+y=2124.6 #point (mean, img_system) check!
 theta_img = (theta_ind-1)*5 
 theta_math = 180 - theta_img
 theta_math_arc=theta_math/omega
