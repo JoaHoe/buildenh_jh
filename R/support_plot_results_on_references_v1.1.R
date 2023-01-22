@@ -184,7 +184,8 @@ print(intsec_linepair_vertex_coord2)
 
 #example 2: orthoimage #1
 #prj_title: ISPRS1_LCM2
-#objects/buildings: 4,5,7,18,9,11,341,342,10
+#objects/buildings: 4,5,7,18,9,11,341,342,10,371,372
+#dimension of orthoimage/GTS: 1919x2569 (WxH)
 
 #plot of all buildings on graph
 setwd(home_dir)
@@ -210,7 +211,7 @@ b_all2 <- b_all
 b_all2$V1 <- b_all$V1[order(b_all$V1, decreasing = FALSE)]
 b_all2$V1
 
-#remove double object-numbers
+#remove multiple object-numbers
 n8 <- 13 #max number of tests per object, to be changed
 b_all_na <- rep(NA,n8)
 b_all_lst <- list(b_all_na)
@@ -238,6 +239,7 @@ for (i in vec_nr) {
 
 b_all_lst$nr
 b_all_nr <- b_all_lst$nr[!is.na(b_all_lst$nr)]
+b_all_nr
 #
 
 #loop
@@ -278,7 +280,8 @@ for (k in b_all_nr) {
   
   while(i < k1) {
     i <- i+1
-    lines(b$Points_x, -b$Points_y, col="white", asp=1, type="l", lwd=2, lty=1)
+    lines(b$Points_x, -b$Points_y, col="white", asp=1, 
+          type="l", lwd=3, lty=1)
   } #end while
   
 } #end loop
@@ -306,14 +309,14 @@ for (k in b_all_nr) {
   
   while(i < k1) {
     i <- i+1
-    lines(b$Points_x, -b$Points_y, col="red", asp=1, type="l", lwd=2, lty=1)
+    lines(b$Points_x, -b$Points_y, col="red", asp=1, type="l", lwd=3, lty=1)
   } #end while
   
 } #end loop
 #
 
 #end of script 5 (plotting all processed buildings on graph, 
-#orthoimage and ground truth)
+#orthoimage and ground truth
 ################################################################################
 
 ## end of supplementing software to program 'plot results on references.R'
