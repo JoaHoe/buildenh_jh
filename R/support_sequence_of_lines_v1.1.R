@@ -19,6 +19,84 @@ cat("version_number= ",v_nr,"\n")
 
 ## 1.digitize and plot new center of object
 coo <- new_centre()
+
+###
+L1 <- trans_ortho() #
+trans_ortho <- function() {
+  mar=r_max #distance from center of object
+  
+  #check point 1
+  x1 <- xc - mar 
+  y1 <- yc + mar
+  points(x1-orig_x, y1-orig_y, pch=16, cex=1.5, asp=1, col="white")
+  
+  #check point 2
+  x2 <- xc + mar
+  y2 <- yc - mar
+  points(x2-orig_x, y2-orig_y, pch=16, cex=1.5, asp=1, col="white")
+  
+  #check point 7
+  x7=xc
+  y7=yc
+  points(x7-orig_x, y7-orig_y, pch=16, cex=1.5, asp=1, col="white")
+  
+  #locator-measurements
+  c1 <- locator(1) #left lower control point (1)
+  c2 <- locator(1) #right upper control point (2)
+  c7 <- locator(1) #check point (center of object )
+  #
+  #calculation of transformation-parameter (plane)
+  dX <- x2 - x1
+  dY <- y2 - y1
+  dx <- c2$x - c1$x
+  dy <- c2$y - c1$y
+  N <- dx^2 + dy^2
+  #
+  a1 <- (dx*dX + dy*dY)/N
+  b1 <- (dx*dY - dy*dX)/N
+  a0 <- x1 - a1*c1$x + b1*c1$y
+  b0 <- y1 - b1*c1$x - a1*c1$y
+  #
+  x1_ch <- a0 + a1*c1$x - b1*c1$y
+  y1_ch <- b0 + b1*c1$x + a1*c1$y
+  x2_ch <- a0 + a1*c2$x - b1*c2$y
+  y2_ch <- b0 + b1*c2$x + a1*c2$y
+  x7_ch <- a0 + a1*c7$x - b1*c7$y
+  y7_ch <- b0 + b1*c7$x + a1*c7$y
+  points(x7_ch-orig_x, y7_ch-orig_y,pch=3, cex=5,asp=1, col="blue")
+  #
+  tr_lat <- c(a0,b0)
+  D <- matrix(nrow=2, ncol=2)
+  D[1,1] <- a1
+  D[1,2] <- -b1
+  D[2,1] <- b1
+  D[2,2] <- a1
+  kf2 <- sqrt(a1^2+b1^2)
+  L1 <- list(D,tr_lat,kf2)
+  return(L1)
+} #end of function 'trans_ortho()'
+
+
+#transformation parameter
+D <- matrix(nrow=2, ncol=2)
+D[1,1] <- L1[[1]][1,1]
+D[1,2] <- L1[[1]][1,2]
+D[2,1] <- L1[[1]][2,1]
+D[2,2] <- L1[[1]][2,2]
+a0 <- L1[[2]][1]
+b0 <- L1[[2]][2]
+tr_lat <- c(a0,b0)
+kf2 <- L1[[3]]
+#
+
+# measurement of new points (results: x,y)
+locator2() #measurement and marking of a pixel's position
+
+
+###
+
+
+
 #end of script 1
 #######################################################################
 
@@ -269,13 +347,16 @@ if (answ == "N") {
 #center of object/building
 xc <- plotPar[1]
 yc <- plotPar[2]
-x_centre <- b13_angle_df[6,3] #to be transferred to spObj_sequence_of_lines_v1.1.R
-y_centre <- b13_angle_df[6,4] #to be transferred to spObj_sequence_of_lines_v1.1.R
+b13_angle_df3
+# x_centre <- b13_angle_df[6,3] #to be transferred to spObj_sequence_of_lines_v1.1.R
+# y_centre <- b13_angle_df[6,4] #to be transferred to spObj_sequence_of_lines_v1.1.R
+x_centre <- b13_angle_df3[6,3] #to be transferred to spObj_sequence_of_lines_v1.1.R
+y_centre <- b13_angle_df3[6,4] #to be transferred to spObj_sequence_of_lines_v1.1.R
 
 #correction of angle for new midpoint
 alpha <- det_of_angle(x_centre, y_centre) #call of function
-b13_angle_df$alpha[6] <- alpha #correction
-b13_angle_df
+b13_angle_df3$alpha[6] <- alpha #correction
+b13_angle_df3
 
 #end of script 9 (correction of angle for midpoint of segment)
 ################################################################################
