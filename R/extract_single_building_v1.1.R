@@ -1,9 +1,11 @@
 #name of program (script): extract_single_building.R
 cat("version_number= ",v_nr,"\n")
 #description: extraction of one building  
-#from image "buildings of generated land cover map"
+#from image "building theme of generated land cover map"
 #orthoimage: ISPRS data "Vaihingen" of areas: #7, #1
-#instruction: use plot of building numbers producible in 'support_extract_single_building' for selecting of object 
+#instruction: use plot of building numbers 
+#producible in 'support_extract_single_building'
+#support script to be used for selecting of object 
 #author: Joachim Hoehle
 #GNU General Public License (GPL)
 cat("###########################################################################","\n")
@@ -11,7 +13,7 @@ cat("###########################################################################
 cat("start of program 'extract_single_building'","\n")
 setwd(home_dir)
 
-##mode of processing
+##selection of processing mode
 cat("select mode of processing? - demo: 1, obj_wise: 2, auto: 3","\n") 
 answ <- readline("mode of processing? - type 1, 2, or 3: ") #processing mode
 
@@ -78,7 +80,7 @@ cat("label of building to be extracted=", bnr2,"\n") #check if new number is nec
 setwd(home_dir)
 LCM_enh_b=readImage(paste("./data/",Img_name,"/images/LCM_cart_enh_b3_scaled_2.jpg",sep = "")) #classification by method JH, scaled affine
 display(LCM_enh_b, method="browser") #use for checking of image
-#display(LCM_enh_b, method="raster")
+#display(LCM_enh_b, method="raster") #optional
 
 ##enhancement of raster image
 LCM_enh_b_t <- thresh(LCM_enh_b,2,2,0.01) #thresholding -> white outlines
@@ -139,7 +141,7 @@ write.table(shap2_A_red3,f2)
 
 ##extraction of one building
 cas <- "NA" #case "NA" 
-sek <- "NA"
+sek <- "NA" #type for line sequlence
 xc <- shap2_A_red3[bnr2,8]
 yc <- shap2_A_red3[bnr2,9]
 points(xc, yc, col="blue",asp=1, pch=16, cex=1.0)
