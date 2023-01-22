@@ -91,6 +91,24 @@ if (Img_name == "ISPRS1") {
     
   } #end b36
   
+  #b372
+  if (bnr2 == 372 && p_pos == "cor_adj_coco") { #b372 (with nonortholines)
+    
+    z <- 1 : nrow(B8S)
+    for (n2 in z) {
+      if (B8S$ortho[n2] == 1) { #B8S$ortho[n2]==0 (if other line than theta_ref) 
+        cat("n2= ", n2, "\n")
+        B8S$theta_adj[n2] <- theta_av # theta_av=theta_ref_adj
+      } #end if
+      B8S  
+    } #end for-loop
+  } #end b372
+  
+  #b45
+  if (bnr2 == 45 && p_pos == "cor_adj_coco") { #b45 (with nonortholines)
+    B8 <- B8 #dummy line
+  } #end b45
+  
 } #end of ISPRS1
 
-##end of script 'spObj_adjustment_of_corner_coordinates.R' 
+##end of script' spObj_adjustment_of_corner_coordinates.R' 
