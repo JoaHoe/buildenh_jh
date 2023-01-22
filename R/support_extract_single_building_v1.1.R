@@ -154,6 +154,73 @@ cat("bnr= ", bnr,"\n")
 
 #end of script 6
 #########################################################################################################
+## 2.plot numbers of buildings after applying the threshold 
+#    for minimum size (3086 pixels)
 
+#input of enhanced image
+LCM_enh_b <- readImage(paste("./data/",Img_name,"/images/LCM_cart_enh_b3_scaled_2.jpg",sep="")) #classification by JH, scaled affine
+#display(LCM_enh_b, method="browser") #for checking of image
+display(LCM_enh_b, method="raster")
+#
+y1 <- 1:nrow(shap2_A_red3)
+
+for (i in y1) {
+  nr <- i 
+  xc <- shap2_A_red3[i,8]
+  yc <- shap2_A_red3[i,9]
+  text(xc,yc,nr,cex=1.2,col="red")
+} #end for loop
+
+#end of script plot numbers of buildings after applying the threshold for minimum size
+#############################################################################################################
+
+## 6.plot the number of one building (before and after applying 
+#    a threshold for minimum size of area)
+#    to be finished
+#example 1: orthoimage #7
+#prj_title: ISPRS7_LCM1
+#objects/buildings: 4,5,6,8,10,11,13,14,15,16,17,18,20,22,23,24,26,27,28,30,31,32,33,34
+
+#example 2: orthoimage #1
+#prj_title: ISPRS1_LCM2
+#objects/buildings: 4,5,7,18,9,11,341,342,10,371,372,46
+
+#plot of all buildings on orthoimage
+setwd(home_dir)
+x=0
+y=0
+
+if (Img_name == "ISPRS7") {  
+  plot(x,-y, pch=3, cex=1.3, cex.axis=1.3,cex.lab=1.3,col="red", 
+       asp=1, xlim=c(1,1887), ylim=c(-2557,-1))
+}
+
+if (Img_name == "ISPRS1") {  
+  plot(x,-y, pch=3, cex=1.3, cex.axis=1.3,cex.lab=1.3,col="red", 
+       asp=1, xlim=c(1,1919), ylim=c(-2569,-1))
+}
+
+#
+
+
+display(LCM_enh_b, method="raster")
+i <- 18 #select the number of building (bnr2), here b18
+x <- coor[i,1]
+y <- coor[i,2]
+text(x,y,i,cex=1.2,col="red")
+
+#plot number of one building (bnr2)
+#numbering with thresholding using area >= 3086 pixels: bnr2
+#use proper image under 'Plots' (use arrows: <- or -> )
+
+display(LCM_enh_b, method="raster")
+names(shap2_A_red3) <- c("bnr2","area","perimeter","radius.mean","radius.sd","radius.min","radius.max","cx","cy","alpha_arc")
+y1 <- 1 : nrow(shap2_A_red3)
+i <- 18 #type number (bnr2)
+xc <- shap2_A_red3[i,8]
+yc <- shap2_A_red3[i,9]
+text(xc,yc,i,cex=1.2,col="red")
+#
+#end of script 3
 ##end of 'support_extract_single_building.R'
 
