@@ -1,7 +1,7 @@
 #name of script: sequence_of_lines.R 
 cat("version_number= ",v_nr,"\n")
-#description: derives the sequence of line segments
-#authors: Joachim Hoehle & Michael Hoehle
+#description: program derives the sequence of line segments
+#author: Joachim Höhle
 #input: result of the Hough-transform
 #output: file with segments of the outline in proper order
 #instructions: the method for sequence of lines is predicted by a Decision Tree
@@ -28,8 +28,7 @@ accSample3_new3 <- accSample3_new2[1,]
 
 ##input of plot-parameter
 setwd(home_dir)
-f<-paste("./data/",Img_name,"/param_b_",bnr2, sep="") #plot parameter
-f
+f<-paste("./data/",Img_name,"/param_b_",bnr2, sep="")
 load(f)
 plotPar
 xc <- plotPar[1]
@@ -46,12 +45,14 @@ names(pc3)[1:2] <- c("col","row")
 cat ("preparation of line-sequence","\n")
 
 ##sequence of lines (sek)
-#selecting the proper method for determining the sequence of lines (PC)
+#selecting the proper method for determining 
+#the sequence of point clouds (PC)
 
-#type of object with respect for sequence of lines
-#cat("has object a complex structure?","\n") #activate 'soph' if required
-
-#parameter for the estimation of line-sequence
+#object type with respect for sequence of lines
+cat("has object a complex structure?","\n") 
+cat("activate parameter 'soph' if required","\n")
+cat("complex structure: soph=1, simple structure: soph=0")
+#parameters for the estimation of line-sequence
 cat("min_pixel= ",min_pixel,"\n")
 cat("bn_PC= ",bn_PC,"\n")
 cat("with_northo= ",with_northo,"\n")
@@ -76,7 +77,11 @@ pred4 <- as.numeric(pred3)
 cat("suggested (predicted) method (meth) for determination of line-sequence_DT= ", pred4,"\n")
 cat("1: Mpts(midpoints+angle), 2: Mpts+dist(midpoints+distance), 3: bdr_follow (boundry following)","\n")
 
-if (proc_mode == "demo") {
+if (Img_name == "ISPRS1" && proc_mode == "demo") {
+  cat("if demo - type 3", "\n")
+}
+
+if (Img_name == "ISPRS7" && proc_mode == "demo") {
   cat("if demo - type 3", "\n")
 }
 
@@ -86,7 +91,7 @@ meth <- as.numeric(meth)
 sek <- switch(meth,"Mpts","Mpts+dist","bdr_follow") 
 sek #selected method for line-sequence
 
-#set up of matrix b13 with corner point number, angle, and coordinates
+#set up of matrix b13 with corner point number,angle,and coordinates
 PC_nr <- B5_6$lnr
 n_x <- length(PC_nr)
 b13_angle <- matrix(nrow=n_x,ncol=4)
@@ -145,7 +150,7 @@ if (sek == "Mpts") {
   #
   b13_angle_df2
 
-##plot of midpoints
+##plot of midpoints in graph
   r_max2 <- 1.1*r_max
   plot(xc,-yc, pch=3, cex=2, col="red", asp=1, xlim=c(xc - r_max2,xc + r_max2), ylim=c(-(yc + r_max2),-(yc - r_max2)),
     main=paste("b ",bnr2, sep=(""),collapse=NULL)) #large scale
@@ -157,7 +162,7 @@ if (sek == "Mpts") {
   cat("Is the position of all midpoints correct?","\n")
   #
   
-  answ <- readline("type Y or N: ")
+  answ <- readline("type Y or N: ") #interaction
   
   if (substr(bnr2,3,3) == "1") { 
     part <- "2parts_1"
@@ -212,10 +217,10 @@ if (sek == "Mpts") {
   
   ##ordering of the angles which represent line segments
   b13_angle_df2_seq <- b13_angle_df3[order(b13_angle_df3$alpha, decreasing = FALSE),]
-  b13_angle_df2_seq
   row.names(b13_angle_df2_seq) <- 1 : nrow(b13_angle_df2_seq)
+  b13_angle_df2_seq
 
-#plot of midpoints in large scale
+  #plot of midpoints at large scale
   r_max2 <- 1.1*r_max
   plot(xc,-yc, pch=3, cex=2, col="red", asp=1, xlim=c(xc - r_max2,xc + r_max2), ylim=c(-(yc + r_max2),-(yc - r_max2)),
     main=paste("b ",bnr2, sep=(""),collapse=NULL)) #large scale
@@ -237,7 +242,7 @@ if (sek == "Mpts+dist") {
   yc <- plotPar[2]
   r_max <- plotPar[3]
 
-  ##plot of final midpoints in large scale
+  ##plot of final midpoints at large scale
   r_max2 <- 1.1*r_max
   plot(xc,-yc, pch=3, cex=2, col="red", asp=1, xlim=c(xc - r_max2,xc + r_max2), ylim=c(-(yc + r_max2),-(yc - r_max2)),
     main=paste("b ",bnr2, sep=(""),collapse=NULL)) #large scale
@@ -259,12 +264,14 @@ if (sek == "Mpts+dist") {
   } #end for-loop
   b13_angle_df2
   #
-  #correction of midpoint position
+  
+  #correction of midpoint positions
   cat("Is the position of all midpoints correct? - type Y or N","\n")
   
   if (proc_mode == "demo") {
     cat("if demo: type N (ISPRS7) or Y (ISPRS1)","\n")
   }
+  
   answ <- readline("type Y or N: ")
   
   if (substr(bnr2,3,3) == "1") { 
@@ -299,7 +306,7 @@ if (sek == "Mpts+dist") {
 
 b13_angle_df2  
 
-##plot 
+##plot of graph
   r_max2 <- 1.1*r_max
   plot(xc,-yc, pch=3, cex=2, col="red", asp=1, xlim=c(xc - r_max2,xc + r_max2), ylim=c(-(yc + r_max2),-(yc - r_max2)),
     main=paste("b ",bnr2, sep=(""),collapse=NULL)) #large scale
@@ -416,14 +423,14 @@ b13_angle_df2
   # end r-calculation
   b_angle_df_seq
 
-  # sequence of line segments
+  ## sequence of line segments
   lnr_det3 <- pt_nr_df[1:n_x,2]
   nr2 <- lnr_det3
   nr2 # sequence of line segments
   b_angle_df_seq[,1:(5+n_x)]
   pt_nr_df[1:n_x,]
 
-##test if sequence is correct?
+##test whether the derived sequence is correct?
   b_angle_df_seq_test <- b_angle_df_seq
   b_angle_df_seq_test <- b_angle_df_seq_test[,1:7]
   b_angle_df_seq_test$nr_center <- nr2
@@ -439,19 +446,20 @@ b13_angle_df2
       if (b_angle_df_seq_test$nr_center[i] == b_angle_df_seq$nr_center[j]) {
         b_angle_df_seq_test[i,2:5] <- b_angle_df_seq[j,2:5]
       } #end if
-      j <- j+1
+      j <- j + 1
     } #end loop j
-    i <- i+1
+    i <- i + 1
   } #end loop i
   #
+  
   b_angle_df_seq_test
   theta_appr2 <- b_angle_df_seq_test$theta_appr[1]
   theta_appr2 #correction?
   theta_appr_arc <- theta_appr2/omega
-
+  vec_x <- 1 : n_x
+  
   #loop
-  vec_x <- 1:n_x
-    for (i in vec_x) {
+  for (i in vec_x) {
     X <- b_angle_df_seq_test$x_centre[i]
     Y <- b_angle_df_seq_test$y_centre[i]
     ro <- cos(theta_appr_arc) * X + sin(theta_appr_arc) * Y
@@ -495,7 +503,7 @@ b13_angle_df2
   }
   all_lines
 
-#plot at large scale
+#plot of graph at large scale
   x <- xc
   y <- yc
   plot(x,-y, pch=3, cex=1.5, col="red", asp=1, xlim=c(xc - r_max2,xc + r_max2), ylim=c(-(yc + r_max2),-(yc - r_max2)), main=paste("b ",bnr2, sep=(""))) #large scale
@@ -504,7 +512,7 @@ b13_angle_df2
   PC_nr <- nr2
   cat("ordered line numbers:",PC_nr,"\n")
 #
-#loop for reading all point clusters
+#loop for reading all pixel clusters (PCs)
   k=1
   for (i in PC_nr) {
     lnr=i
@@ -516,7 +524,7 @@ b13_angle_df2
     nrow <- length(P0_red$idx)
     #cat("nrow = ",nrow,"\n")
     all_lines[[k]] <- P0_red
-    k <- k+1
+    k <- k + 1
     cat("lnr=",lnr,"\n")
     #browser() 
     points(P0_red[,2],-P0_red[,3], pch='.', asp=1, cex=2, col="blue")
@@ -536,15 +544,15 @@ b13_angle_df2
 
 #loop
   k <- 1
-  for (i in PC_nr){
+  for (i in PC_nr) {
     na_PC <- paste("PC_",PC_nr[k],sep="")
     name_PC <- as.name(na_PC)
     names_PC[[k]] <- name_PC
-    k=k+1
+    k <- k + 1
   } #end of for-loop
   names(all_PC) <- names_PC
 
-#plot image detail
+#plot image detail (large scale)
   display(img_uds,method = "raster")
   n_x <- length(PC_nr)
   vec_y <- 1 : n_x
@@ -566,7 +574,7 @@ b13_angle_df2
   for (i in vec_y) {
     points(all_PC[[i]]$x-orig_x,all_PC[[i]]$y-orig_y, pch='.', asp=1, cex=2, col="green")
   } #end loop
-# end of checkplot
+# end of check plot
   
   all_PC
   length(all_PC)
@@ -578,15 +586,17 @@ b13_angle_df2
   vec_y <- 1 : n_PC
   setwd(home_dir)
   all_PC
-  for (i in vec_y) { #loop
+  
+  #loop
+  for (i in vec_y) { 
     fname8 <- paste("./data/",Img_name,"/all_PC$PC_nr",PC_nr[i],".txt",sep="")
     write.table(all_PC[[i]], fname8)
-  } #end loop out put of list all_PC
+  } #end loop output of list 'all_PC'
 
   # output of sequence (sek = "Mpts+dist")
   setwd(home_dir)
   fname9 <- paste("./data/", Img_name,"/b",bnr2,"_case.txt", sep="")
-  write.table(sek,fname9,row.names = FALSE, col.names = FALSE)
+  write.table(sek,fname9,row.names=FALSE, col.names=FALSE)
 } 
 #end of route "Mpts+dist"
 #####################################################################
@@ -633,6 +643,7 @@ if (sek == "bdr_follow") {
   y3 <- 1 : n_pt
   x_v <- round(out_poly_df$x)
   y_v <- round(out_poly_df$y)
+  
   for (i in y3) {
     points(x_v[i], y_v[i], pch=16, col="red", cex=0.2) #points from edge
   }
@@ -640,10 +651,11 @@ if (sek == "bdr_follow") {
 ## transfer of midpoints into system of image 'out_poly'('b18')
 # automatic determination of scale factor my3
   par(mai = c(1.02,0.82,0.82,0.42))
-  pixel_size <- par("mai")[3]/60 #  60 pixel, 
-    #determined by manual measurement of top margin (0.82") using function 'locator(1)'
+  pixel_size <- par("mai")[3]/60 #60 pixel, 
+  #determined by manual measurement of top margin (0.82") 
+  #using function 'locator(1)'
   pixel_size # unit is inch, corresponds to 73.17073 pixels 
-    #per inch (depends on used screen). A value of many screens is: 72 pixels/inch.
+  #per inch (depends on used screen). A value of many screens is: 72 pixels/inch.
   1/pixel_size #number of pixels per inch
   
   #determine a scale factor between plot and image
@@ -664,15 +676,15 @@ if (sek == "bdr_follow") {
   dy_window_plot <- plotPar[5]
   kf2 <- size_plotting_region_y/dy_window_plot #scale factor between plot and image
   kf2 #scale factor between plot and image
-  1/kf2 # approximate value: 1/k = 1.407957
+  1/kf2 # approximate value: 1/kf2 = 1.407957
   window_size_x <- 578 #specified value
   margin_size_x <- (par("mai")[2]+par("mai")[4])/pixel_size #image
   x0_img <- (par("mai")[2]/pixel_size) + (window_size_x-margin_size_x)/2
   y0_img <- par("mai")[3]/pixel_size+size_plotting_region_y/2
 
   #derivation of origin (left top corner) of window for a building
-  x0 <- round(xc-x0_img/kf2) #x-coordinate of window origin
-  y0 <- round(yc-y0_img/kf2) #y-coordinate of window origin
+  x0 <- round(xc - x0_img/kf2) #x-coordinate of window origin
+  y0 <- round(yc - y0_img/kf2) #y-coordinate of window origin
 
   ##2D-transformation
   a0_bdr <- x0
@@ -680,7 +692,7 @@ if (sek == "bdr_follow") {
 #
   D_bdr <- matrix(nrow=2, ncol=2)
   alpha = (-90) #degrees (angle of rotation of coordinate systems 
-    #(original image, out_poly) eventually subject of change)
+  #(original image, out_poly) eventually subject of change)
   alpha_arc <- alpha/omega #radiant of rotation angle
   a1_bdr <- cos(alpha_arc)
   b1_bdr <- sin(alpha_arc)
@@ -753,7 +765,7 @@ if (sek == "bdr_follow") {
 
   if (answ == "N") {
     if (part == "2parts_1") {
-      bnr2 <- bnr2*10+1 #bnr2 of first part
+      bnr2 <- bnr2*10 + 1 #bnr2 of first part
       bnr2_part <- bnr2
       p_pos <- "cor_pos"
       setwd(home_dir2)
@@ -801,7 +813,6 @@ if (sek == "bdr_follow") {
   ynp <- 1 : n_x
   a0_bdr
   b0_bdr
-  i=1
   
   for (i in ynp) {
     x <- b_angle_df_seq_red$x_centre[i]
@@ -828,14 +839,14 @@ if (sek == "bdr_follow") {
   midpoints <- midpts_trans
   midpoints 
   midpoints[,2:3] <- as.integer(midpoints[,2:3])
-#
+  #
+  
   n_midpts <- length(midpoints[,1])
-  n_midpts
   y4 <- 1 : n_midpts
 
   #plot midpoints in 'out_poly'
   plot(out_poly)
-  i=1
+  
   for (i in y4) {
     cat("midpt_nr=", midpoints[i,1],"\n")
     #browser()
@@ -862,6 +873,7 @@ if (sek == "bdr_follow") {
       points(X, Y, pch=16, col="red", cex=1)
       x1 <- X
       y1 <- Y
+      
       if (x_v[i] == x1 && y_v[i] == y1 ||
           x_v[i] == (x1-1) && y_v[i] == y1 ||
           x_v[i] == (x1+1) && y_v[i] == y1 ||
@@ -988,6 +1000,7 @@ if (sek == "bdr_follow") {
       } #end if
     } #end loop j
   } #end loop i
+  
   nr_midpts #numbers of pixels representing line segments
   k12 <- length(nr_midpts)
   
@@ -1011,6 +1024,7 @@ if (sek == "bdr_follow") {
   
   #check
   n_det5 <- length(lnr_det5)
+  
   if (n_seq != n_det5) {
     stop("lines are not correctly detected -> correct positions by 'support_line_detection.R'")
     cat("lines are not correctly detected -> correct sequence manually","\n") 
@@ -1020,10 +1034,11 @@ if (sek == "bdr_follow") {
     sequence_seg2
   } else {
     cat ("sequence = ",sequence_seg, "\n")   
-  }
+  } #end if-else
   
   cat("Is the sequence of lines correct?","\n")
   answ <- readline("type Y or N:  ") #manual input
+  
   if (answ == "N") {
     p_pos <- "cor_sek"
     setwd(home_dir2)
@@ -1031,7 +1046,7 @@ if (sek == "bdr_follow") {
     sequence_seg2  
   } else {
     sequence_seg2 <- sequence_seg #sequence is correct
-  }
+  } #end if-else
   
 } #end sek = "bdr_follow" 
 
@@ -1048,7 +1063,7 @@ if (sek == "Mpts") {
 
 if (sek == "Mpts+dist") {
   PC_nr <- nr2 
-}
+} #end if
 
 if (sek == "bdr_follow") {
   PC_nr <- sequence_seg2
@@ -1062,11 +1077,12 @@ f4 <- paste("./data/",Img_name,"/b",bnr2,"_PC_nr.txt",sep="")
 setwd(home_dir)
 write.table(PC_nr,file=f4)
 
-#new
 ##preparation
 x3 <- length(PC_nr)
 all_PC <- list() #generation of a list
-for (i in 1:x3){
+vec2 <- 1 : x3
+
+for (i in vec2) {
   all_PC[[i]] <- "PC"
 }
 all_PC
