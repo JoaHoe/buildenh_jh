@@ -5,7 +5,7 @@
 #GNU General Public License (GPL)
 
 trans_ortho <- function() {
-  mar=r_max #distance from center of object
+  mar=r_max/4 #distance from center of object
   
   #check point 1
   x1 <- xc - mar 
