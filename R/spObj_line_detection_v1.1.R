@@ -9,7 +9,7 @@ cat("version_number= ",v_nr,"\n")
 #changing the default value (n_pix=35) in 'line detection.R'or by
 #pointing to one pixel using script 'support_line_detection.R'
 
-##orthoimage ISPRS_#7
+##orthoimage "ISPRS7"
 
 if (Img_name == "ISPRS7") { 
 
@@ -230,6 +230,19 @@ if (Img_name == "ISPRS1") {
     row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
   } #end b15
   
+  #b16
+  if (bnr2 == 16 && p_pos == "cor_det") { 
+    #cas='100_all'
+    B5_6
+    B5_6R4 <- B5_6
+    n_B5_6 <- nrow(B5_6)
+    index2 <- n_B5_6 + 1
+    B5_6R4[index2,1:7] <- B4[468,1:7]
+    B5_6R4[index2,8] <- 1
+    row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
+    B5_6R4
+  } #end b16
+  
   #b17
   if (bnr2 == 17 && p_pos == "cor_det") { 
     #cas='100_all'
@@ -319,9 +332,48 @@ if (Img_name == "ISPRS1") {
     B5_6R4
   } #end b36
   
-} #end image ISPRS1
+  #b372
+  
+  if (bnr2 == 372 && p_pos == "cor_det") { 
+    #cas='100_all+nonortholines'
+    B5_6
+    B5_7 <- B5_6
+    B5_6R4 <- B5_7[-c(1,2,4,5,6,7),]
+    row.names(B5_6R4) <- 1 : nrow(B5_6R4)
+    B5_6R4
+  } #end b372
+  
+  #b38
+  
+  if (bnr2 == 38 && p_pos == "cor_det") { #cas='4_long'
+    B5_4e_4long
+    B5_4e_4long2 <- B5_4e_4long
+    B5_4_ord2 <- subset(B5_4_ord, B5_4_ord$n_pixel >= wd)
+    B5_4e_4long2[3,] <- B5_4_ord2[1,] #new line
+    B5_4e_4long2  
+  } #end b38
+  
+  #b42
+  if (bnr2 == 42 && p_pos == "cor_det") { #cas='4_long'
+    B5_4e_4long
+    B5_4e_4long2 <- B5_4e_4long
+    wd=50
+    B5_4_ord2 <- subset(B5_4_ord, B5_4_ord$n_pixel >= wd)
+    B5_4e_4long2[3,] <- B5_4_ord2[3,] #new line
+    B5_4e_4long2  
+  } #end b42
+  
+  #b45
+  if (bnr2 == 45 && p_pos == "cor_det") { #cas='100_all+nonortho'
+    B5_6
+    B5_7 <- B5_6
+    B5_6R4 <- B5_7[-c(1:2,4:17),]
+    row.names(B5_6R4) <- 1 : nrow(B5_6R4)
+    B5_6R4
+  } #end b45
+  
+} #end of image "ISPRS1"
 
-
-##end script 'spObj_line_detection'
+##end of script 'spObj_line_detection'
 
 
