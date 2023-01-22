@@ -15,3 +15,5 @@ new_centre <- function() {
 } #end of function new_centre
 
 #end of script 'func_new_centre.R'
+
+
