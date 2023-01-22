@@ -3,20 +3,17 @@
 cat("start of spObj_adjustment of line ","\n")
 cat("version_number= ",v_nr,"\n")
 
-
 ##buildings of orthoimage ISPRS_#7
 
 if (Img_name == "ISPRS7") {  
   
   #b4
-  
   if (bnr2 == 4 && p_pos == "cor_adj_line") {
     B6$theta_adj[3] <- B6$theta_ang[3] #correction of theta
     B6$ro_adj[3] <- B6$ro_pixel[3] #correction of ro
   }
 
   #b5
-  
   if (bnr2 == 5 && p_pos == "cor_adj_line") {   
     B6$ro_adj[3] <- (-B6$ro_adj[3]) #correction of ro
     B6$theta_adj[3] <- 180 + B6$theta_adj[3] #angle must be positive
@@ -43,22 +40,13 @@ if (Img_name == "ISPRS1") {
   
   #b271
   if (bnr2 == 271 && p_pos == "cor_adj_line") { 
-    #B6$theta_adj[4] <- B6$theta_ang[4] #correction of theta (line 982)
-    #B6$ro_adj[4] <- B6$ro_pixel[4] #correction of ro (line 982)
-    #B6$theta_adj[10] <- B6$theta_ang[10] #correction of theta (line 1053)
-    #B6$ro_adj[10] <- B6$ro_pixel[10] #correction of ro (line 1053)
-    #B6$theta_adj[11] <- B6$theta_ang[11] #correction of theta (line 283)
-    #B6$ro_adj[11] <- B6$ro_pixel[11] #correction of ro (line 283)
+    B6 <- B6 #dummy line
   } #end b271
   
   #b36
   if (bnr2==36 && p_pos == "cor_adj_line") {
-    #stop("new code")
     i # index of PC, which must be corrected
     cat("PC_nr= ",PC_numb[i],"\n") #PC_nr, which must be corrected
-    #fname9 <- paste("./data/",Img_name,"/res_PC_nr_",PC_numb[i],".txt",sep="") 
-    #setwd(home_dir)
-    #residuals <- read.table(fname9) 
     res1
     residuals <- matrix(nrow=length(res1), ncol=2)
     residuals[,1] <- 1 : length(res1)
@@ -67,9 +55,9 @@ if (Img_name == "ISPRS1") {
     #
     cat("PC_number= ",PC_numb[i],"\n")
     nrow(all_PC[[i]])
-    #nrow(residuals)
     vec <- 1 : nrow(residuals)
     thr_res #3xthr_line
+    
     #remove gross errors
     nrs_errors <- rep(0,nrow(residuals))
     if (nrow(residuals) == nrow(all_PC[[i]])) {
@@ -93,11 +81,32 @@ if (Img_name == "ISPRS1") {
     setwd(home_dir)
     fname8 <- paste("./data/",Img_name,"/all_PC$PC_nr",PC_numb[i],".txt", sep=(""))
     write.table(all_PC[[i]],fname8)
+    
     #start again adjustment of line
     setwd(home_dir2)
     source(paste("adjustment_of_line_v",v_nr,".R",sep="")) 
    } #end of bnr2=36
-  } #end of Img_name = "ISPRS1"
+  
+  #b372
+  if (bnr2==372 && p_pos == "cor_adj_line") {
+   B6$theta_adj[2] <- B6$theta_ang[2]
+   B6$ro_adj[2] <- B6$ro_pixel[2]
+   B6$theta_adj[3] <- B6$theta_ang[3]
+   B6$ro_adj[3] <- B6$ro_pixel[3]
+   B6 
+  } #end of b372
+  
+  #b38
+  if (bnr2 == 38 && p_pos == "cor_adj_line") {
+    B6 <- B6 #dummy line 
+  } #end of b38
+
+  #b46
+  if (bnr2 == 46 && p_pos == "cor_adj_line") {
+    B6 <- B6 #(dummy line) 
+  } #end of b46
+  
+} #end of Img_name = "ISPRS1"
 
 ##end of script 'spObj_adjustment_of_line.R' 
 
