@@ -30,8 +30,9 @@ PC_segment_4 <- function(lnr) {
     while (i < n_theta) {
       i <- i+1
       ro2[i] <- cos(theta_rad[i])*X[k1] + sin(theta_rad[i])*Y[k1]
-      ro2[i] <- abs(ro2[i])
+      #ro2[i] <- abs(ro2[i]) #change
       ro_index[i] <- round(ratio*(ro2[i]-ro_1)+1) 
+      #ro_index[i] <- round(ratio*(ro2[i]+ro_1)+1) 
       if (ro_index[i] >= 1 && ro_index[i] <= n_ro ) {
         k2 <- ro_index[i]
         H[i,k2] <- H[i,k2] + 1
