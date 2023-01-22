@@ -5,19 +5,22 @@
 #GNU General Public License (GPL)
 
 line_reduce <- function() { 
+  #browser()
+  B5_4
   k14 <- length(B5_4$lnr)
   B5_4
+  n_pix
   #alternative selections:
   #wd=15 #  15*0.09 = 1.4m (search for small lines)
   #wd=56 #  56*0.09 = 5m (search for long lines)
   cat("smallest line segment within outline of building=", n_pix,"\n")
   B5_4b <- B5_4
   B5_4b[,1:7] <- 0
-  B5_4b[1,] <- B5_4[1,]
-  
+  B5_4b[1,] <- B5_4[1,] 
+  #
   i=1
   k1=2
-  while (i < k14){
+  while (i < k14) {
     i=i+1
     if (B5_4$theta_angle[i] == theta_ref && B5_4$n_pixel[i] >= n_pix ||
         B5_4$theta_angle[i] == alph_ref && B5_4$n_pixel[i] >= n_pix) {
@@ -259,6 +262,7 @@ line_reduce <- function() {
   
   if (k7 == 2) {
     B5_4dd_ord_final <- B5_4dd_ord_red
+    B5_4dd_ord_final
   } else { #else 1
     vec6 = 1:k7
     rem_vec <- rep(0,k7)
@@ -272,7 +276,7 @@ line_reduce <- function() {
     } #end for-loop
     
     rem_vec2 <- subset(rem_vec, rem_vec > 0) 
-    
+    rem_vec2
     if (sum(rem_vec) != 0 & nrow(B5_4dd_ord_red) > 2) {
       B5_4dd_ord_red2 <- B5_4dd_ord_red[-rem_vec2,] #some line segments will be removed
     } else { #else2
@@ -302,7 +306,7 @@ line_reduce <- function() {
       B5_4dd_ord_red2$shorter_line[n] <- min(B5_4dd_ord_red2$n_pixel[n],B5_4dd_ord_red2$n_pixel[(n+1)])
     } #end for-loop
   } #end if-else
-  
+  B5_4dd_ord_red2
   k9 <- nrow(B5_4dd_ord_red2)
   
   if (k9 == 2) {
