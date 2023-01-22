@@ -6,7 +6,6 @@ cat("version_number= ",v_nr,"\n")
 #instruction: if corrections in the positions are required -> use interactive detection of lines in 'support_line_detection.R' 
 #orthoimage ISPRS_#7, #1
 
-
 ##orthoimage ISPRS_#7
 
 if (Img_name == "ISPRS7") { 
@@ -204,7 +203,7 @@ if (Img_name == "ISPRS7") {
     lnr_det5
   } #end if (b27,p_pos="cor_sep)
   
-  ##corrections for postion of line-midpoints
+  ##corrections for position of line-midpoints
   
   if (bnr2 == 271 && p_pos == "cor_pos") { #b27, first part 
     b13_angle_df[8,3:4] <- c(588.2,1818.5)
@@ -248,6 +247,15 @@ if (Img_name == "ISPRS7") {
 ##orthoimage ISPRS_#1
 
 if (Img_name == "ISPRS1") {
+  
+  #b16
+  if (bnr2 == 16 && p_pos == "cor_pos") {  
+    #determine new position by 'support_line_detection.R', #6
+    #or with angle by 'support_sequence_of_lines.R', #9
+    b13_angle_df2[6,3:4] <- c(346.4, 1336.0) #manually derived
+    b13_angle_df2[6,2] <- c(87.6883)
+    b13_angle_df3 <- b13_angle_df2
+  } #end b22
   
   #b22
   if (bnr2 == 22 && p_pos == "cor_pos") {  
@@ -295,6 +303,16 @@ if (Img_name == "ISPRS1") {
     b13_angle_df2[4,3:4] <- c(800, 2108) #255
     b13_angle_df2[5,3:4] <- c(852, 2122) #7
     b13_angle_df2[6,3:4] <- c(811, 2194) #74
+    b13_angle_df3 <- b13_angle_df2
+  } #end b36
+  
+  #b38
+  if (bnr2 == 38 && p_pos == "cor_pos") {  
+    #determine new position by 'support_line_detection.R', #6
+    #or with angle by 'support_sequence_of_lines.R', #9
+    #manually derivation
+    b13_angle_df2
+    b13_angle_df2[3,3:4] <- c(1023,2304) #
     b13_angle_df3 <- b13_angle_df2
   } #end b36
   
