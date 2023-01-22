@@ -4,14 +4,14 @@ v_nr = "1.1" #version number of the program
 cat("version_number= ",v_nr,"\n")
 #examples: extracted buildings from land cover maps derived by classification programs
 #data: ISPRS test "Vaihingen": orthoimages of area #7, #1
-#author: Joachim Hoehle
+#author: Joachim Höhle
 #instructions: change directories for input;
 #instructions: input project title and image name
 #instructions: save your home directory
 #instructions: type 'Ctrl+A'(select all) and 'Source'
 #instructions: new users may start by examples (processing mode = demo)
 #depends: R-4.2.1
-#Copyright(C) 2022 Joachim Hoehle
+#Copyright(C) 2022 Joachim Höhle
 #GNU General Public License (GPL)
 ###################################################################################
 cat("start of software package 'buildenh_jh' ","\n")
@@ -91,11 +91,11 @@ display = function(...) if (interactive()) EBImage::display(...)
 #setup for processing mode "auto"
 
 if (Img_name == "ISPRS1") {
-  y_auto <- c(4,5,7,18) #file for automatic processing (orthoimage #7)  
+  y_auto <- c(4,5,7,18) #objects for automatic processing (orthoimage #7)  
 }
 
 if (Img_name == "ISPRS7") {
-  y_auto <- c(20,22,23,5) #file for automatic processing (orthoimage #7)  
+  y_auto <- c(20,22,23,5) #objects for automatic processing (orthoimage #7)  
 }
 
 n_y_auto <- length(y_auto)
