@@ -4,12 +4,13 @@
 # ro-values are calculated by least-squares adjustment
 # average of standard deviation of residuals to be used as quality control
 cat("version_number= ",v_nr,"\n")
-# author: Joachim Hoehle
+# author: Joachim Höhle
 # instructions: use supplementing scripts in case of problems
-#GNU General Public License (GPL)
+# GNU General Public License (GPL)
 cat("##################################################################","\n")
 
 cat("start of program 'adjustment_of_corner_coordinates.R'","\n")
+
 ##inputs
 
 #input of plot-parameter
@@ -18,13 +19,17 @@ xc <- plotPar[1]
 yc <- plotPar[2]
 r_max <- plotPar[3]
 
-# input of adjusted angle (theta_weighted mean)
+#input of adjusted angle (theta_weighted mean)
 setwd(home_dir)
 fname10 <- paste("./data/",Img_name,"/theta_av_b",bnr2,".txt", sep="")
 theta_av <- as.numeric(read.table(fname10))
-cat("theta angle (weighted average) = ", theta_av, "[degrees]", "\n")
-theta <- theta_av
-#
+cat("theta_adj_av (weighted average) = ", theta_av, "[degrees]", "\n")
+
+# if (theta_av < 0) {
+#   theta_av <- theta_av + 180
+# }
+
+theta_av
 
 # input of table with adjusted parameters (theta_adj, ro_adj)
 f2 <- paste("./data/",Img_name,"/param_adj_b",bnr2,".txt",sep="")
@@ -38,36 +43,64 @@ B8[,8] <- 0
 names(B8)[8] <- "ortho"
 # 
 for (i in z) {
+  
   if (B8$theta_ang[i] == theta_ref || B8$theta_ang[i] == alph_ref) {
     B8$ortho[i] <- 1
   } else {
     B8$ortho[i] <- 0
-  } 
-} #end loop i
+  } #end if-else
 
+} #end for-loop 
+
+B8
 B8S <- B8 #setup of new data frame with adjusted values 
 B8S
+n_ortholines2 <- sum(B8S$ortho)
 
-#introduction of theta_av
+#introduction of adjusted angle (theta_av)
+
 for (i in z) {
+  
   if (B8S$ortho[i] == 1) { #buildings with orthogonal lines
     B8S$theta_adj[i] <- theta_av
   } 
-} # end loop
-# 
 
-for (i in z) {
-  if (B8S$ortho[i] == 1 && B8$theta_ang[i] >= 90)
-    B8S$theta_adj[i] <- B8S$theta_adj[i] + 90
-} # end loop
+} # end for-loop
+# 
+B8S
+
+if (cas != "100_all+nonortho") { #solution for objects with orthogonal lines
+ 
+  for (i in z) {
+    if (B8S$ortho[i] == 1 && B8S$theta_ang[i] > 90)
+      B8S$theta_adj[i] <- B8S$theta_adj[i] + 90
+  } # end loop
+
+  #adaptation of ro due to change in  theta
+  B8S
+  z1 <- 1 : nrow(B8S)
+
+  for (i in z1) {
+  
+    if (B8S$ortho[i] == 1 && B8S$ro_pixel[i] < 0) {
+      B8S$ro_adj[i] <- (-B8S$ro_adj[i])
+    }
+    
+  } # end for-loop
+
+} #end if cas != "100_all+nonortho"
+
+B8S
 
 n_pts <- nrow(B8S)
 
 if (sum(B8S$ortho) < n_pts) { 
   cas <- "100_all+nonortho" #case for objects with non-orthogonal lines
+  n_nonortholines2
 }
 
 B8 <- B8S
+B8
 
 if (cas != "100_all+nonortho") {
   n_nonortholines2 <- 0
@@ -84,35 +117,64 @@ if (n_nonortholines2 != 0) {
 } # end if
 #
 
-if (n_nonortholines2 == 0 && soph == 1) {
-  for (i in z) {
-    if (B8S$ortho[i] == 1) { #buildings with orthogonal lines
-      B8S$theta_adj[i] <- theta_av
-    }
-  } # end loop
-  
-  for (i in z) {
-    if (B8S$ortho[i] == 1 && B8$theta_ang[i] > 90)
-      B8S$theta_adj[i] <- B8S$theta_adj[i] + 90
-  } # end loop
-  n_pts <- nrow(B8S)
-  
-  if (sum(B8S$ortho) < n_pts) { 
-    cas <- "100_all+nonortho" #case for objects with non-orthogonal lines
-  }
+# if (n_nonortholines2 == 0) {
+#   
+#    if (theta_av < 0) {
+#      theta_av <- theta_av + 180
+#    }
+#   
+#    n_B8 <- nrow(B8)
+#    z <- 1 : n_B8
+#   
+#    for (i in z) {
+#        if (B8$ortho[i] == 1) { #buildings with orthogonal lines
+#          theta_av
+#          B8$theta_adj[i] <- theta_av
+#        }
+#    } # end loop i
+#   
+#   # for (i in z) {
+#   #     if (B8S$ortho[i] == 1 && B8$theta_ang[i] >= 90) {
+#   #       B8S$theta_adj[i] <- B8S$theta_adj[i] + 90
+#   #     } #end if
+#   # } # end loop i
+#   
+#   n_B8 <- nrow(B8)
+#   z <- 1 : n_B8
+#   
+#   for (i in z) {
+#       if (B8$ortho[i] == 1 && B8$theta_ang[i] >= 90) {
+#         B8$theta_adj[i] <- B8$theta_adj[i] + 90
+#       } #end if
+#   } # end loop i
+# 
+#   n_pts <- nrow(B8)
+#   
+#   if (sum(B8$ortho) < n_pts) {
+#     cas <- "100_all+nonortho" #case for objects with non-orthogonal lines
+#   }
+# 
+#   B8
+# } #end if n_nonortholines2 = 0 
 
-  B8 <- B8S
-} #end if n_nonortholines2 = 0 && soph = 1
+n_pts <- nrow(B8)
+
+if (sum(B8$ortho) < n_pts) {
+  cas <- "100_all+nonortho" #case for objects with non-orthogonal lines
+}
+
 B8
+n_ortholines2
+n_nonortholines2
 
-if (n_nonortholines2 > 0) { #special object
+if (n_nonortholines2 > 1 && n_ortholines2 != 1) { #special object
   p_pos <- "cor_adj_coco"
   setwd(home_dir2)
   source(paste("spObj_adjustment_of_corner_coordinates_v",v_nr,".R",sep = "")) 
 } #end if
 
-B8 <- B8S
 B8
+
 phi_deg <- B8$theta_adj
 phi_deg <- (-phi_deg) #change to math-system
 options(digits=6)
@@ -158,7 +220,6 @@ p <- adjust_coord(A,b) #function call
 p
 m1 <- length(p[,1])
 m2 <- m1/2
-
 
 ##checks by plotting the results
 
@@ -240,6 +301,7 @@ write.table (intsec_linepair_vertex_coord, f5)
 #
 
 #store bnr2 in a file containing all processed buildings
+bnr2
 setwd(home_dir)
 fname15 <- paste("./results/",Img_name,"/b_all.txt",sep="")
 write.table(bnr2, file= fname15, row.names = F, col.names = F, append=TRUE)
