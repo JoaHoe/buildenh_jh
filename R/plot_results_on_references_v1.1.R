@@ -1,14 +1,14 @@
 ##plot result on references (orthoimage,ground truth)
 #name of program (script): plot_results_on_references.R
 cat("version_number= ",v_nr,"\n")
-#author: Joachim Hoehle
+#author: Joachim Höhle
 #examples: ISPRS data: image ISPRS7/LCM1, ISPRS1/LCM2
-#instructions: use supplementing scripts for interactions if necessary 
+#instructions: use supplementing scripts if necessary 
 #GNU General Public License (GPL)
 cat("####################################################################","\n")
 cat("start of program 'plot_results_on_references.R'","\n")
 setwd(home_dir)
-
+#stop("tests")
 ##input of table with line-pair, vertex_nr and final coordinates (x,y)
 f5 <- paste("./results/",Img_name,"/b",bnr2,"_intsec_linepair_vertex_coord.txt",sep="")
 intsec_linepair_vertex_coord2 <- read.table(f5)
@@ -43,23 +43,29 @@ while(i < k1) {
 display(img_uds,method = "raster")
 n_x <- length(PC_nr)
 vec_y <- 1 : n_x
+orig_y <- (-orig_y_math) #change to img-system
+orig_y
+points((xc-orig_x),(yc-orig_y),pch=3, asp=1, cex=1.3, col="red")
+points(pc3$col-orig_x,pc3$row-orig_y,pch=20,asp=1,cex=0.3,col="green")
+lines((b$Points_x-orig_x),(b$Points_y-orig_y),col="red",asp=1,type="l",lwd=2,lty=1)
 
+#plot line one by one
+display(img_uds,method = "raster")
+points((xc-orig_x),(yc-orig_y),pch=3, asp=1, cex=1.3, col="red")
+points(pc3$col-orig_x,pc3$row-orig_y,pch=20,asp=1,cex=0.3,col="green")
 #loop
 for (i in vec_y) {
   cat("i=",i,"\n")
   #browser()
-  points(as.integer(pc3$col-orig_x), as.integer(pc3$row-orig_y), pch=20, asp=1, cex=0.3, col="green")
-  points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.3, col="red")
-  
-  #loop
-  i <- 0
-  
-  while(i < k1) {
-    i <- i+1
-    lines(b$Points_x-orig_x, (b$Points_y - orig_y),  col="blue", asp=1, type="l", lwd=2, lty=1)
-  } #end while
-  
+  b$Points_x_red[i] <- b$Points_x[i]-orig_x
+  b$Points_x_red[i+1] <- b$Points_x[i+1]-orig_x
+  b$Points_y_red[i] <- b$Points_y[i]-orig_y
+  b$Points_y_red[i+1] <- b$Points_y[i+1]-orig_y
+  #
+  lines(b$Points_x_red[i:(i+1)],b$Points_y_red[i:(i+1)],
+        col="blue",asp=1,type="l",lwd=2,lty=1)
 } #end for-loop
+
 # end of plot large scale
 
 cat("does the result agree with the orthoimage?","\n")
@@ -89,7 +95,8 @@ if (answ == "Y") {
     i <- i + 1
     lines(b,col="red", asp=1, type="l", lwd=2, lty=1)
   } #end while
-} #end if answ="Y")
+
+  } #end if answ="Y")
 
 cat("does the result agree with the Ground Truth?","\n")
 
@@ -131,7 +138,7 @@ if (answ == "Y") {
   #loop
   i <- 0
   while(i < k1) {
-    i <- i+1
+    i <- i + 1
     lines(b, col="black", asp=1, type="l", lwd=1, lty=1)
   } #end while
     
