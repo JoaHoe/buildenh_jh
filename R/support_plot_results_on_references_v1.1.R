@@ -240,7 +240,6 @@ for (i in vec_nr) {
 b_all_lst$nr
 b_all_nr <- b_all_lst$nr[!is.na(b_all_lst$nr)]
 b_all_nr
-#
 
 #output
 fname13 <- paste("./results/",Img_name,"/b_all_nrs.txt",sep="")
