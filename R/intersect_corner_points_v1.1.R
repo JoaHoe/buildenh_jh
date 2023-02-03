@@ -1,14 +1,15 @@
 #name of program (script): 'intersect_corner_points.R'
 cat("version_number= ",v_nr,"\n")
-#description of program: 
+##description of program:
+#intersection of successive lines 
 #coordinate-system (theta,ro)
 #graphics for checking
 #derivation of weighted average of main angle (theta)
 #using generic design matrix
-#author: Joachim Höhle
-#GNU General Public License (GPL)
+##author: Joachim Höhle
+##GNU General Public License (GPL)
 cat("##############################################","\n")
-
+#stop("manual operation")
 cat("start of program 'intersect_corner_points.R'","\n")
 setwd(home_dir)
 
@@ -24,6 +25,7 @@ r_max <- plotPar[3]
 ##input adjusted line parameters (theta,ro)
 fname9 <- paste("./data/",Img_name,"/param_adj_b",bnr2,".txt", sep="")
 B6 <- read.table(fname9)
+B6
 #
 
 n_pts <- length(B6[,1])
@@ -32,7 +34,7 @@ n_pts <- length(PC_nr) #number of points (vertices)
 lnr_seq <- PC_nr
 
 #thresholds
-thr_theta_av = 10.0 # [degrees], used for checking of theta_av
+thr_theta_av = 10.0 # [degrees], used for checking of theta-average (theta_av)
 
 #test for odd number of points
 if (n_pts %% 2 == 1) { 
@@ -65,9 +67,11 @@ i <- i + 1
 ##plot at large scale 
 B7_seq <- B7
 y <- 1 : n_pts
+
 plot(xc,-yc, pch=3, cex=2, col="red", asp=1, xlim=c(xc-r_max2, xc+r_max2), 
      ylim=c(-yc-r_max2, -yc+r_max2), xlab="col", ylab="row",
      main=paste("building",bnr2))
+
 y4 <- B7_seq$lnr
 
 #loop
@@ -77,9 +81,9 @@ for (n in y4) {
  P_red <- reduce_pointset(P_orig)
  #browser()
  cat("point cluster nr=", n,"\n")
+ #points(P_orig[,2],-P_orig[,3], pch=20, asp=3, cex=0.5, col="blue")
  points(P_red[,2],-P_red[,3], pch=20, asp=3, cex=0.5, col="red") #corrected pixel cluster (PC)
 } #end of loop
-#
 
 ## intersection of lines
 B8 <- B7_seq
@@ -96,7 +100,22 @@ x0 <- B8$ro_adj
 b0 <- A %*% x0 #calculation of intersections
 b0 #approximate coordinates
 
+#correction of coordinates due to tan(90)
+z <- 1 : m
+for (i9 in z) {
+  
+  if (B8$theta_adj[i9] == 90) {
+    p_pos <- "cor_corner_pts"
+    setwd(home_dir2)
+    source(paste("spObj_intersect_corner_points_v",v_nr,".R",sep = "")) 
+  } 
+  
+} #end loop i9
+
+b0
+
 #output of approximate coordinates of corners (vertices)
+setwd(home_dir)
 fname12 <- paste("./data/",Img_name,"/b",bnr2,"_coord_appr.txt",sep="")
 write.table(b0,fname12,sep="  ")
 
@@ -185,9 +204,9 @@ while(i < k1) {
 
 #end of plot of corner points (derived from intersection with adjusted lines)
 
-## check of orientation angles of the lines (theta_angle)
-# difference of angles (theta) at building corners (vertices)
-# order of lnr_seq for B6
+##check of orientation angles of the lines (theta_angle)
+#difference of angles (theta) at building corners (vertices)
+#order of lnr_seq for B6
 
 options(digits=5)
 B6_seq <- B8
@@ -199,7 +218,7 @@ n_B6_seq <- n_pts
 x1 <- 1 : n_pts
 B6_seq
 
-##difference of angles
+#difference of angles
 angle_dif <- rep(0,n_pts)
 y1 <- 1 : (n_pts-1)
 
@@ -236,6 +255,7 @@ distance[,] <- 0
 
 #loop
 i <- 0
+
 for (n in y4) {
   fname <- paste("./data/",Img_name,"/b",bnr2,"_",n,".txt", sep="")
   P <- read.table(fname, col.names=c("idx","x","y")) #point cloud
@@ -250,7 +270,7 @@ for (n in y4) {
   distance[i,1:2] <- c(n,dist)
 } #end of loop
 
-# distance (length) of line segments to be used for calculation of weights
+#distance (length) of line segments to be used for calculation of weights
 len <- distance[,2]
 np <- len
 B6_seq$np <- np
@@ -259,13 +279,15 @@ y1 <- 1 : n_pts
 B6_seq <- B6_seq2
 B6_seq
 
-## output of table with theta_adj, ro_adj
+##output of table with theta_adj, ro_adj
 fname9 <- paste("./data/",Img_name,"/param_adj_b",bnr2,".txt",sep="")
 write.table(B6_seq, fname9)
 #
 #########################################################################
 
 if (cas != "100_all+nonortho") {
+  
+  #averaging of angles (theta_av)
   theta_vec <- rep(0,n_B6_seq)
   np_vec <- rep(0,n_B6_seq)
   theta_vec2 <- rep(0,n_B6_seq)
@@ -320,6 +342,8 @@ if (cas != "100_all+nonortho") {
     
     if (ang[i] > 90) {
       ang_mod[i] <- (ang[i] - 90)
+    } else {
+      ang_mod[i] <- ang[i] #corrected
     }
     
   } #end for-loop
@@ -340,6 +364,8 @@ if (cas != "100_all+nonortho") {
 } #end if cas != "100_all+nonortho"
 
 if (cas == "100_all+nonortho") {  
+  
+  #average of angles
   theta_vec <- rep(0, n_B6_seq)
   np_vec <- rep(0,n_B6_seq)
   theta_vec2 <- rep(0, n_B6_seq)
@@ -348,7 +374,8 @@ if (cas == "100_all+nonortho") {
   
   #loop
   for (i in z) { 
-    if (B6_seq$theta_ang[i] == theta_ref || B6_seq$theta_ang[i] == (theta_ref - 90)) {
+    
+    if (B6_seq$theta_ang[i] == theta_ref || B6_seq$theta_ang[i] == alph_ref) {
       B6_seq$ortho[i] <- 1
     } else {
       B6_seq$ortho[i] <- 0 
@@ -359,10 +386,12 @@ if (cas == "100_all+nonortho") {
   B6_seq
   
   for (i in z) {
+    
     if (B6_seq$ortho[i] == 1) {
       theta_vec[i] <- B6_seq$theta_adj[i] 
       np_vec[i] <- B6_seq$np[i]
     } 
+    
   } #end for-loop
   theta_vec
   
@@ -373,10 +402,12 @@ if (cas == "100_all+nonortho") {
   ang_mod <- ang
   ang_mod
   
-  for (i in vec) { #reduction to range 0...90
+  for (i in vec) { #reduction of ang_mod to range 0...90
+    
     if (ang_mod[i] > 90) {
-      ang_mod[i] <- (ang_mod[i]-90) 
+      ang_mod[i] <- (ang_mod[i] - 90) 
     }
+    
   } #end for-loop
 
   ang_mod
@@ -418,14 +449,15 @@ if (cas == "100_all+nonortho") {
   write.table(theta_av_mod,file=f)
   #
   
-  ##average for a set of parallel lines 
-  #of different orientation (theta_ref2)
+  ##average for a set of parallel lines of different orientation (theta_ref2)
   
   for (i in z) {
+    
     if (B6_seq$ortho[i] == 0) { 
       theta_vec2[i] <- B6_seq$theta_adj[i] 
       np_vec2[i] <- B6_seq$np[i]
     } #end if
+    
   } #end for-loop
   
   theta_vec2
@@ -451,7 +483,7 @@ if (cas == "100_all+nonortho") {
   cat("averaging of non-ortho angles","\n" )
   #two possibilities (2 or 1 line)
   
-  #2 lines
+  #two lines
   if (n_nonortholines == 2) {
     p_pos = "cor_theta_av2"
     setwd(home_dir2)
@@ -464,15 +496,17 @@ if (cas == "100_all+nonortho") {
     write.table(theta_av2_mod,file=f)
   } #end if n_nonortholines = 2 
   
-  #1 line
+  #one line
   if (n_nonortholines == 1) {
       p_pos = "cor_theta_av2"
       
       #loop
       for (i in z) {
+        
         if (B6_seq$ortho[i] == 1) {
            i2 <- i
-        } 
+        }
+        
       } #end for-loop
       
       setwd(home_dir2)
@@ -494,70 +528,50 @@ if (cas != "100_all+nonortho") {
   
   theta_av <- theta_average
   cat("weighted average of angle=",theta_av," degrees","\n")
-  theta_av_mod <- theta_av
   
   #test of theta_average by means of theta_ref
-  theta_av_mod
+  theta_av
   theta_ref
   thr_theta_av #threshold
   
-  if (theta_ref > 90) {
-    theta_ref_mod <- theta_ref - 90
-    dev_theta <- abs(theta_av_mod - theta_ref_mod)
+  if (theta_av > 90) {
+    theta_av_mod <- theta_av - 90
   } else {
-    theta_ref_mod <- theta_ref
-    dev_theta <- abs(theta_av_mod - theta_ref_mod)
+    theta_av_mod <- theta_av
   }
   
-  dev_theta
+  dev_theta <- abs(theta_av_mod - theta_ref)
+  cat("deviation: theta_av_mod-theta_ref= ",dev_theta,"\n")
   
   if (dev_theta > thr_theta_av) {
-   cat("theta_av deviates too much from theta_ref:", dev_theta, "degree", "\n")
-   stop("interaction required")
+    cat("theta_av deviates too much from theta_ref:", dev_theta, "degree", "\n")
+    #stop("interaction required")
   } #end if
-  # 
   
   #check of average by means of phi-angles
   len_phi_all
   phi_all
   phi_average <- w_av(phi_all,len_phi_all)
-  phi_average
+  cat("phi_average= ",phi_average,"\n")
   theta_ref
-  
-  if (theta_ref < 90 && phi_average < 0) {
-    theta_average2 <- (-phi_average)
-  } else {
-    theta_average2 <- (90-phi_average)
-  }
-  
-  theta_average2
-  theta_ref
-  dif_thetaref_phi <- abs(theta_average2 - theta_ref) 
-  
-  if (dif_thetaref_phi > thr_theta_av) {
-    cat("phi_average deviates too much from theta_ref:", dif_thetaref_phi, "degree", "\n")
-    stop("interaction required")
-  } #end if
   
   #test of averages derived by different methods
   phi_average
   theta_average
   thr_av=0.5
   
-  if (theta_average < 90 && phi_average < 0) {
-    theta_average3 <- (- phi_average)
+  if (theta_av > 90) {
+    theta_av_mod <- theta_av - 90 
   } else {
-    theta_average3 <- (90-phi_average)
-  } #end if-else
+    theta_av_mod <- theta_av
+  }
   
-  theta_average3 #calculated from phi_average)
-  
-  
-  dif_av <- abs(theta_average - theta_average3)
-  cat("dif_av= ",dif_av,"\n" )
+  dif_av <- abs(theta_av_mod - (-phi_average)) #phi into img-system
+  cat("differences_in_averages= ",dif_av,"\n")
   
   if (dif_av > thr_av) {
-    stop("error -> check theta_average")
+    #stop("error -> check theta_average")
+    cat("check theta_average","\n")
   }
   
   ##output of weighted average of angle
