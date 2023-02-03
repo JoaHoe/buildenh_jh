@@ -1,9 +1,9 @@
 ##name of program: startup_buildenh.R
 #description: program(script) starts the package 'buildenh'
-v_nr = "1.1" #version number of the program
+v_nr = "1.1" #version number of the program pckage
 cat("version_number= ",v_nr,"\n")
 #examples: extracted buildings from land cover maps derived by classification programs
-#data: ISPRS test "Vaihingen": orthoimages of area #7, #1
+#data: ISPRS test "Vaihingen": orthoimages of area #1, #7
 #author: Joachim Höhle
 #instructions: change directories for input;
 #instructions: input project title and image name
@@ -22,8 +22,6 @@ cat("first program/script 'startup_buildenh.R' ","\n")
 old_dir <- setwd("./")
 getwd()
 #
-#home_dir <- "C:/Users/Joachim/OneDrive/Documents/GitHub/buildenh"
-#home_dir2 <- "C:/Users/Joachim/OneDrive/Documents/GitHub/buildenh/R"
 home_dir <- "C:/Users/Joachim/R_programs/buildenh_jh/clone1"
 home_dir2 <- "C:/Users/Joachim/R_programs/buildenh_jh/clone1/R"
 
@@ -31,13 +29,12 @@ home_dir2 <- "C:/Users/Joachim/R_programs/buildenh_jh/clone1/R"
 
 ## title of project (activate manually)
 
-setwd(home_dir)
 #prj_title <- "ISPRS7_LCM1" #orthoimage ISPRS#7, 
 #classification method: DT/LCM1 by 17 attributes
-#training by orthoimage #26
-prj_title <- "ISPRS1_LCM2" #orthoimage ISPRS#1, classification method: DT/LCM2 by 5 attributes
+#training by ISPRS orthoimage #26
+prj_title <- "ISPRS1_LCM2" #ortsetwd(home_dir)hoimage ISPRS#1, classification method: DT/LCM2 by 5 attributes
 cat("project title is = ", prj_title,"\n")
-
+setwd(home_dir)
 #select orthoimage (activate manually)
 #Img_name <- "ISPRS7" #name of orthoimage to be processed, change for other image
 Img_name <- "ISPRS1" #name of orthoimage to be processed, change for other image
