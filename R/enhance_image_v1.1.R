@@ -1,8 +1,8 @@
 ##name of program (script): enhance_image.R
 cat("version_number= ",v_nr,"\n")
-#description: cartographic enhancement of extracted class (here: "building")
-#ISPRS data (areas #7,#1), DT classification, training by images #26
-#author: Joachim Hoehle
+#description: cartographic enhancement of extracted class "building"
+#ISPRS data (areas #1,#7), DT classification, training by ISPRS orthoimages #26
+#author: Joachim Höhle
 #instructions: scale of image has to be checked and eventually be corrected
 #GNU General Public License (GPL)
 ############################################################################
@@ -66,13 +66,13 @@ display(LCM_bb)
 LCM_b <- LCM_cart_enh_building
 display(LCM_b, "raster")
 display(LCM_b, "browser")
-#end of "generation of refined class building"
+#end of generation of refined class "building"
 
-#scaling of image?
+##scaling of image
 #cat("Is scaling necessary? type Y or N","\n") 
 #answ <- readline("Is scaling necessary? ") #activate if required
 
-answ = "Y" #remove this line for other projects than "ISPRS7" and "ISPRS1"
+answ = "Y" #remove this line for other projects than "ISPRS1" and "ISPRS7"
 
 if (answ == "Y") {
   setwd(home_dir2)
@@ -86,7 +86,7 @@ display(LCM_b_2)
 cat("end of 'enhance_image.R' - continue with 'extract_single_building.R' ","\n")
 setwd(home_dir2)
 source(paste("extract_single_building_v",v_nr,".R",sep=""))
-#end of enhance image
+#end of 'enhance_image'
 #########################################################################################
 
 
