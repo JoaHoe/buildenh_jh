@@ -1,12 +1,12 @@
 #name of program (script): extract_single_building.R
 cat("version_number= ",v_nr,"\n")
 #description: extraction of one building  
-#from image "building theme of generated land cover map"
-#orthoimage: ISPRS data "Vaihingen" of areas: #7, #1
+#from image "building"-theme of generated land cover map
+#orthoimage: ISPRS data "Vaihingen" of areas: #1, #7
 #instruction: use plot of building numbers 
 #producible in 'support_extract_single_building'
 #support script to be used for selecting of object 
-#author: Joachim Hoehle
+#author: Joachim Höhle
 #GNU General Public License (GPL)
 cat("###########################################################################","\n")
 
@@ -34,12 +34,8 @@ if (answ == "2") {
 }
 
 if (answ == "3") { 
-  proc_mode <- "auto" #automatic processing of orthoimage
+  proc_mode <- "auto" #automatic processing of several orthoimages
 }
-
-# if (answ == "4") { 
-#   stop("terminate automatic processing")
-# }
 
 if (proc_mode == "obj_wise") {   
   bnr2 <- readline("type the label of building to be processed: ") #label of building by manual input
@@ -64,7 +60,7 @@ if (substr(bnr2,3,3) == "1" || substr(bnr2,3,3) == "2") {
 
 cat("label of building to be extracted= ", bnr2,"\n")
 
-if (part == "2parts_1" || part == "2parts_2") { #repeated? see line 52
+if (part == "2parts_1" || part == "2parts_2") { #repeated? see line 51
   bnr2 <- as.numeric(substr(bnr2,1,2))
   bnr2_orig <- bnr2
 } #end if
@@ -74,9 +70,8 @@ if (part == "no_part") {
 }
 
 cat("label of building to be extracted=", bnr2,"\n") #check if new number is necessary
-#
 
-#input of enhanced billede
+##input of enhanced billede
 setwd(home_dir)
 LCM_enh_b=readImage(paste("./data/",Img_name,"/images/LCM_cart_enh_b3_scaled_2.jpg",sep = "")) #classification by method JH, scaled affine
 display(LCM_enh_b, method="browser") #use for checking of image
@@ -105,15 +100,15 @@ setwd(home_dir)
 coor <- computeFeatures.moment(LCM_label) #geometric features (moment)
 n9 <- nrow(coor)
 cat('number of buildings=',n9,'\n')
-shap<-computeFeatures.shape(LCM_label) #geometric features (shape)
+shap <- computeFeatures.shape(LCM_label) #geometric features (shape)
 shap
 n8 <- nrow(shap) #number of buildings to enhance
 cat('number of buildings=',n8,'\n')
-shap_A<-computeFeatures.shape(LCM_label_A) #geometric features (shape)
+shap_A <- computeFeatures.shape(LCM_label_A) #geometric features (shape)
 shap_A
-n7<-nrow(shap_A)
-shap1_A<-matrix(nrow=n7,ncol=10)
-y<-1:n7
+n7 <- nrow(shap_A)
+shap1_A <- matrix(nrow=n7,ncol=10)
+y <- 1 : n7
 #
 
 for (n in y){
@@ -127,10 +122,10 @@ shap2_A <- subset(shap1_A,shap1_A[,2] >= 3086) #removes buildings of area < 5mx5
 n8 <- nrow(shap2_A)
 cat('number of buildings after area-thresh-holding=',n8,'\n')
 rownames(shap2_A) <- 1:n8
-names(shap2_A)<-c("bnr","area", "perimeter", "radius.mean", "radius.sd", "radius.min","radius.max","cx","cy","alpha_arc")
+names(shap2_A) <- c("bnr","area", "perimeter", "radius.mean", "radius.sd", "radius.min","radius.max","cx","cy","alpha_arc")
 shap2_A
 y3 <- nrow(shap2_A)
-shap2_A_red3<-shap2_A #if no points are removed
+shap2_A_red3 <- shap2_A #if no points are removed
 shap2_A_red3
 #
 
@@ -180,9 +175,11 @@ obj_nrs #list with bnr/bnr2 to be used in conversion bnr2<-bnr (and vice versa)
 cat("bnr2= ", bnr2,"\n")
 
 for (i in y1) {
+  
   if (obj_nrs[i,2] == bnr2) {
     bnr <- obj_nrs[[i,1]]
   } #end if
+  
 } #end for-loop
 
 cat("bnr= ", bnr,"\n")
@@ -194,13 +191,13 @@ display(is_bnr,"raster")
 #
 
 #conversion to a vector
-coords <- data.frame(x=as.numeric(row(is_bnr)),y=as.numeric(col(is_bnr)), is_bnr=as.numeric(is_bnr))
+coords <- data.frame(x=as.numeric(row(is_bnr)),y=as.numeric(col(is_bnr)),is_bnr=as.numeric(is_bnr))
 coords <- coords[coords$is_bnr == 1,] #removal of pixels which do not have the label of the building
 
-##plot of PC and checkpoints
+#plot of PC and checkpoints
 r_max2 <- round(1.1*r_max)
-plot(coords$x, coords$y, pch=16, cex=0.2,col="black",asp=1,xlim=c(xc-r_max2,xc+r_max2),ylim=c(yc+r_max2, yc-r_max2), xlab = NULL, ylab=NULL, ann= FALSE, main=paste("b", bnr2), axes=TRUE)
-#plot(coords$x, coords$y,pch=16,cex=0.2,col="black",asp=1,xlim=c(1,1887),ylim=c(2557,1), xlab = NULL, ylab=NULL, ann= FALSE, main=paste("b", bnr2), axes=TRUE) #small scale
+plot(coords$x,coords$y,pch=16,cex=0.2,col="black",asp=1,xlim=c(xc-r_max2,xc+r_max2),ylim=c(yc+r_max2,yc-r_max2),xlab=NULL,ylab=NULL,ann=FALSE,main=paste("b",bnr2),axes=TRUE)
+#plot(coords$x,coords$y,pch=16,cex=0.2,col="black",asp=1,xlim=c(1,1887),ylim=c(2557,1),xlab=NULL,ylab=NULL,ann=FALSE,main=paste("b",bnr2),axes=TRUE) #small scale
 points(xc+r_max, yc+r_max, pch=16, cex=1.5, col="black", asp=1) #point for scaling
 points(xc-r_max, yc+r_max, pch=16, cex=1.5, col="black", asp=1) #point for scaling
 points(xc-r_max, yc-r_max, pch=16, cex=1.5, col="black", asp=1) #point for scaling
@@ -209,7 +206,7 @@ points(xc, yc, pch = 3, cex=1.5, col = "red", asp=1) #centre of PC
 #
 
 ##output as tiff-image
-file1 <-  paste('./data/',Img_name,'/images/b',bnr2,'_new8.tif',sep = "")
+file1 <- paste('./data/',Img_name,'/images/b',bnr2,'_new8.tif',sep = "")
 tiff(file1, width=578, height=578, units="px", bg = "white")
 r_max2 <- round(1.1*r_max)
 plot(coords$x, coords$y, pch=16, cex=0.2,col="black",asp=1,xlim=c(xc-r_max2,xc+r_max2),ylim=c(yc+r_max2, yc-r_max2), xlab = NULL, ylab=NULL, ann= FALSE, main=paste("b", bnr2), axes=TRUE)
@@ -225,7 +222,7 @@ dev.off()
 ylim <- c(yc+r_max2, yc-r_max2)
 ylim[1] - ylim[2]
 
-##calculation of window size
+##calculation of window-size
 par("usr")
 dy_window_plot <- abs(par("usr")[3] - par("usr")[4]) #range of window
 
@@ -249,6 +246,7 @@ display(b_new8, method="raster")
 cat("partition of object? - no parts: 0, two parts: 1 (first object) or 2 (second object)","\n")
 
 k_part <- readline("select partition-type - if demo - type 0: ") #when object must be parted
+
 if (k_part == "0") { #no partition of object
   part <- "no_part"
 }
@@ -259,7 +257,6 @@ if (k_part == "1") { #first part
 
 if (k_part == "2") { #second part
   part <- "2parts_2"
-  #n_y_auto <- n_y_auto + 1
 }
 
 if (part == "2parts_1" || part == "2parts_2") {
