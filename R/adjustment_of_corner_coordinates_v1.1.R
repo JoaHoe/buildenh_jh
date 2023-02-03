@@ -1,35 +1,29 @@
 ##name of program (script): adjustment of corner coordinates.R
-# description: calculation of final corner coordinates
-# weighted average of the main direction (theta_av) is used 
+cat("version_number= ",v_nr,"\n")
+## description: calculation of final coordinates of polygon-corners (vertexes)
+# weighted average of the main direction (theta_av) 
 # ro-values are calculated by least-squares adjustment
 # average of standard deviation of residuals to be used as quality control
-cat("version_number= ",v_nr,"\n")
-# author: Joachim Höhle
-# instructions: use supplementing scripts in case of problems
-# GNU General Public License (GPL)
+## author: Joachim Höhle
+## instructions: use supplementing scripts in case of problems
+## GNU General Public License (GPL)
 cat("##################################################################","\n")
 
 cat("start of program 'adjustment_of_corner_coordinates.R'","\n")
 
 ##inputs
-
+#stop("checking")
 #input of plot-parameter
 n_pts # number of corners/lines
 xc <- plotPar[1]
 yc <- plotPar[2]
 r_max <- plotPar[3]
 
-#input of adjusted angle (theta_weighted mean)
+#input of adjusted angle (theta, weighted average)
 setwd(home_dir)
 fname10 <- paste("./data/",Img_name,"/theta_av_b",bnr2,".txt", sep="")
 theta_av <- as.numeric(read.table(fname10))
 cat("theta_adj_av (weighted average) = ", theta_av, "[degrees]", "\n")
-
-# if (theta_av < 0) {
-#   theta_av <- theta_av + 180
-# }
-
-theta_av
 
 # input of table with adjusted parameters (theta_adj, ro_adj)
 f2 <- paste("./data/",Img_name,"/param_adj_b",bnr2,".txt",sep="")
@@ -53,8 +47,9 @@ for (i in z) {
 } #end for-loop 
 
 B8
-B8S <- B8 #setup of new data frame with adjusted values 
-B8S
+
+#setup of new data frame with adjusted values 
+B8S <- B8 
 n_ortholines2 <- sum(B8S$ortho)
 
 #introduction of adjusted angle (theta_av)
@@ -72,25 +67,14 @@ B8S
 if (cas != "100_all+nonortho") { #solution for objects with orthogonal lines
  
   for (i in z) {
-    if (B8S$ortho[i] == 1 && B8S$theta_ang[i] > 90)
-      B8S$theta_adj[i] <- B8S$theta_adj[i] + 90
-  } # end loop
-
-  #adaptation of ro due to change in  theta
-  B8S
-  z1 <- 1 : nrow(B8S)
-
-  for (i in z1) {
-  
-    if (B8S$ortho[i] == 1 && B8S$ro_pixel[i] < 0) {
-      B8S$ro_adj[i] <- (-B8S$ro_adj[i])
+    
+    if (B8S$theta_ang[i] >= 90 && theta_av < 90) {
+      B8S$theta_adj[i] <- B8S$theta_adj[i] + 90 
     }
     
-  } # end for-loop
-
+  } # end i-loop
+  
 } #end if cas != "100_all+nonortho"
-
-B8S
 
 n_pts <- nrow(B8S)
 
@@ -99,83 +83,64 @@ if (sum(B8S$ortho) < n_pts) {
   n_nonortholines2
 }
 
-B8 <- B8S
-B8
+B8S
 
 if (cas != "100_all+nonortho") {
   n_nonortholines2 <- 0
 }
 
-n_nonortholines2 #n_nonortholines2 is the number of lines which belong to the object
+n_nonortholines2 #n_nonortholines2 = number of non-ortho-lines 
 
-##input of theta_av2
-if (n_nonortholines2 != 0) { 
-  setwd(home_dir)
-  fname11 <- paste("./data/",Img_name,"/theta_av2_b", bnr2,".txt",sep="")
-  theta_av2 <- as.numeric(read.table(fname11))
-  cat("theta angle2 (weighted average) = ", theta_av2, "[degrees]", "\n")
-} # end if
-#
+if (cas == "100_all+nonortho") { #solution for orthogonal lines
+  
+  for (i in z) {
+    
+    if (B8S$ortho[i] == 1 && B8S$theta_ang[i] > 90) {
+      B8S$theta_adj[i] <- B8S$theta_adj[i] + 90 
+    }
+     
+  } # end loop
+  
+  ##input of theta_av2
+  if (n_nonortholines2 != 0) { 
+    setwd(home_dir)
+    fname11 <- paste("./data/",Img_name,"/theta_av2_b", bnr2,".txt",sep="")
+    theta_av2 <- as.numeric(read.table(fname11))
+    cat("theta angle2 (weighted average) = ", theta_av2, "[degrees]", "\n")
+  } # end if
+  
+  z1 <- 1 : nrow(B8S)
+  
+  for (i in z1) {
+    
+    if (B8S$ortho[i] == 0) {
+      B8S$theta_adj[i] <- theta_av2
+    }
+    
+  } # end for-loop
 
-# if (n_nonortholines2 == 0) {
-#   
-#    if (theta_av < 0) {
-#      theta_av <- theta_av + 180
-#    }
-#   
-#    n_B8 <- nrow(B8)
-#    z <- 1 : n_B8
-#   
-#    for (i in z) {
-#        if (B8$ortho[i] == 1) { #buildings with orthogonal lines
-#          theta_av
-#          B8$theta_adj[i] <- theta_av
-#        }
-#    } # end loop i
-#   
-#   # for (i in z) {
-#   #     if (B8S$ortho[i] == 1 && B8$theta_ang[i] >= 90) {
-#   #       B8S$theta_adj[i] <- B8S$theta_adj[i] + 90
-#   #     } #end if
-#   # } # end loop i
-#   
-#   n_B8 <- nrow(B8)
-#   z <- 1 : n_B8
-#   
-#   for (i in z) {
-#       if (B8$ortho[i] == 1 && B8$theta_ang[i] >= 90) {
-#         B8$theta_adj[i] <- B8$theta_adj[i] + 90
-#       } #end if
-#   } # end loop i
-# 
-#   n_pts <- nrow(B8)
-#   
-#   if (sum(B8$ortho) < n_pts) {
-#     cas <- "100_all+nonortho" #case for objects with non-orthogonal lines
-#   }
-# 
-#   B8
-# } #end if n_nonortholines2 = 0 
+} #end if cas == "100_all+nonortho"
 
-n_pts <- nrow(B8)
+B8S
+n_pts <- nrow(B8S)
 
-if (sum(B8$ortho) < n_pts) {
+if (sum(B8S$ortho) < n_pts) {
   cas <- "100_all+nonortho" #case for objects with non-orthogonal lines
 }
 
-B8
+B8S
 n_ortholines2
 n_nonortholines2
 
-if (n_nonortholines2 > 1 && n_ortholines2 != 1) { #special object
+if (n_nonortholines2 > 1 && n_ortholines2 != 1) { #used at special object
   p_pos <- "cor_adj_coco"
   setwd(home_dir2)
   source(paste("spObj_adjustment_of_corner_coordinates_v",v_nr,".R",sep = "")) 
 } #end if
 
-B8
+B8S
 
-phi_deg <- B8$theta_adj
+phi_deg <- B8S$theta_adj
 phi_deg <- (-phi_deg) #change to math-system
 options(digits=6)
 cat("sequence of angles [degrees]:","\n")
@@ -187,11 +152,11 @@ A[,] <- 0
 A <- design_mat(m,phi) #call of function
 A
 
-# Input of approximate coordinates
+#input of approximate coordinates
 setwd(home_dir)
 fname12 <- paste("./data/",Img_name,"/b",bnr2,"_coord_appr.txt",sep = "")
 b01 <- read.table(fname12,col.names="xy")
-b01 # approximate corner coordinates
+b01 #approximate corner coordinates
 b <- rep(0,m)
 b <- b01$xy
 n_b <-length(b01$xy)
@@ -200,12 +165,13 @@ b_mat <- as.data.frame(b_mat)
 b_mat[1:n_b,1] <- b
 b_mat[1:n_b,2] <- 0
 names(b_mat)[1:2] <- c("coo","ortho")
+n_B8S <- nrow(B8S)
 
 i <- 1
 j <- 1
 #loop i
 
-while (i <= n_B8) {
+while (i <= n_B8S) {
     b_mat[j,2] <- b_xy_vertex$ortho[i]
     b_mat[j+1,2] <- b_xy_vertex$ortho[i]
     i <- i + 1
