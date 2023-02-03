@@ -1,13 +1,14 @@
 #name of program: adjustment_of_line.R
 cat("version_number= ",v_nr,"\n")
 #description: least-squares adjustment of a straight line 
-#parameters are theta (angle) and ro (distance of line from origin)
+#unknowns are theta (angle) and ro (distance of line from origin)
 #residuals are orthogonal to the line
 #author: Joachim Höhle
 #GNU General Public License (GPL)
 cat("###########################################################################","\n")
+
 cat("start of program 'adjustment_of_line.R'","\n")
-#stop("manual operation for checking")
+
 setwd(home_dir)
 
 ##plot point clouds of building and origin of coordinate system (small scale)
@@ -41,13 +42,13 @@ plot(xc,-yc, pch=3, cex=3, col="red", asp=1,
 
 ##input of individual pixel clusters (PC)
 x <- PC_nr
-x
 x3 <- length(PC_nr)
 y2 <- 1 : x3
 y2 #sequence of lines (not ordered)
 
-## Input of list PC_all
+##input of list 'PC_all'
 setwd(home_dir)
+x
 i=1
 
 for (n1 in x) {
@@ -55,25 +56,25 @@ for (n1 in x) {
   fname8 <- paste("./data/",Img_name,"/all_PC$PC_nr",n1,".txt", sep=(""))
   all_PC[[i]] <- read.table(fname8)
   i <- i+1
-} #end of input of list PC_all (loop "i")
+} #end of input of list 'PC_all'
 
-## plot of separated and corrected point clusters
+##plot of separated and corrected point clusters
 # loop for each point cluster
 palette2 <- c("brown", "red", "gray",  "darkgreen", "blue", "magenta", "black", "cyan")
 
 for (i in y2) {
   cat("i=", i, "\n")
-  #browser(text="line-number= ",i)
-  points(all_PC[[i]]$x,(-all_PC[[i]]$y), pch='.', asp=1, cex=2.5, col=palette2[n]) #change to math-system
+  #browser()
+  points(all_PC[[i]]$x,(-all_PC[[i]]$y), pch='.', asp=1, cex=2.5, col="red") #change to math-system
 } # end of input PCs
 
-## Input of line parameter (matrix 'B') without proper sequence of lines
+##input of line parameter (matrix 'B') without proper sequence of lines
 fname9 <- paste("./data/",Img_name,"/unsorted_lines_b",bnr2,".txt", sep="")
 B6 <- read.table(fname9, header=T)
 B6 #line segments of outline
 np2 <- nrow(B6)
 
-## generation of proper sequence of lines
+##generation of proper sequence of lines
 B6 <- subset(B6,select=c(lnr,theta_angle,ro_pixel,n_pixel)) 
 B6[,5:6] <- 0
 names(B6) <- c("PC_nr","theta_ang","ro_pixel","n_pixel", "theta_adj", "ro_adj")
@@ -85,6 +86,7 @@ B6_seq$PC_nr <- x
 np <- length(x)
 B6_seq[,2:4] <- 0
 B6_seq
+
 # loop
 i <- 1
 while (i <= np) {
@@ -116,12 +118,10 @@ len_phi_all <- rep(0,x)
 
 #loop i
 for (i in y2) {
-  #stop("manual checking")
   cat("i= ",i,"\n")
   #browser()
   k4 <- nrow(all_PC[[i]])
   all_PC[[i]][1 : k4,]
-  
   len_phi_all[i] <- k4
   
   #loop j
@@ -135,7 +135,7 @@ for (i in y2) {
   
   x_dat <- all_PC[[i]]$x
   y_dat <- (-all_PC[[i]]$y) #change to math-system
-  xs <- sum(x_dat)/k4 #math_sysyem
+  xs <- sum(x_dat)/k4 #math-system
   ys <- sum(y_dat)/k4
   xs_all[i] <- xs
   ys_all[i] <- ys
@@ -153,22 +153,23 @@ for (i in y2) {
   ro_adj <- (a_adj*cos(phi_deg/omega))
   cat("ro_adj= ", ro_adj, "\n")
   
-  #calculation of phi
+ 
   #two solutions are possible due to tangens-function
-  
-  ##solution 1 
-  th1_img <- 90 - phi_deg #th1_img in img-system
+  #solution 1 
+  #calculation of th1_img
+  th1_img <- 90 - phi_deg #th1_img in img-system (adjusted)
   
   if ((th1_img < B6[i,2] + 25) && (th1_img > B6[i,2] - 25)) {
-    
-    
+
   #update of matrix B6 (img-system)
    
     if(th1_img < 0) {
       th1_img <- th1_img + 180
     }
     
-    B6[i,5] <- th1_img #solution 1 
+    B6[i,5] <- th1_img #solution 1
+    names(B6)[7] <- "solution"
+    B6[i,7] <- "1"
     
     #calculation of ro_test (img-system)
     ys_img <- (-ys)
@@ -179,7 +180,6 @@ for (i in y2) {
     
     #update of table B6
     B6[i,6] <- ro_test_img 
-    #print(B6)
     
     #graphical output 
     # calculation in math-system
@@ -199,7 +199,8 @@ for (i in y2) {
   } else { 
       
     ##solution 2
-    th2_img <- 180 - phi_deg  #(-phi_deg)
+    #calculation of th2_img
+    th2_img <- 180 - phi_deg  
     
     #update of table B6
     if (th2_img < 0) {
@@ -212,7 +213,9 @@ for (i in y2) {
     if (B6[i,5] > 180) {
       B6[i,5] <- B6[i,5] - 180
     }
-   
+    
+    B6[i,7] <- "2"
+    
     #calculation of ro
     ys_img <- (-ys)
     ro_test_img <- cos(B6[i,5]/omega) * xs + sin(B6[i,5]/omega) * ys_img #img-system
@@ -222,7 +225,8 @@ for (i in y2) {
     #update of table B6
     B6[i,6] <- ro_test_img
     
-    #B6 #agreement with the results of Hough-trans? (see at script-line 442:B4 in 'line_detection.R') 
+    #B6 #agreement with the results of Hough-trans? 
+    #see at script-line 442:B4 in 'line_detection.R') 
    
     #plot of adjusted line (graph)
     #calculation in math-system
@@ -232,15 +236,17 @@ for (i in y2) {
     ro_test2 <- cos(th2_arc) * xs + sin(th2_arc) * ys 
     a <- ro_test2/sin(th2_arc)
     coef2 <- c(a,b)
+    
     if (is.finite(a)) {
       abline(coef2, col="blue",lwd=2) #plot of lines parallel to main line
     } else {
       ro_l1 <- B4$ro_pixel[lnr]
       lines(c(ro_l1,ro_l1),c(0,-2569),col="red",lty=1,lwd=2,asp=1) #ref/th1
       lines(c(ro_l1,ro_l1),c(0,1919),col="red",lty=1,lwd=2,asp=1) #orth/th2
-    }
+    } #end of if-else
     
-  } #end of if-else
+  } #end solution2
+
 } #end of loop i (generation of line parameters)
 
 cat("line parameters in ordered sequence:","\n")
@@ -254,6 +260,7 @@ B6
 x <- nrow(B6)
 y2 <- 1 : x
 res <- rep(0,k4)
+res2 <- rep(0,k4)
 thr_line=3 #threshold for sigma of residuals [pixel] 
 thr_res=5*thr_line #threshold for single residual
 PC_numb <- B6[,1]
@@ -265,14 +272,15 @@ for (i in y2) {
   PC_number <- B6[i,1]
   cat("i= ",i,"PC_nr= ",PC_number, "\n")
   phi3 <- phi_all[i]
-  
   xs <- xs_all[i]
   ys <- ys_all[i]
   
-  if (B6$theta_ang[i] < 90) {
-    phi3 <- phi3 + 90
+  if (B6$theta_ang[i] > 90) { 
+    phi3 <- phi3 + 90 #solution 2
+  } else {
+    phi3 <- phi3 #solution 1
   }
-  
+
   cat("phi3= ",phi3,"\n")
   phi3_arc <- phi3/omega
   a_adj3 <- ys - xs*tan(phi3_arc) #calculation of unknown
@@ -283,7 +291,7 @@ for (i in y2) {
   res <- rep(0,k4)
   all_PC[[i]][1 : k4,]
   row.names(all_PC[[i]]) <- 1 : k4 
-
+ 
   #loop 
   j=1 #pixel number
   
@@ -292,11 +300,11 @@ for (i in y2) {
     x <- all_PC[[i]]$x[j]
     y <- -all_PC[[i]]$y[j] #change to math-system
     res[j] <- a_adj3*cos(phi3_arc) + x*sin(phi3_arc) - y*cos(phi3_arc) #math-system
-  
+    
     if (res[j] > thr_res) {
       cat("index= ", i ,"pixel= ", j, "res= ", res[j], "to be removed","\n")
     } #end if
-  
+    
     j <-j + 1
   } #end loop j
 
@@ -341,12 +349,13 @@ cat("if proc_mode='demo' -> type N", "\n")
 answ4 <- readline("type Y or N: ") #interaction required
 
 if (answ4 == "Y") {
-  p_pos <- "cor_adj_line"
+  p_pos <- "cor_adj_line" #correction of adjustment parameter
   setwd(home_dir2)
   source(paste("spObj_adjustment_of_line_v",v_nr,".R",sep=""))
 } #end if
 
 print(B6) #final result of line adjustment
+B6 <- subset(B6,select= -solution)
 
 # output of results (B6)
 setwd(home_dir)
