@@ -10,7 +10,7 @@ cat("version_number= ",v_nr,"\n")
 # 2.check result in enlarged ground truth (GT) image
 # 3.plot building on graph
 # 4.plot outlines with vertex & line numbers on enlarged orthoimage
-# 5.plot of all processed buildings on graph, orthoimage and GT
+# 5.plot of all processed buildings onto graph, orthoimage and GT
 
 ################################################################################
 
@@ -212,7 +212,7 @@ b_all2$V1 <- b_all$V1[order(b_all$V1, decreasing = FALSE)]
 b_all2$V1
 
 #remove multiple object-numbers
-n8 <- 13 #max number of tests per object, to be changed
+n8 <- 13 #max number of tests per object, subject of change
 b_all_na <- rep(NA,n8)
 b_all_lst <- list(b_all_na)
 names(b_all_lst) <- "nr"
@@ -241,6 +241,10 @@ b_all_lst$nr
 b_all_nr <- b_all_lst$nr[!is.na(b_all_lst$nr)]
 b_all_nr
 #
+
+#output
+fname13 <- paste("./results/",Img_name,"/b_all_nrs.txt",sep="")
+write.table(b_all_nr,fname13)
 
 #loop
 for (i in b_all_nr)  { 
@@ -315,8 +319,8 @@ for (k in b_all_nr) {
 } #end loop
 #
 
-#end of script 5 (plotting all processed buildings on graph, 
-#orthoimage and ground truth
+#end of script 5 (plotting all processed buildings onto graph, 
+#orthoimage and ground truth (GT)
 ################################################################################
 
 ## end of supplementing software to program 'plot results on references.R'
