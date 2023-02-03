@@ -5,4 +5,4 @@ data/ISPRS1/images/
 data/ISPRS1/
 !dummy4.txt
 #results/ISPRS1/
-#!results/ISPRS/b_all.txt
+!b_all.txt
