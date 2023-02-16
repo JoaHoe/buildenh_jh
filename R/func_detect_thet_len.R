@@ -1,6 +1,8 @@
 ##name of script: func_detect_thet_len.R
+cat("version_number= ",v_nr,"\n")
 #purpose: determination of angle theta
 #function used in: 'support_line_detection.R'
+#author: Joachim Höhle
 #GNU General Public License (GPL)
 
 detect_thet_len <- function() { 
