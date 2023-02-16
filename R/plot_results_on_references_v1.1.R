@@ -89,6 +89,7 @@ if (answ == "Y") {
   setwd(OrgGtsPathname)
   img_GTS <- readImage(OrgGtsFilename)
   display(img_GTS, method="raster")
+  #display(img_GTS)
   
   #loop
   i <- 0
