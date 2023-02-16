@@ -1,11 +1,14 @@
-#script: func_trans_ortho.R
+##name of script: func_trans_ortho.R
+cat("version_number= ",v_nr,"\n")
 #purpose: calculation of transformation parameter
 #         with measurement of check points
 #function used in: support_line_detection.R
+#author: Joachim Höhle
 #GNU General Public License (GPL)
 
+
 trans_ortho <- function() {
-  mar=r_max/4 #distance from center of object
+  mar=(wind_x-orig_x)/4
   
   #check point 1
   x1 <- xc - mar 
