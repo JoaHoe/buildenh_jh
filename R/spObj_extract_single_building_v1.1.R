@@ -1,9 +1,10 @@
 ##name of script: spObj_extract_single_building.R
-#GNU General Public License (GPL)
 cat("version_number= ",v_nr,"\n")
 #purpose: partition of special objects 
 #instruction: measure 2 pixels which will separate object (zoom:200%)
 #             use 'display(is_bnr)'
+#author: Joachim Höhle
+#GNU General Public License (GPL)
 #####################################################################
 
 if (Img_name == "ISPRS7") {
@@ -27,6 +28,7 @@ if (Img_name == "ISPRS7") {
       
       is_label_2 <- is_bnr2_label@.Data == 2 #second part
       display(is_label_2)
+      
       #save original values
       xc_orig <- xc
       yc_orig <- yc
@@ -52,10 +54,10 @@ if (Img_name == "ISPRS7") {
                              y=as.numeric(col(is_label_1)), 
                              is_label_1=as.numeric(is_label_1))
         coords <- coords[coords$is_label_1 == 1,] #removal of pixels 
-                    #which do not have the label of the building
+        #which do not have the label of the building
         head(coords)
         
-        #calculation of new center of object from connected components
+        #calculation of new center of object from connected components (CC)
         xc <- coor_part[1,1]
         yc <- coor_part[1,2]
         alpha <- coor_part[1,5]*omega
@@ -184,7 +186,8 @@ if (Img_name == "ISPRS7") {
         setwd(home_dir2)
         source(paste("line_detection_v",v_nr,".R", sep=""))
       } #end of bnr2=272
-  } # end bnr2 = 27
+      
+  } # end b27
   ############################################
   
   #b32
@@ -201,9 +204,10 @@ if (Img_name == "ISPRS7") {
     coor_part<-computeFeatures.moment(is_bnr2_label) #geometric features (moment)
     shap_part<-computeFeatures.shape(is_bnr2_label) #geometric features (shape)
     
-    is_label_1 <- is_bnr2_label@.Data == 1 #left part
+    is_label_1 <- is_bnr2_label@.Data == 1 #first part
     imageData(is_label_1)[460:493, 2287:2230]
     display(is_label_1)
+    
     is_label_2 <- is_bnr2_label@.Data == 2 #second part
     display(is_label_2)
     
@@ -290,7 +294,7 @@ if (Img_name == "ISPRS7") {
       
       setwd(home_dir2)
       source(paste("line_detection_v",v_nr,".R", sep=""))
-    } #end of bnr2=321
+    } #end of b321
     
     #second part 
     if (bnr2 == 322) { 
@@ -326,6 +330,7 @@ if (Img_name == "ISPRS7") {
       points(xc+r_max, yc-r_max, pch=16, cex=1.5, col="black", asp=1) #point for scaling
       points(xc, yc, pch = 3, cex=1.5, col = "red", asp=1) #centre of PC
       #
+      
       ##generation of image
       file1 <- paste('./data/',Img_name,'/images/b',bnr2,'_new8.tif',sep = "")
       tiff(file1, width=578, height=578, units="px", bg = "white")
@@ -353,19 +358,20 @@ if (Img_name == "ISPRS7") {
       idxy <- cbind(idx, x_dat, y_dat)
       idxy <- coords2 #use of old object name
       
-      #idxy
+      #output of pixel cluster for one building
       rownames(idxy) <- 1 : N1
       nrow(idxy)
       fname2 <- paste("./data/",Img_name,"/idxy_LCM_b",bnr2,".csv", sep="")
-      write.table(idxy, fname2,  sep= " ", row.names=T) ##output of pixel cluster for one building
+      write.table(idxy, fname2,  sep= " ", row.names=T) 
       #end of output
       
       cat("end of program 'spObj_extract_single_building.R' - continue with 'line_detection.R' ","\n")
       
       setwd(home_dir2)
       source(paste("line_detection_v",v_nr,".R", sep=""))
-    } #end of bnr2=322
-  } # end bnr2 = 32
+    } #end of b322
+    
+  } # end b32
 
 } #end ISPRS7
 #################################################################################
@@ -512,13 +518,13 @@ if (Img_name == "ISPRS1") {
       dev.off()
       #windows() #if necessary
       cat("end of spObj_extract_single_building.R - second part", sep = "","\n")
-    } #end of bnr2=62
-  } # end bnr2 = 6
+    } #end of b62
+    
+  } #end b6
   
+  ##############################################################################
   
-  
-  ##################################################
-  #27
+  #b27
   if (bnr2 == 27 && p_pos == "cor_sep") {
     cat("start of spObj_extract_single_building.R -first part",sep = "")
     display(is_bnr)
@@ -604,7 +610,7 @@ if (Img_name == "ISPRS1") {
       points(xc+r_max, yc-r_max, pch=16, cex=1.5, col="black", asp=1) #point for scaling
       dev.off()
       cat("end of spObj_extract_single_building.R -first part",sep = "")
-    } #end bnr2 = 321 (first part)
+    } #end b321 (first part)
     
     #second part 
     if (bnr2 == 272) { 
@@ -657,10 +663,11 @@ if (Img_name == "ISPRS1") {
       dev.off()
       #windows() #if necessary
       cat("end of spObj_extract_single_building.R - second part", sep = "","\n")
-    } #end of bnr2=272
-  } # end bnr2 = 27
+    } #end of b272
+    
+  } # end b27
   
-  ##########################################
+  ##############################################################################
   
   #b34
   if (bnr2 == 34 && p_pos == "cor_sep") {
@@ -748,7 +755,7 @@ if (Img_name == "ISPRS1") {
       points(xc+r_max, yc-r_max, pch=16, cex=1.5, col="black", asp=1) #point for scaling
       dev.off()
       cat("end of spObj_extract_single_building.R -first part",sep = "")
-    } #end bnr2 = 321 (first part)
+    } #end b321 (first part)
     
     #second part 
     if (bnr2 == 342) { 
@@ -801,8 +808,9 @@ if (Img_name == "ISPRS1") {
       dev.off()
       #windows() #if necessary
       cat("end of spObj_extract_single_building.R - second part", sep = "","\n")
-    } #end of bnr2=342
-  } # end bnr2 = 34
+    } #end of b342
+    
+  } #end b34
   
   #b37
   
@@ -891,7 +899,7 @@ if (Img_name == "ISPRS1") {
       points(xc+r_max, yc-r_max, pch=16, cex=1.5, col="black", asp=1) #point for scaling
       dev.off()
       cat("end of spObj_extract_single_building.R -first part",sep = "")
-    } #end bnr2 = 371 (first part)
+    } #end b371 (first part)
     
     #second part 
     if (bnr2 == 372) { 
@@ -944,12 +952,14 @@ if (Img_name == "ISPRS1") {
       dev.off()
       #windows() #if necessary
       cat("end of spObj_extract_single_building.R - second part", sep = "","\n")
-    } #end of bnr2=372
-  } # end bnr2 = 37
+    } #end of b372
+    
+  } #end b37
   
 } #end ISPRS1
-###################################################################
+################################################################################
+
 cat("end of program 'spObj_extract_single_building.R' ",sep = "","\n")
 
-###################################################################
+##
 
