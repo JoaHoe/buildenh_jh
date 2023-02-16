@@ -1,12 +1,14 @@
 ##name of script: spObj_sequence_of_lines.R
 cat("version_number= ",v_nr,"\n")
-#GNU General Public License (GPL)
 #purpose: dealing with special objects 
 #correction of position of line-centers, angle of line and sequence of lines 
 #instruction: if corrections in the positions are required -> use interactive detection of lines in 'support_line_detection.R' 
-#orthoimage ISPRS_#7, #1
+#data: ISPRS orthoimages #1, #7
+#author: Joachim Höhle
+#GNU General Public License (GPL)
 
-##orthoimage ISPRS_#7
+
+##orthoimage ISPRS7
 
 if (Img_name == "ISPRS7") { 
 
@@ -18,17 +20,20 @@ if (Img_name == "ISPRS7") {
       b13_angle_df2[12,3:4] <- c(1509.9,132.6)
       b13_angle_df2
   } #end of b4
-  
+
+    
   #b5
   if (bnr2 == 5 && p_pos == "cor_sek") {  
       sequence_seg <- c(7,23,98,264,70,49,34) # when selected "manually"
   } #end of b5
-  
+
+    
   #b8
   if (bnr2 == 8 && p_pos == "cor_pos") { 
       b13_angle_df2
       b13_angle_df2[10,3:4] <- c(1157,532)
     } #end of b8
+  
   
   #b16
   if (bnr2 == 16 && p_pos == "cor_pos") { 
@@ -52,7 +57,8 @@ if (Img_name == "ISPRS7") {
     b13_angle_df2$alpha[8] <- alpha #manual correction
     b13_angle_df2
   } #end of b16
-  
+ 
+   
   #b17
   if (bnr2 == 17 && p_pos == "cor_pos") {  
     b13_angle_df2 <- b13_angle_df
@@ -61,16 +67,18 @@ if (Img_name == "ISPRS7") {
     b13_angle_df2[5,3:4] <- c(877.1,980.3)
     b13_angle_df2
   } #end of b17
-  
-  #b18
+ 
+   
+  #b18 (demo)
   if (bnr2 == 18 && p_pos == "cor_pos") {  
-    b13_angle_df[6,3:4] <- c(953.2,921.5)
+    b13_angle_df[6,3:4] <- c(789.8,1144.4) #line 5
     b13_angle_df[8,3:4] <- c(1017,1084)
     b13_angle_df[9,3:4] <- c(1131.6,1044.1)
-    b13_angle_df[10,3:4] <- c(789.8,1144.4)
+    b13_angle_df[10,3:4] <- c(953.2,921.5) #line 5
     b13_angle_df2 <- b13_angle_df
   } #end of b18
-  
+
+    
   #b23
   if (bnr2 == 23 && p_pos == "cor_det") { 
     lnr_det3[6] <- c(36) 
@@ -88,16 +96,19 @@ if (Img_name == "ISPRS7") {
     i <- 1
     
     while (i <= n_B5_4) {
+      
       if (B5_4$lnr[i] == lnr_det3[6]) { 
         B5_6R[6,2:7] <- B5_4[i,2:7]
         B5_6R[6,8] <- 1
       } #end if 
+      
       i <- i + 1 
     } #end of loop
     
     B5_6R4 <- B5_6R
   } #end of b23
-  
+
+    
   #b24
   
   if (bnr2 == 24 && p_pos == "cor_pos") { 
@@ -108,7 +119,8 @@ if (Img_name == "ISPRS7") {
     b13_angle_df2 <- b13_angle_df
     b13_angle_df2
   } #end of b24
-  
+ 
+   
   ##b27
   #first part
   
@@ -124,10 +136,12 @@ if (Img_name == "ISPRS7") {
     k2 = 1
     #loop
     for (n in vec_1) {
+      
       if (B5_6$theta_angle[n] == alph_ref && B5_6$ro_pixel[n] <= 1430) {
         B5_6R2[k2,] <- B5_6[n,]
         k2 <- k2+1
       } #end if
+      
     } #end for-loop
     
     B5_6R2 <- B5_6R2[1:(k2-1),]
@@ -139,10 +153,12 @@ if (Img_name == "ISPRS7") {
     #
     k=1
     for (n in vec_1) {
+      
       if (B5_6$theta_angle[n] == theta_ref) {
         B5_6R3[k,] <- B5_6[n,]
         k <- k+1
       } #end if
+      
     } #end for-loop
     
     B5_6R3[15:19,] <- B5_6R2[1:5,] 
@@ -166,10 +182,12 @@ if (Img_name == "ISPRS7") {
     vec_1 <- 1 : n_PCR2
     k2 = 1
     for (n in vec_1) {
+      
       if (B5_6$theta_angle[n] == theta_ref && B5_6$ro_pixel[n] >= 1325) {
         B5_6R2[k2,] <- B5_6[n,]
         k2 <- k2+1
       } #end if
+      
     } #end for-loop
     B5_6R2
     k3 <- k2-1
@@ -182,10 +200,12 @@ if (Img_name == "ISPRS7") {
     B5_6R3[,] <- 0
     k=1
     for (n in vec_1) {
+      
       if (B5_6$theta_angle[n] == alph_ref) {
         B5_6R3[k,] <- B5_6[n,]
         k <- k+1
       } #end if
+      
     } #end for-loop
     
     B5_6R3[14:21,] <- B5_6R2[1:8,]
@@ -203,7 +223,7 @@ if (Img_name == "ISPRS7") {
     lnr_det5
   } #end if (b27,p_pos="cor_sep)
   
-  ##corrections for position of line-midpoints
+  ##corrections for positions of line-midpoints
   
   if (bnr2 == 271 && p_pos == "cor_pos") { #b27, first part 
     b13_angle_df[8,3:4] <- c(588.2,1818.5)
@@ -229,12 +249,14 @@ if (Img_name == "ISPRS7") {
     sequence_seg2 <- c(1,5,16,3,98)
     sequence_seg2
   } #end b30
-  
+
+    
   #b32
   if (bnr2 == 321 && p_pos == "cor_pos") {
     b13_angle_df2[8,3:4] <- c(293,2042) #new position to be measured in system b32/viewer
   } #end b321
-  
+ 
+   
   #b34
   if (bnr2 == 34 && p_pos == "cor_pos") {  
     b13_angle_df[3,3:4] <- c(1796,2288)
@@ -244,10 +266,21 @@ if (Img_name == "ISPRS7") {
 } #end of ISPRS7
 ##########################################################
 
-##orthoimage ISPRS_#1
+##orthoimage ISPRS1
 
 if (Img_name == "ISPRS1") {
-  
+
+    
+  #b11
+  if (bnr2 == 11 && p_pos == "cor_pos") {  
+    #determine new position by 'support_line_detection.R', #6
+    #or with angle by 'support_sequence_of_lines.R', #9
+    b13_angle_df
+    b13_angle_df[8,3:4] <- c(1066,589) #lnr=24,midpoint is manually derived
+    b13_angle_df2 <- b13_angle_df
+  } #end b11
+
+    
   #b16
   if (bnr2 == 16 && p_pos == "cor_pos") {  
     #determine new position by 'support_line_detection.R', #6
@@ -256,7 +289,8 @@ if (Img_name == "ISPRS1") {
     b13_angle_df2[6,2] <- c(87.6883)
     b13_angle_df3 <- b13_angle_df2
   } #end b22
-  
+ 
+   
   #b22
   if (bnr2 == 22 && p_pos == "cor_pos") {  
     #determine new position by 'support_line_detection.R', #6
@@ -264,7 +298,8 @@ if (Img_name == "ISPRS1") {
     b13_angle_df[6,3:4] <- c(1487, 1423) #manually derived
     b13_angle_df3 <- b13_angle_df
   } #end b22
-  
+ 
+   
   #b271
   if (bnr2 == 271 && p_pos == "cor_pos") {  
     #determine new position by 'support_line_detection.R', #6
@@ -280,7 +315,8 @@ if (Img_name == "ISPRS1") {
     b13_angle_df3 <- b13_angle_df
     b13_angle_df3
   } #end b271
-  
+
+    
   #b35
   if (bnr2 == 35 && p_pos == "cor_pos") {  
     #determine new position by 'support_line_detection.R', #6
@@ -293,7 +329,8 @@ if (Img_name == "ISPRS1") {
     b13_angle_df2[6,3:4] <- c(904, 2127) #126
     b13_angle_df3 <- b13_angle_df2
   } #end b35
-  
+ 
+   
   #b36
   if (bnr2 == 36 && p_pos == "cor_pos") {  
     #determine new position by 'support_line_detection.R', #6
@@ -305,7 +342,8 @@ if (Img_name == "ISPRS1") {
     b13_angle_df2[6,3:4] <- c(811, 2194) #74
     b13_angle_df3 <- b13_angle_df2
   } #end b36
-  
+ 
+   
   #b38
   if (bnr2 == 38 && p_pos == "cor_pos") {  
     #determine new position by 'support_line_detection.R', #6
@@ -314,7 +352,7 @@ if (Img_name == "ISPRS1") {
     b13_angle_df2
     b13_angle_df2[3,3:4] <- c(1023,2304) #
     b13_angle_df3 <- b13_angle_df2
-  } #end b36
+  } #end b38
   
   
 } #end of ISPRS1
