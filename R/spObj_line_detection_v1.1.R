@@ -1,13 +1,15 @@
 ##name of script: spObj_line_detection.R
-#GNU General Public License (GPL)
 cat("version_number= ",v_nr,"\n")
-#purpose: dealing with special objects at line detection 
-#instructions: change of default values may be required
+##purpose: dealing with special objects in script 'line detection.R' 
+##instructions: change of default values may be required
 #default values: ref_line=1
 #default values: n_pix=15 ("extr_wd"),25 ("4_long"),35 ("100_all"),15("100_all+nonortho")
 #small rectangular lines can be detected by:
-#changing the default value (n_pix=35) in 'line detection.R'or by
+#changing the default value (n_pix=35) in 'line detection.R' or by
 #pointing to one pixel using script 'support_line_detection.R'
+##author: Joachim Höhle
+##GNU General Public License (GPL)
+
 
 ##orthoimage "ISPRS7"
 
@@ -29,6 +31,7 @@ if (Img_name == "ISPRS7") {
      row.names(B5_6R4) <- 1 : n12
   }
   
+  
   ##b5
   #cas="100_all+nonortho"
   
@@ -40,6 +43,7 @@ if (Img_name == "ISPRS7") {
   
   ##b8
   #cas='100_all'
+  
   if (bnr2 == 8 && p_pos == "cor_det") { 
      B5_6R4 <- B5_6
      B5_6R4[8,] <- B5_4[34,]
@@ -60,12 +64,14 @@ if (Img_name == "ISPRS7") {
      B5_4e_4long2$ortho <- 1
   } #end b11 
   
+  
   ##b14
   #cas = "4_long" 
   
   if (bnr2 == 14 && p_pos == "cor_det") { 
      B5_6R4 <- B5_6[-4,] #drop of line
   } #end b14 
+  
   
   ##b16
   #cas="100_all"
@@ -75,6 +81,7 @@ if (Img_name == "ISPRS7") {
      B5_6R4[8,] <- B5_6R4[6,]
   } #end b16 
   
+  
   ##b17
   #cas="100_all+nonortho"
   
@@ -83,6 +90,7 @@ if (Img_name == "ISPRS7") {
      lnr_det5[7] <- 100
   } #end b17  
     
+  
   ##b18
   #cas="100_all+nonortho"
   
@@ -92,6 +100,7 @@ if (Img_name == "ISPRS7") {
     lnr_det5 <- lnr_det4
   } #end b18
   
+  
   ##b21
   
   if (bnr2 == 21 && p_pos == "cor_det") {
@@ -100,11 +109,13 @@ if (Img_name == "ISPRS7") {
     row.names(B5_6R4) <- 1 : n_B5_6R4
     B5_6R4$ortho <- 1
   } #end b21
+  #
   
   ##b23
   #cas = "100_all"
   
   if (bnr2 == 23 && p_pos == "cor_det") {
+     browser()
      n2 <- nrow(B5_6)
      B5_6[n2+1,] <- B5_4[10,]
      B5_6 <- B5_6[-c(2:3,7:9,11:15),1:8]
@@ -114,6 +125,7 @@ if (Img_name == "ISPRS7") {
      B5_6R4 <- B5_6
   } #end b23
   #
+  
   
   ##b24
   #cas="100_all"
@@ -128,6 +140,8 @@ if (Img_name == "ISPRS7") {
     B5_6R4[n2_B5_6R4,8] <- 1
     B5_6R4[n3_B5_6R4,8] <- 1
   } #end b24
+  #
+  
   
   ##b27
   #cas="100_all"
@@ -144,16 +158,20 @@ if (Img_name == "ISPRS7") {
      B5_6R4 <- B5_6[-c(2,6,11:18,20,22),]
      B5_6R4[12,8] <- 1
   } #end b272
+  
   #end b27
+  
   
   ##b28
   #cas="100_all"
   
-  if (bnr2 == 28 && p_pos == "cor_det") {
+  if (bnr2 == 28 && p_pos == "cor_det") { 
      B5_6[2,1:7] <- B4[454,1:7]
      B5_6[2,8] <- 1
      B5_6R4 <- B5_6
   } #end b28
+  #
+  
   
   ##b30
   #cas="100_all+nonortho"
@@ -161,6 +179,9 @@ if (Img_name == "ISPRS7") {
   if (bnr2 == 30 && p_pos == "cor_det") { 
      lnr_det5 <- lnr_det3[-c(4:5)]
   } #end b30
+  
+  #
+  
   
   ##b32
   #cas="100_all"
@@ -170,30 +191,35 @@ if (Img_name == "ISPRS7") {
     B5_6R4[8,] <- B5_6R4[2,]
     row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
   } #end b321
+  
   #
+  
   
   if (bnr2 == 322 && p_pos == "cor_det") { 
     B5_6R4 <- B5_6[-c(2,4,7,9),]
     row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
     B5_6 <- B5_6R4
   } #end b322
+  
   #end b32
+  
   
   ##b34
   #cas="100_all+nonortho"
   
-  if (bnr2 == 34 && p_pos == "cor_det") {
+  if (bnr2 == 34 && p_pos == "cor_det") { 
     lnr_det5 <- lnr_det3[-c(1,2,5)]
   } #end b34
     
-} #end image ISPRS7
+} #end of orthoimage "ISPRS7"
 
+###############################################################################
 
 ##ISPRS1
 
 if (Img_name == "ISPRS1") { 
 
-  #b5
+  ##b5
   #cas="4_long"
   
   if (bnr2 == 5 && p_pos == "cor_det") { 
@@ -201,38 +227,48 @@ if (Img_name == "ISPRS1") {
     B5_4e_4long2 <- B5_4e_4long
   } #end b5
   
+  
   ##b10
   #cas='100_all'
+  
   if (bnr2 == 10 && p_pos == "cor_det") { 
     B5_6R4 <- B5_6[-c(2,6,7,8,11,12,13,18),]
     row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
   } #end b10
   
-  #b11
+  
+  ##b11
   #cas="100_all+nonortho"
   
   if (bnr2 == 11 && p_pos == "cor_det") { 
-    lnr_det3[5] <- 182 #correction to be made
-    lnr_det5 <- lnr_det3 
+    lnr_det3 <- B5_6$lnr
+    lnr_det3[5] <- 173 #correction
+    lnr_det5 <- lnr_det3
   } #end b11
   
+  
   #b13
+  #cas='100_all'
+  
   if (bnr2 == 13 && p_pos == "cor_det") { 
-      #cas='100_all'
       B5_6R4 <- B5_6[-c(6,7),]
       row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
   } #end b13
   
-  #b15
+  
+  #b15y
+  #cas='100_all'
+  
   if (bnr2 == 15 && p_pos == "cor_det") { 
-    #cas='100_all'
     B5_6R4 <- B5_6[-c(1,6,7),]
     row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
   } #end b15
   
-  #b16
+  
+  ##b16
+  #cas='100_all'
+  
   if (bnr2 == 16 && p_pos == "cor_det") { 
-    #cas='100_all'
     B5_6
     B5_6R4 <- B5_6
     n_B5_6 <- nrow(B5_6)
@@ -243,16 +279,20 @@ if (Img_name == "ISPRS1") {
     B5_6R4
   } #end b16
   
-  #b17
+  
+  ##b17
+  #cas='100_all'
+  
   if (bnr2 == 17 && p_pos == "cor_det") { 
-    #cas='100_all'
     B5_6R4 <- B5_6[-c(2,3,5,7),]
     row.names(B5_6R4) <- 1 : length(B5_6R4$lnr)
   } #end b17
   
-  #b21
+  
+  ##b21
+  #cas='100_all'
+  
   if (bnr2 == 21 && p_pos == "cor_det") { 
-    #cas='100_all'
     B5_6
     B5_6R4 <- B5_6[-c(1,2,5,6,7),]
     row.names(B5_6R4) <- 1 : nrow(B5_6R4)
@@ -263,65 +303,77 @@ if (Img_name == "ISPRS1") {
     B5_6R4
   } #end b21
   
-  #b22
+  
+  ##b22
+  #cas='100_all'
+  
   if (bnr2 == 22 && p_pos == "cor_det") { 
-    #cas='100_all'
     B5_6
     B5_6R4 <- B5_6[-c(2,3,6,8,10,11,13,14,16,17),]
     row.names(B5_6R4) <- 1 : nrow(B5_6R4)
     B5_6R4
   } #end b22
   
-  #b25
+  
+  ##b25
+  #cas='100_all'
+  
   if (bnr2 == 25 && p_pos == "cor_det") { 
-    #cas='100_all'
     B5_6
     B5_6R4 <- B5_6[-c(2,3,6,7),]
     row.names(B5_6R4) <- 1 : nrow(B5_6R4)
     B5_6R4
   } #end b25
   
-  #b271
+  
+  ##b271
+  #cas='100_all+nonortho'
+  
   if (bnr2 == 271 && p_pos == "cor_det") { 
-    #cas='100_all+nonortho'
     B5_6
     B5_6R4 <- B5_6[-c(2,3,4,6,7,10,11,12,13),]
     row.names(B5_6R4) <- 1 : nrow(B5_6R4)
     B5_6R4
   } #end b271
   
-  #b28
+  
+  ##b28
+  #cas='100_all'
+  
   if (bnr2 == 28 && p_pos == "cor_det") { 
-    #cas='100_all'
     B5_6
     B5_6R4 <- B5_6[-c(2,5),]
     row.names(B5_6R4) <- 1 : nrow(B5_6R4)
     B5_6R4
   } #end b28
   
-  #b29
+  
+  ##b29
+  #cas='100_all'
+  
   if (bnr2 == 29 && p_pos == "cor_det") { 
-    #cas='100_all'
     B5_6
     B5_6R4 <- B5_6[-c(2,3,6,7),]
     row.names(B5_6R4) <- 1 : nrow(B5_6R4)
     B5_6R4
   } #end b29
   
-  #b35
+  
+  ##b35
+  #cas='100_all'
   
   if (bnr2 == 35 && p_pos == "cor_det") { 
-    #cas='100_all'
     B5_6
     B5_6R4 <- B5_6[-c(4,6,7,8,11,13,14),]
     row.names(B5_6R4) <- 1 : nrow(B5_6R4)
     B5_6R4
   } #end b35
  
-  #b36
+  
+  ##b36
+  #cas='100_all+nonortholines'
   
   if (bnr2 == 36 && p_pos == "cor_det") { 
-    #cas='100_all+nonortholines'
     
     B5_7 <- B5_6
     B5_7[11,5:6] <- c(70,2255) #PC255
@@ -332,10 +384,11 @@ if (Img_name == "ISPRS1") {
     B5_6R4
   } #end b36
   
-  #b372
+  
+  ##b372
+  #cas='100_all+nonortholines'
   
   if (bnr2 == 372 && p_pos == "cor_det") { 
-    #cas='100_all+nonortholines'
     B5_6
     B5_7 <- B5_6
     B5_6R4 <- B5_7[-c(1,2,4,5,6,7),]
@@ -343,9 +396,11 @@ if (Img_name == "ISPRS1") {
     B5_6R4
   } #end b372
   
-  #b38
   
-  if (bnr2 == 38 && p_pos == "cor_det") { #cas='4_long'
+  ##b38
+  #cas='4_long'
+  
+  if (bnr2 == 38 && p_pos == "cor_det") { 
     B5_4e_4long
     B5_4e_4long2 <- B5_4e_4long
     B5_4_ord2 <- subset(B5_4_ord, B5_4_ord$n_pixel >= wd)
@@ -353,8 +408,11 @@ if (Img_name == "ISPRS1") {
     B5_4e_4long2  
   } #end b38
   
-  #b42
-  if (bnr2 == 42 && p_pos == "cor_det") { #cas='4_long'
+  
+  ##b42
+  #cas='4_long'
+  
+  if (bnr2 == 42 && p_pos == "cor_det") { 
     B5_4e_4long
     B5_4e_4long2 <- B5_4e_4long
     wd=50
@@ -363,8 +421,11 @@ if (Img_name == "ISPRS1") {
     B5_4e_4long2  
   } #end b42
   
-  #b45
-  if (bnr2 == 45 && p_pos == "cor_det") { #cas='100_all+nonortho'
+  
+  ##b45
+  #cas='100_all+nonortho'
+  
+  if (bnr2 == 45 && p_pos == "cor_det") { 
     B5_6
     B5_7 <- B5_6
     B5_6R4 <- B5_7[-c(1:2,4:17),]
@@ -372,7 +433,7 @@ if (Img_name == "ISPRS1") {
     B5_6R4
   } #end b45
   
-} #end of image "ISPRS1"
+} #end of orthoimage "ISPRS1"
 
 ##end of script 'spObj_line_detection'
 
