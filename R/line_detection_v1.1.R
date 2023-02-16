@@ -115,7 +115,9 @@ n_theta <- length(theta)
 #ro_rg=3: range with Dis_min2...Dis_max, selectable value for Dis_min2
 
 #setting of ro_range
-ro_rg = 3 #default 
+ro_rg = 3 #default (ISPRS1)
+#ro_rg = 1 #default (ISPRS7)
+
 ro_rg <- as.integer(ro_rg)
 cat("selected ro-range type=", ro_rg,"\n")
 
@@ -144,12 +146,13 @@ if (ro_rg == 1) { # 1 is default value for ro_rg
 #
 
 if(ro_rg == 2) {
-#procedure with rotation of coordinate system with angle of fitted ellipse (building should have a longer side)
-#solution fails when building is a squared area
+  #procedure with rotation of coordinate system with angle of fitted ellipse (building should have a longer side)
+  #solution fails when building is a squared area
   
   if(alpha_math < 0) {
     alpha_math <- 180 + alpha_math
   }
+  
   theta_appr <- alpha_math - 90
   d_safety = 0 #safety value in [pel] #default=50
   theta1 <- theta_appr
@@ -164,18 +167,12 @@ if(ro_rg == 2) {
   X <- max(pc2$col) 
   Y <- (-max(pc2$row)) #change to math-system
   ro1_max <- cos(theta1_arc) * X + sin(theta1_arc) * Y
-  #ro1_max <- abs(ro1_max)
-  ro1_max <- ro1_max
   ro2_max <- cos(theta2_arc) * X + sin(theta2_arc) * Y
-  #ro2_max <- abs(ro2_max)
   ro2_max <- ro2_max
   X <- min(pc2$col)
   Y <- (-min(pc2$row)) #change to math-system
   ro1_min <- cos(theta1_arc) * X + sin(theta1_arc) * Y
-  #ro1_min <- abs(ro1_min) #same as in Hough-trans
-  ro1_min <- ro1_min #not the same as in Hough-trans
   ro2_min <- cos(theta2_arc) * X + sin(theta2_arc) * Y
-  #ro2_min <- abs(ro2_min)
   ro2_min <- ro2_min
   ro_range <- c(ro1_max, ro2_max, ro1_min, ro2_min) 
   ro_range
@@ -189,7 +186,7 @@ if(ro_rg == 2) {
   ro_1 <- ro[1]
   
   #plot graph
-  alpha <- alpha_math #alpha is here equal to alpha_math
+  alpha <- alpha_math 
   alpha_arc <- alpha/omega
   a = tan(alpha_arc)
   theta_ang <- alpha + 90
@@ -204,9 +201,11 @@ if(ro_rg == 2) {
      ro_l1 <- ro_0
      lines(c(ro_l1,ro_l1),c(0,-2500))
   } #end if-else
+  
   save(theta_step, ro_step, ro, ro_1, n_theta, n_ro, ro_rg, 
        file=paste("./data/",Img_name,"/H_par", sep="", collapse=NULL)) #storage of Hough parameters
-} #end ro_rg=2 incl. plot)
+
+} #end ro_rg=2 incl. plot
 
 #
 if (ro_rg == 3) { # default 
@@ -230,7 +229,7 @@ if (ro_rg == 3) { # default
 
 ##start of Hough-transform
 theta_rad <- theta/omega
-H <- array(dim=c(n_theta, n_ro)) # init Hough matrix
+H <- array(dim=c(n_theta, n_ro)) # init Hough-matrix
 dim(H)
 
 ## extracting separated point clusters (P)
@@ -591,7 +590,7 @@ k1=1
 #loop
 while (i < k13) {
   i <- i + 1
-  if (B4$theta_angle[i] == theta_ref && B4$n_pixel[i] >= lol || # lol = number of pixels (n_pixel))
+  if (B4$theta_angle[i] == theta_ref && B4$n_pixel[i] >= lol || 
       B4$theta_angle[i] == alph_ref && B4$n_pixel[i] >= lol) {
     B5_2[k1,] <- c(B4$lnr[i],B4$theta_index[i], B4$ro_index[i], B4$n[i], B4$theta_angle[i],B4$ro_pixel[i],B4$n_pixel[i])
     k1 <- k1 + 1
@@ -650,8 +649,8 @@ if (wind_y > img_y_max) {
 }
 
 ## display enlarged ortho_image and PC of building outline
-img_uds <- img_ref[orig_x : wind_x,orig_y:wind_y,1:3]
-display(img_uds, method = "raster")
+img_uds <- img_ref[orig_x:wind_x,orig_y:wind_y,1:3]
+display(img_uds,method = "raster")
 #display(img_uds,method = "browser") #enables zooming
 points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.3, col="red")
 points(as.integer(pc3$col-orig_x), as.integer(pc3$row-orig_y), pch=20, asp=1, cex=0.2, col="green")
@@ -806,7 +805,7 @@ while (lnr <= n_lnr) { #plot of lnr_ref
 } #end loop while
 
 #parameters of longest detected lines
-n_longest_lines <- 10 #number of longest lines after Hough trans (default)
+n_longest_lines <- 8 #number of longest lines after Hough trans (default)
 x1 <- B4$theta_index[1 : n_longest_lines]
 ce <- matrix(nrow=10, ncol=2)
 ce_df <- data.frame(ce)
@@ -877,7 +876,7 @@ cat("n_nonortholines= ", n_nonortholines,"\n") #number of non-ortholines
 
 ##determination of object-type
 
-ty <- fe(max_pix,n_ortholines_1,n_nonortholines) #ty #value is an estimate -> subject of change
+ty <- fe(max_pix,n_ortholines_1,n_nonortholines) #ty-value is an estimate
 cat("suggestion for object type=",ty, "\n")
 cat("object types (cas): 1 (extr_wd), 2 (4_long), 3 (100_all), 4 (100_all+nonortho)","\n")
 
@@ -1281,10 +1280,12 @@ if (cas == "4_long") {
   } #end if-else
   
   B5_4e_4long2
+  B5_long_lines <- B5_4e_4long2
+  B5_long_lines 
   
   #parameter for sequence-determination
   min_pixel <- min(B5_4e_4long$n_pixel)
-  bn_PC <- nrow(B5_4e_4long) #long2
+  bn_PC <- nrow(B5_4e_4long) 
   with_northo <- 1
   soph=0 #determination of sequence is easy
 
@@ -1296,6 +1297,7 @@ if (cas == "4_long") {
 #with removal of "shorter_line"
 
 if (cas == "100_all") {
+  #stop("proceed manually")
   print(B5_4)
   cat("minimum length of line: 15 pixel (recommended), 10, 35 (alternative)")
   n_pix <- readline("type minimum length of line= ") #manual input 15 (recommended) or 35 (alternativ)
@@ -1304,7 +1306,10 @@ if (cas == "100_all") {
   thr <- 10 #default value: 10 pixel
   cat("n_pix=",n_pix,"pixels","\n")
   cat("thr=",thr,"pixels","\n")
-  B5_6 <- rectang_lines(B5_4,theta_ref, wd,thr) #call of function 'rectang_lines()'
+  theta_ref
+  wd
+  #B5_6 <- rectang_lines(B5_4,theta_ref,wd,thr) #call of function 'rectang_lines()'
+  B5_6 <- rectang_lines() #call of function 'rectang_lines()'
   print(B5_6)
   
   #plot of centers and PC of outline at large scale
