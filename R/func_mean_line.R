@@ -1,7 +1,9 @@
-##script: func_mean_line.R
+##name of script: func_mean_line.R
+cat("version_number= ",v_nr,"\n")
 #purpose: calculation of midpoint of PointCloud (PC) and
 #         angle between center of object to midpoint of PC
 #used in: sequence_of_lines.R
+#author: Joachim Höhle
 #GNU General Public License (GPL)
 
 mean_line <- function(ln_num) {
