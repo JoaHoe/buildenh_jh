@@ -1,11 +1,16 @@
 ##script name: func_rectang_lines.R
+cat("version_number= ",v_nr,"\n")
 #purpose: detecting lines which are parallel/orthogonal 
 #         to main orientation
 #used in: line_detection.R
+#author: Joachim Höhle
 #GNU General Public License (GPL)
 
-rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) { 
+#rectang_lines <- function(B5_4,theta_ref,wd,thr3) { 
+rectang_lines <- function() { 
+  #browser()
   B5_4
+  cat("theta_ref = ",theta_ref, "\n")
   k14 <- length(B5_4$lnr)
   B5_4b <- B5_4
   B5_4b[,1:7] <- 0
@@ -14,38 +19,44 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
   #loop
   i=1
   k1=2
+  
   while (i < k14) {
     i=i+1
-    if (B5_4$theta_angle[i] == theta_ref3 && B5_4$n_pixel[i] >= wd3 ||
-        B5_4$theta_angle[i] == alph_ref && B5_4$n_pixel[i] >= wd3) {
+    
+    if (B5_4$theta_angle[i] == theta_ref && B5_4$n_pixel[i] >= wd ||
+        B5_4$theta_angle[i] == alph_ref && B5_4$n_pixel[i] >= wd) {
       B5_4b[k1,] <- B5_4[i,]
       k1 <- k1+1
     } #end if
-  } #end loop
+    
+  } #end loop i
   
   B5_4b
   B5_4c <- subset(B5_4b,B5_4b$lnr > 0)
-  B5_4c #matrix with lines longer than 'wd3'
+  B5_4c #matrix with lines longer than 'wd'
   k15 <- length(B5_4c$lnr)
   
-  ## Search of lines with theta_ref3
+  ## Search of lines with theta_ref
   vec <- 1:k15
   B5_4d <- B5_4c
   B5_4d[,1:7] <- 0
   
   #loop
   j=1
+  
   for (i in vec) {
-    if (B5_4c$theta_angle[i] == theta_ref3) {
+    
+    if (B5_4c$theta_angle[i] == theta_ref) {
       B5_4d[j,] <- B5_4c[i,]
       j <- j + 1
     } #end if
+    
   } # end for-loop
   
-  B5_4d <- subset(B5_4d,B5_4d$n_pixel >= wd3)
+  B5_4d <- subset(B5_4d,B5_4d$n_pixel >= wd)
   B5_long_lines <- B5_4d[1:2,]
   B5_4d_ord <- B5_4d[order(B5_4d[,6],decreasing=FALSE),]
-  B5_4d_ord2 <- subset(B5_4d_ord,B5_4d_ord$n_pixel >= wd3)
+  B5_4d_ord2 <- subset(B5_4d_ord,B5_4d_ord$n_pixel >= wd)
   n_B5_4d_ord2 <- length(B5_4d_ord2$lnr)
   row.names(B5_4d_ord2) <- 1 : n_B5_4d_ord2
   B5_4d_ord2
@@ -57,15 +68,18 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
   
   #loop
   j = 1
+  
   for (i in vec) {
+    
     if (B5_4c$theta_angle[i] == alph_ref) {
       B5_4dd[j,] <- B5_4c[i,]
       j = j + 1
     } #end if
+    
   } #end for-loop
   
   B5_4dd
-  B5_4dd <- subset(B5_4dd, B5_4dd$n_pixel >= wd3)
+  B5_4dd <- subset(B5_4dd, B5_4dd$n_pixel >= wd)
   B5_long_lines[3:4,] <- B5_4dd[1:2,] # matrix for weighted mean of angle
   B5_long_lines
   min(B5_long_lines$n_pixel)
@@ -76,7 +90,7 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
   B5_4d_ord
   B5_4d_ord[,8] <- 0
   names(B5_4d_ord)[8] <- "dif_ro_pixel"
-  B5_4d_ord_red <- subset(B5_4d_ord, B5_4d_ord$n_pixel >= wd3)
+  B5_4d_ord_red <- subset(B5_4d_ord, B5_4d_ord$n_pixel >= wd)
   k6 <- nrow(B5_4d_ord_red)
   rownames(B5_4d_ord_red) <- 1 : k6
   B5_4d_ord_red
@@ -91,15 +105,16 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
     B5_4d_ord_red$dif_ro_pixel[n] <- B5_4d_ord_red$ro_pixel[n+1] - B5_4d_ord_red$ro_pixel[n]
     B5_4d_ord_red$shorter_line[n] <- min(B5_4d_ord_red$n_pixel[n],B5_4d_ord_red$n_pixel[(n+1)])
   } # end for-loop
+  
   B5_4d_ord_red
   
   for (n in vec5) {
     
-    if(B5_4d_ord_red$dif_ro_pixel[n] <= thr3 && B5_4d_ord_red$n_pixel[n] == B5_4d_ord_red$shorter_line[n]) {
+    if(B5_4d_ord_red$dif_ro_pixel[n] <= thr && B5_4d_ord_red$n_pixel[n] == B5_4d_ord_red$shorter_line[n]) {
       B5_4d_ord_red$remove_row_nr[n] <- n 
     } #end if
     
-    if(B5_4d_ord_red$dif_ro_pixel[n] <= thr3 && B5_4d_ord_red$n_pixel[n+1] == B5_4d_ord_red$shorter_line[n]) {
+    if(B5_4d_ord_red$dif_ro_pixel[n] <= thr && B5_4d_ord_red$n_pixel[n+1] == B5_4d_ord_red$shorter_line[n]) {
       B5_4d_ord_red$remove_row_nr[n+1] <- n+1 
     } #end if
     
@@ -112,25 +127,32 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
   rem_vec <- rep(0,k7)
   
   for (n in vec6) {
+    
     if(B5_4d_ord_red$remove_row_nr[n] > 0) {
       rem_vec[n] <- B5_4d_ord_red$remove_row_nr[n]
     }
+    
   } # end for-loop
   rem_vec
   #
+  
   rem_vec2 <- NULL
   j = 1
+  
   for (n in vec6) {
+    
     if (rem_vec[n] == 0) {next} 
     else {
       rem_vec2[j] <- rem_vec[n]
       j=j+1
     }
+    
   } #end for-loop
   
   rem_vec2
   le3 <- length(rem_vec2)
   #
+  
   if (le3 == 0) {
     B5_4d_ord_red2 <- B5_4d_ord_red  #solution
   } else {
@@ -163,11 +185,11 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
     # select the longer line of two
     
     for (n in vec7) { #condition 1 and 2
-      if (B5_4d_ord_red3$dif_ro_pixel[n] <= thr3 && B5_4d_ord_red3$n_pixel[n] == B5_4d_ord_red3$shorter_line[n]) {
+      if (B5_4d_ord_red3$dif_ro_pixel[n] <= thr && B5_4d_ord_red3$n_pixel[n] == B5_4d_ord_red3$shorter_line[n]) {
         B5_4d_ord_red3$remove_row_nr[n] <- n
       } # end if1
       
-      if(B5_4d_ord_red3$dif_ro_pixel[n] <= thr3 && B5_4d_ord_red3$n_pixel[n+1] == B5_4d_ord_red3$shorter_line[n]) {
+      if(B5_4d_ord_red3$dif_ro_pixel[n] <= thr && B5_4d_ord_red3$n_pixel[n+1] == B5_4d_ord_red3$shorter_line[n]) {
         B5_4d_ord_red3$remove_row_nr[n+1] <- n+1
       } # end if2
       
@@ -178,10 +200,12 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
     rem_vec <- rep(0,k9)
     
     for (n in vec9) {
+      
       if (B5_4d_ord_red3$remove_row_nr[n] > 0) { #if3
         rem_vec[n] <- B5_4d_ord_red3$remove_row_nr[n]
         cat("rem_vec=", rem_vec[n], "\n")
       } # end if3
+      
     } # end for-loop
     
     rem_vec2 <- NULL
@@ -225,11 +249,11 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
     } #end if last step
     
     B5_4d_ord_red4
-    B5_4d_ord_red5 <- subset(B5_4d_ord_red4, n_pixel >= wd3)
+    B5_4d_ord_red5 <- subset(B5_4d_ord_red4, n_pixel >= wd)
     B5_4d_ord_final <- B5_4d_ord_red5
     k11 <- nrow(B5_4d_ord_red5)
   } #end if (k8 >= 2)
-  #
+  
   B5_4d_ord_final
   
   ## lines orthogonal to ref
@@ -254,11 +278,11 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
   
   for (n in vec5) {
     
-    if(B5_4dd_ord_red$dif_ro_pixel[n] <= thr3 && B5_4dd_ord_red$n_pixel[n] == B5_4dd_ord_red$shorter_line[n]) {
+    if(B5_4dd_ord_red$dif_ro_pixel[n] <= thr && B5_4dd_ord_red$n_pixel[n] == B5_4dd_ord_red$shorter_line[n]) {
       B5_4dd_ord_red$remove_row_nr[n] <- n 
     } #end if 
     
-    if(B5_4dd_ord_red$dif_ro_pixel[n] <= thr3 && B5_4dd_ord_red$n_pixel[n+1] == B5_4dd_ord_red$shorter_line[n]) {
+    if(B5_4dd_ord_red$dif_ro_pixel[n] <= thr && B5_4dd_ord_red$n_pixel[n+1] == B5_4dd_ord_red$shorter_line[n]) {
       B5_4dd_ord_red$remove_row_nr[n+1] <- n+1 
     } #end if 
     
@@ -281,11 +305,12 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
   } else { #else 1
     vec6 = 1:k7
     rem_vec <- rep(0,k7)
+    
     for (n in vec6) {
       
       if(B5_4dd_ord_red$remove_row_nr[n] > 0)  {
         rem_vec[n] <- B5_4dd_ord_red$remove_row_nr[n]
-      }
+      } #end if
       
     } #end for-loop
     
@@ -296,9 +321,10 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
     } else { #else2
       B5_4dd_ord_red2 <- B5_4dd_ord_red
     } #end if-else2
+    
   } #end if-else1
+  
   B5_4dd_ord_red2
-  #
   k8 <- nrow(B5_4dd_ord_red2)
   rownames(B5_4dd_ord_red2) <- 1 : k8
   B5_4dd_ord_red2[,8:10] <- 0
@@ -306,6 +332,7 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
   if (k8 < 2) {
     stop("error","\n") 
   }
+  
   if (k8 == 2) {
     B5_4dd_ord_final <- B5_4dd_ord_red2
   } else {
@@ -328,11 +355,11 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
     
     for (n in vec7) {
       
-      if(B5_4dd_ord_red2$dif_ro_pixel[n] <= thr3 && B5_4dd_ord_red2$n_pixel[n] == B5_4dd_ord_red2$shorter_line[n]) {
+      if(B5_4dd_ord_red2$dif_ro_pixel[n] <= thr && B5_4dd_ord_red2$n_pixel[n] == B5_4dd_ord_red2$shorter_line[n]) {
         B5_4dd_ord_red2$remove_row_nr[n] <- n 
       } #end if 1
       
-      if(B5_4dd_ord_red2$dif_ro_pixel[n] <= thr3 && B5_4dd_ord_red2$n_pixel[n+1] == B5_4dd_ord_red2$shorter_line[n]) {
+      if(B5_4dd_ord_red2$dif_ro_pixel[n] <= thr && B5_4dd_ord_red2$n_pixel[n+1] == B5_4dd_ord_red2$shorter_line[n]) {
         B5_4dd_ord_red2$remove_row_nr[n+1] <- n+1 
       } #end if2
       
@@ -355,7 +382,7 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
   }
   B5_4dd_ord_red3
   
-  B5_4dd_ord_red4 <- subset(B5_4dd_ord_red3, n_pixel >= wd3)
+  B5_4dd_ord_red4 <- subset(B5_4dd_ord_red3, n_pixel >= wd)
   k11 <- nrow(B5_4dd_ord_red4)
   rownames(B5_4dd_ord_red4) <- 1 : k11
   B5_4dd_ord_red4
@@ -370,7 +397,9 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
     B5_4dd_ord_final <- B5_4dd_ord_red4
   }
   
-  if ( k11 == 2 ) {B5_4dd_ord_final <- B5_4dd_ord_red4} 
+  if ( k11 == 2 ) {
+    B5_4dd_ord_final <- B5_4dd_ord_red4
+  } 
   
   if (k11 > 2) {
     B5_4dd_ord_red4[,8:10] <- 0
@@ -383,11 +412,12 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
     } #end for-loop
     
     for (n in vec9) {
-      if(B5_4dd_ord_red3$dif_ro_pixel[n] <= thr3 && B5_4dd_ord_red4$n_pixel[n] == B5_4dd_ord_red4$shorter_line[n]) {
+      
+      if(B5_4dd_ord_red3$dif_ro_pixel[n] <= thr && B5_4dd_ord_red4$n_pixel[n] == B5_4dd_ord_red4$shorter_line[n]) {
         B5_4dd_ord_red4$remove_row_nr[n] <- n
       } #end if
       
-      if(B5_4dd_ord_red4$dif_ro_pixel[n] <= thr3 && B5_4dd_ord_red4$n_pixel[n+1] == B5_4dd_ord_red4$shorter_line[n]) {
+      if(B5_4dd_ord_red4$dif_ro_pixel[n] <= thr && B5_4dd_ord_red4$n_pixel[n+1] == B5_4dd_ord_red4$shorter_line[n]) {
         B5_4dd_ord_red4$remove_row_nr[n+1] <- n+1
       } #end if
       
@@ -412,7 +442,7 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
     } #end if-else 
     
     B5_4dd_ord_red5
-    B5_4dd_ord_red6 <- subset(B5_4dd_ord_red5, n_pixel >= wd3)
+    B5_4dd_ord_red6 <- subset(B5_4dd_ord_red5, n_pixel >= wd)
     k13<-nrow(B5_4dd_ord_red6)
     rownames(B5_4dd_ord_red6) <- 1 : k13
     
@@ -465,14 +495,15 @@ rectang_lines <- function(B5_4,theta_ref3,wd3,thr3) {
   
   for (i in vec) {
     
-    if (B5_6$theta_angle[i] == theta_ref3 || B5_6$theta_angle[i] == alph_ref) {  
+    if (B5_6$theta_angle[i] == theta_ref || B5_6$theta_angle[i] == alph_ref) {  
       B5_6$ortho[i] <- 1
     } else {
       B5_6$ortho[i] <- 0
     } #end if-else
     
-  } #end for-loop 
+  } #end for-loop
+  
   return(B5_6)
-} #end of function 'rectang_lines(B5_4,theta_ref3,wd3,thr3)'
+} #end of function 'rectang_lines()'
 
 #end of script 'func_rectang_lines.R
