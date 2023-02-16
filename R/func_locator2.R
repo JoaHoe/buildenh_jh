@@ -1,7 +1,9 @@
-#name of script: func_locator2.R
-#purpose: digitizing and marking of a single pixel in orthoimage-section
+##name of script: func_locator2.R
+cat("version_number= ",v_nr,"\n")
+#purpose: digitizing and marking of a single pixel in orthoimage-extract
 #function used in: 'support_line_detection.R'
 #instructions: point to pixel and click by mouse 
+#author: Joachim Höhle
 #GNU General Public License (GPL)
 
 locator2 <- function() {
