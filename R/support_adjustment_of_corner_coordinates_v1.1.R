@@ -1,7 +1,8 @@
 ## name of script: support_adjustment_of_corner_coordinates.R
 cat("version_number= ",v_nr,"\n")
 ## purpose: supporting scripts and functions for special objects
-## instruction: run all programs in "demo" mode before using 'support_adjustment_of_corner_coordinates.R'
+## instruction: use processing mode "demo" before applying 'support_adjustment_of_corner_coordinates.R'
+## author: Joachim Höhle
 ## GNU General Public License (GPL)
 
 ##contents: 
