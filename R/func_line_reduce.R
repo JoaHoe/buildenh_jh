@@ -1,11 +1,13 @@
 ##name of script: 'func_line_reduce.R'
+#cat("version_number= ",v_nr,"\n")
 #purpose: reduction of orthogonal lines
 #parameter: n_pix (length of smallest line segment [pixel]),
 #           thr (difference in ro-values between adjacent lines [pixel])
+#author: Joachim Höhle
 #GNU General Public License (GPL)
 
 line_reduce <- function() { 
-  #browser()
+  browser()
   B5_4
   k14 <- length(B5_4$lnr)
   B5_4
@@ -22,11 +24,13 @@ line_reduce <- function() {
   k1=2
   while (i < k14) {
     i=i+1
+    
     if (B5_4$theta_angle[i] == theta_ref && B5_4$n_pixel[i] >= n_pix ||
         B5_4$theta_angle[i] == alph_ref && B5_4$n_pixel[i] >= n_pix) {
       B5_4b[k1,] <- B5_4[i,]
       k1 <- k1+1
     } #end if
+    
   } #end loop
   B5_4b
   B5_4c <- subset(B5_4b, B5_4b$lnr > 0)
@@ -37,13 +41,17 @@ line_reduce <- function() {
   vec <- 1:k15
   B5_4d <- B5_4c
   B5_4d[,1:7] <- 0
+  
   #loop
   j=1
-  for (i in vec){
+  
+  for (i in vec) {
+    
     if (B5_4c$theta_angle[i] == theta_ref) {
       B5_4d[j,] <- B5_4c[i,]
       j=j+1
     } #end if
+    
   } # end for-loop
   B5_4d <- subset(B5_4d,B5_4d$n_pixel >= n_pix)
   B5_long_lines <- B5_4d[1:2,]
@@ -106,6 +114,7 @@ line_reduce <- function() {
   } #end for-loop
   
   le3 <- length(rem_vec2)
+  
   if (le3 == 0) {
     B5_4d_ord_final <- B5_4d_ord_red  #solution
   } else {
@@ -115,6 +124,7 @@ line_reduce <- function() {
     k8 <- nrow(B5_4d_ord_red2)
     rownames(B5_4d_ord_red2) <- 1:k8
   } #end if-else
+  
   B5_4d_ord_red2
   #
   if (k8 < 2) {
@@ -129,6 +139,7 @@ line_reduce <- function() {
     B5_4d_ord_red3 <- B5_4d_ord_red2 #new round
     B5_4d_ord_red3[,8:10] <- 0
     vec7 <- 1:(k8-1)
+    
     for (n in vec7) {
       B5_4d_ord_red3$dif_ro_pixel[n] <- (B5_4d_ord_red3$ro_pixel[n+1]- B5_4d_ord_red3$ro_pixel[n])
       B5_4d_ord_red3$shorter_line[n] <- min(B5_4d_ord_red3$n_pixel[n],B5_4d_ord_red3$n_pixel[(n+1)])
@@ -136,39 +147,49 @@ line_reduce <- function() {
     
     # select the longer line of two
     for (n in vec7) { #condition 1 and 2
+      
       if (B5_4d_ord_red3$dif_ro_pixel[n] <= thr && B5_4d_ord_red3$n_pixel[n] == B5_4d_ord_red3$shorter_line[n]) {
         B5_4d_ord_red3$remove_row_nr[n] <- n
       } # end if1
+      
       if(B5_4d_ord_red3$dif_ro_pixel[n] <= thr && B5_4d_ord_red3$n_pixel[n+1] == B5_4d_ord_red3$shorter_line[n]) {
         B5_4d_ord_red3$remove_row_nr[n+1] <- n+1
       } # end if2
+      
     } # end for-loop
     
     k9 <- nrow(B5_4d_ord_red3)
     vec9 <- 1:k9
     rem_vec <- rep(0,k9)
+    
     for (n in vec9) {
+      
       if (B5_4d_ord_red3$remove_row_nr[n] > 0) { #if3
         rem_vec[n] <- B5_4d_ord_red3$remove_row_nr[n]
         cat("rem_vec=", rem_vec[n], "\n")
       } # end if3
+      
     } # end for-loop
     #
     
     rem_vec2 <- NULL
     j = 1
+    
     for (n in vec9) {
+      
       if(rem_vec[n] == 0) {next} else {
         rem_vec2[j] <- rem_vec[n]
         j=j+1
       } #end if-else
+      
     } #end for-loop
-    #
+    
     if (sum(rem_vec) != 0) {
       B5_4d_ord_red4 <- B5_4d_ord_red3[-rem_vec2,]
     } else {
       B5_4d_ord_red4 <- B5_4d_ord_red3
     } #end if-else
+    
     k10 <- nrow(B5_4d_ord_red4)
     
     if (k10 < 2) {
@@ -277,13 +298,14 @@ line_reduce <- function() {
     
     rem_vec2 <- subset(rem_vec, rem_vec > 0) 
     rem_vec2
+    
     if (sum(rem_vec) != 0 & nrow(B5_4dd_ord_red) > 2) {
       B5_4dd_ord_red2 <- B5_4dd_ord_red[-rem_vec2,] #some line segments will be removed
     } else { #else2
       B5_4dd_ord_red2 <- B5_4dd_ord_red
     } #end if-else2
   
-    } #end if-else1
+  } #end if-else1
   B5_4dd_ord_red2
   
   k8 <- nrow(B5_4dd_ord_red2)
@@ -301,10 +323,12 @@ line_reduce <- function() {
   if (k8 > 2) {
     vec7 <- 1:(k8-1)
     vec7
+    
     for (n in vec7) {
       B5_4dd_ord_red2$dif_ro_pixel[n] <- (B5_4dd_ord_red2$ro_pixel[n+1] - B5_4dd_ord_red2$ro_pixel[n])
       B5_4dd_ord_red2$shorter_line[n] <- min(B5_4dd_ord_red2$n_pixel[n],B5_4dd_ord_red2$n_pixel[(n+1)])
     } #end for-loop
+    
   } #end if-else
   B5_4dd_ord_red2
   k9 <- nrow(B5_4dd_ord_red2)
@@ -321,7 +345,8 @@ line_reduce <- function() {
       
       if(B5_4dd_ord_red2$dif_ro_pixel[n] <= thr && B5_4dd_ord_red2$n_pixel[n+1] == B5_4dd_ord_red2$shorter_line[n]) {
         B5_4dd_ord_red2$remove_row_nr[n+1] <- n+1 
-      } #end if2
+      } #end if 2
+      
     } #end for-loop
   } #end if-else
   
@@ -340,6 +365,7 @@ line_reduce <- function() {
   } else {
     B5_4dd_ord_red3 <- B5_4dd_ord_red2
   }
+  
   B5_4dd_ord_red3
   B5_4dd_ord_red4 <- subset(B5_4dd_ord_red3, n_pixel >= n_pix2)
   k11 <- nrow(B5_4dd_ord_red4)
@@ -413,7 +439,8 @@ line_reduce <- function() {
       B5_4dd_ord_final <- B5_4dd_ord_red6
     } # end if
     
-  } #end if
+  } #end ifs
+  
   # end final line segments, end of cas="100_all+nonortho"
   
   B5_4dd_ord_final
@@ -422,6 +449,7 @@ line_reduce <- function() {
   l1 <- length(B5_4d_ord_final$lnr)
   l2 <- length(B5_4dd_ord_final$lnr)
   lnr_det3 <- rep(0,(l1+l2))
+  
   if (l1 == l2) {
     lnr_det3[1:l1] <- B5_4d_ord_final$lnr
     lnr_det3[(l1+1):(l1+l2)] <- B5_4dd_ord_final$lnr
@@ -431,6 +459,7 @@ line_reduce <- function() {
   
   l1 <- length(B5_4d_ord_final$lnr)
   l2 <- length(B5_4dd_ord_final$lnr)
+  
   if (l1 == l2) {
     lnr_det3[1:l1] <- B5_4d_ord_final$lnr
     lnr_det3[(l1+1) : (l1+l2)] <- B5_4dd_ord_final$lnr
@@ -459,4 +488,4 @@ line_reduce <- function() {
   return(B5_6)
 } # end of function 
 
-## end of script 'func_line_reduce.R'
+##end of script 'func_line_reduce.R'
