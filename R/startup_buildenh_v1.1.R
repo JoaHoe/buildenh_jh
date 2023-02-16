@@ -3,11 +3,13 @@
 v_nr = "1.1" #version number of the program pckage
 cat("version_number= ",v_nr,"\n")
 #examples: extracted buildings from land cover maps derived by classification programs
-#data: ISPRS test "Vaihingen": orthoimages of area #1, #7
+#data: ISPRS test "Vaihingen": orthoimages of area #1, #7, #26
 #author: Joachim Höhle
 #instructions: change directories for input;
 #instructions: input project title and image name
 #instructions: save your home directory
+#instructions: select project title
+#instructions: select orthoimage: ISPRS1 or ISPRS7
 #instructions: type 'Ctrl+A'(select all) and 'Source'
 #instructions: new users may start by examples (processing mode = demo)
 #depends: R-4.2.1
@@ -15,7 +17,6 @@ cat("version_number= ",v_nr,"\n")
 #GNU General Public License (GPL)
 ###################################################################################
 cat("start of software package 'buildenh_jh' ","\n")
-
 cat("first program/script 'startup_buildenh.R' ","\n")
 
 #save your home directory
@@ -27,17 +28,22 @@ home_dir2 <- "C:/Users/Joachim/R_programs/buildenh_jh/clone1/R"
 
 ###################################################################################
 
-## title of project (activate manually)
+## title of project (select manually)
 
-#prj_title <- "ISPRS7_LCM1" #orthoimage ISPRS#7, 
-#classification method: DT/LCM1 by 17 attributes
-#training by ISPRS orthoimage #26
-prj_title <- "ISPRS1_LCM2" #ortsetwd(home_dir)hoimage ISPRS#1, classification method: DT/LCM2 by 5 attributes
+prj_title <- "ISPRS7_LCM1" 
+#orthoimage ISPRS7, classification method: DT/LCM1 by 17 attributes
+#training by orthoimage #7
+
+#prj_title <- "ISPRS1_LCM2" 
+#orthoimage ISPRS1, classification method: DT/LCM2 by 5 attributes
+#training by orthoimage #26
+
 cat("project title is = ", prj_title,"\n")
 setwd(home_dir)
+
 #select orthoimage (activate manually)
-#Img_name <- "ISPRS7" #name of orthoimage to be processed, change for other image
-Img_name <- "ISPRS1" #name of orthoimage to be processed, change for other image
+Img_name <- "ISPRS7" #name of orthoimage to be processed, change for other image
+#Img_name <- "ISPRS1" #name of orthoimage to be processed, change for other image
 
 if (Img_name == "ISPRS7") {
 ##setting of path- & file-name for original data:
@@ -92,7 +98,7 @@ if (Img_name == "ISPRS1") {
 }
 
 if (Img_name == "ISPRS7") {
-  y_auto <- c(20,22,23,5) #objects for automatic processing (orthoimage #7)  
+  y_auto <- c(20,22,23) #objects for automatic processing (orthoimage #7)  
 }
 
 n_y_auto <- length(y_auto)
