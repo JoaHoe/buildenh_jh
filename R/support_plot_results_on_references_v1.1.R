@@ -1,15 +1,16 @@
-## name of script: support_plot_results_on_references.R
+##name of script: support_plot_results_on_references.R
 cat("version_number= ",v_nr,"\n")
-## purpose: supporting software for program "plot_results_on_references.R"
-##instruction: run all programs in "demo"-mode before using supporting software
-## GNU General Public License (GPL)
+##purpose: supporting software for program "plot_results_on_references.R"
+##instruction: run all scripts in "demo"-mode before using supporting scripts
+#author: Joachim Höhle
+##GNU General Public License (GPL)
 
 ## contents:
 
 # 1.check of classification and enhancement in enlarged orthoimage
 # 2.check result in enlarged ground truth (GT) image
-# 3.plot building on graph
-# 4.plot outlines with vertex & line numbers on enlarged orthoimage
+# 3.plot building onto graph
+# 4.plot outlines with vertexes & line-numbers onto enlarged orthoimage
 # 5.plot of all processed buildings onto graph, orthoimage and GT
 
 ################################################################################
@@ -20,8 +21,8 @@ cat("version_number= ",v_nr,"\n")
 #input and display
 setwd(OrgImgPathname)
 img_ref <- readImage(OrgImgFilename)
-img_x_max <- dim(img_ref)[1] #image size
-img_y_max <- dim(img_ref)[2] #image size
+img_x_max <- dim(img_ref)[1] #image size x
+img_y_max <- dim(img_ref)[2] #image size y
 display(img_ref,method = "raster")
 
 #input of plot parameters: center (xc, yc), maximum radius (r_max)
@@ -32,7 +33,7 @@ xc <- plotPar[1]
 yc <- plotPar[2]
 r_max <- plotPar[3]
 
-#input of adjusted corner point coordinates
+#input of adjusted corner point- (vertex-) coordinates
 setwd(home_dir)
 fname12 <- paste("./results/",Img_name,"/b",bnr2,"_coord_adj_plot.txt",sep="")
 b_xy_ortho <- read.table(fname12, header=T)
@@ -42,21 +43,29 @@ k1 <- length(b_xy_ortho$x)
 #
 
 #display of orthoimage in new (large) window
-orig_x <- as.integer(xc-2*r_max)
-orig_y <- as.integer(yc-2*r_max)
-wind_x <- as.integer(orig_x+4*r_max)
-wind_y <- as.integer(orig_y+4*r_max)
+orig_x <- as.integer(xc-1.2*r_max)
+orig_y <- as.integer(yc-1.2*r_max)
+wind_x <- as.integer(orig_x+2.4*r_max)
+wind_y <- as.integer(orig_y+2.4*r_max)
 #
 
-if (wind_x > img_x_max) {
+if (orig_x < 0) {
+  orig_y = 0 
+}
+
+if (orig_y < 0) {
+  orig_y = 0 
+}
+
+if (wind_x > img_x_max) { #new window border
   wind_x <- img_x_max
 }
 
-if (wind_y > img_y_max) {
+if (wind_y > img_y_max) { #new window border
   wind_y <- img_y_max
 }
 
-img_uds <- img_ref[orig_x:wind_x, orig_y:wind_y, 1:3]
+img_uds <- img_ref[orig_x:wind_x,orig_y:wind_y,1:3]
 display(img_uds, method = "raster")
 #display(img_uds, method = "browser")
 
@@ -64,11 +73,10 @@ display(img_uds, method = "raster")
 fname <- paste("./data/",Img_name,"/idxy_LCM_b",bnr2,".csv",sep="")
 pc3 <- read.table(fname, header=TRUE)
 names(pc3)[1:2] <- c("col","row")
-#end of input
 
-#plotting of center, object (CC), and connections on enlarged orthoimage
-points(xc, yc, pch=3, asp=1, cex=1.3, col="green")
-points(as.integer(pc3$col-orig_x), as.integer(pc3$row-orig_y), pch=20, asp=1, cex=0.3, col="green")
+#plotting of center, object (CC), and connections onto enlarged orthoimage
+points(xc-orig_x,yc-orig_y,pch=3,asp=1,cex=1.3,col="red")
+points(as.integer(pc3$col-orig_x),as.integer(pc3$row-orig_y),pch=20,asp=1,cex=0.3,col="green")
 #
 
 #loop
@@ -78,7 +86,8 @@ while(i < k1) {
   i <- i + 1
   lines(b_xy_ortho$x-orig_x, b_xy_ortho$y-orig_y, col="white", asp=1, type="l", lwd=3, lty=1)
 }
-#end of script 1 (check of classification and enhancement in enlarged orthoimage)
+
+#end of script 1 (check of classification and enhancement by enlarged orthoimage)
 
 ###############################################################################
 
@@ -101,7 +110,7 @@ k1 <- length(b_xy_ortho$x)
 #plot of connections on GT_large scale
 i <- 0
 
-while(i < k1){
+while(i < k1) {
   i <- i + 1
   lines(b_xy_ortho$x-orig_x, b_xy_ortho$y-orig_y, col="red", 
         asp=1, type="l", lwd=3, lty=1)
@@ -111,15 +120,16 @@ while(i < k1){
 ################################################################################
 
 
-## 3.plot building on graph
+## 3.plot of building onto graph
 
 setwd(home_dir)
 x=0
 y=0
-plot(x,-y, pch=3, cex=1, cex.axis=1,cex.lab=1,col="red", asp=1, xlim=c(1,1887), ylim=c(-2557,-1), main = paste("buildings of image '",Img_name,"'",sep = ""))
-#
-
 bnr2 #number of building
+plot(x,-y, pch=3, cex=1, cex.axis=1,cex.lab=1,col="red", asp=1, 
+     xlim=c(1,img_x_max), ylim=c(-img_y_max,-1), main = paste("b",bnr2," of orthoimage ",
+     Img_name,sep = ""))
+
 fname12 <- paste("./results/",Img_name,"/b",bnr2,"_coord_adj_plot.txt",sep="")
 b <- read.table(fname12,header=T)
 k1 <- nrow(b)
@@ -135,10 +145,10 @@ while(i < k1) {
   lines(b, col="black", asp=1, type="l", lwd=2, lty=1)
 } #end while
 
-#end of script 3 (plot building on graph)
+## end of script 3 (plot of building onto graph)
 ###############################################################
 
-## 4.plot outlines with vertex & line numbers on enlarged orthoimage
+## 4.plot of outline with vertexes & line-numbers onto enlarged orthoimage
 
 display(img_uds,method = "raster")
 n_x <- length(PC_nr)
@@ -164,7 +174,7 @@ for (i in vec_y) {
          labels = intsec_linepair_vertex_coord2$vertex_nr[i], 
          pos=2, offset = 0.7, cex = 1, col = "white")
     text(centers_PC[i,2]-orig_x,(-centers_PC[i,3]-orig_y), labels=centers_PC[(i),1],
-         pos=2, offset = 0.5, cex = 1, col = "blue")
+         pos=2, offset = 0.5, cex = 1, col = "red")
   } #end while
   
 } #end for-loop
@@ -172,11 +182,11 @@ for (i in vec_y) {
 cat("table with line-pairs,vertex/corner-number,coordinates(x,y)","\n")
 print(intsec_linepair_vertex_coord2)
 
-# end of script 4 (plot outlines with vertex & line numbers on enlarged orthoimage)
+## end of script 4 (plot of outline with vertexes & line-numbers onto enlarged orthoimage)
 
 ################################################################################
 
-## 5.plot of all processed buildings on graph, orthoimage and ground truth
+## 5.plot of all processed buildings onto graph, orthoimage and ground truth
 
 #example 1: orthoimage #7
 #prj_title: ISPRS7_LCM1
@@ -184,25 +194,15 @@ print(intsec_linepair_vertex_coord2)
 
 #example 2: orthoimage #1
 #prj_title: ISPRS1_LCM2
-#objects/buildings: 4,5,7,18,9,11,341,342,10,371,372
+#objects/buildings: 4,5,7,8,9,10,11,13,15,17,18,20,21,22,23,25,271,272,26,28,29,32,35,36,26,341,342,371,372,38,39,41,42,43,45,46
 #dimension of orthoimage/GTS: 1919x2569 (WxH)
 
-#plot of all buildings on graph
+##plot of all buildings onto graph
 setwd(home_dir)
 x=0
 y=0
-
-if (Img_name == "ISPRS7") {  
-  plot(x,-y, pch=3, cex=1.3, cex.axis=1.3,cex.lab=1.3,col="red", 
-     asp=1, xlim=c(1,1887), ylim=c(-2557,-1))
-}
-
-if (Img_name == "ISPRS1") {  
-  plot(x,-y, pch=3, cex=1.3, cex.axis=1.3,cex.lab=1.3,col="red", 
-       asp=1, xlim=c(1,1919), ylim=c(-2569,-1))
-}
-
-#
+plot(x,-y, pch=3, cex=1.3, cex.axis=1.3,cex.lab=1.3,col="red", 
+       asp=1, xlim=c(1,img_x_max), ylim=c(-img_y_max,-1))
 
 #input of file with all buildings
 fname12 <- paste("./results/",Img_name,"/b_all.txt",sep="")
@@ -253,16 +253,19 @@ for (i in b_all_nr)  {
   b <- read.table(fname12,header=T)
   k1 <- nrow(b)
   names(b) <- c("Points_x","Points_y")
-  #cat("plot of building-outline","\n")
+  
+  cat("plot of building-outline","\n")
   i <- 0
+  
   while(i < k1) {
     i <- i+1
     lines(b, col="black", asp=1, type="l", lwd=1, lty=1)
   } #end while
+  
 } #end loop
 #
 
-##plot of all processed buildings on orthoimage
+##plot of all processed buildings onto orthoimage
 setwd(OrgImgPathname)
 img_ref <- readImage(OrgImgFilename)
 display(img_ref, method = "raster")
@@ -318,10 +321,9 @@ for (k in b_all_nr) {
 } #end loop
 #
 
-#end of script 5 (plotting all processed buildings onto graph, 
-#orthoimage and ground truth (GT)
+##end of script 5 
 ################################################################################
 
-## end of supplementing software to program 'plot results on references.R'
+##end of supplementing software to script 'plot_results_on_references.R'
 
 
