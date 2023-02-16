@@ -1,7 +1,9 @@
 ## name of script: support_intersect_corner_points.R
-## GNU General Public License (GPL)
 cat("version_number= ",v_nr,"\n")
-## purpose: supporting software for program "intersect_corner_points.R"
+## purpose: supporting software for script "intersect_corner_points.R"
+##instruction: process first mode 'demo'
+##author: Joachim Höhle
+##GNU General Public License (GPL)
 
 ## contents:
 # 1.test of theta average (theta_av)
@@ -15,9 +17,11 @@ cat("version_number= ",v_nr,"\n")
 
 ## 1.test of theta average
 setwd(home_dir)
-thr_theta_av2 <- 10 #degrees
+options(digits=7)
+thr_theta_av2 <- 10 #threshold [degrees]
 f1 <- paste("./data/",Img_name,"/theta_av_b",bnr2,".txt",sep="")
 theta_av <- read.table(f1)
+theta_av
 #
 
 f2 <- paste("./data/",Img_name,"/th_ref_",bnr2,sep="")
@@ -34,20 +38,45 @@ if (abs(theta_av$x[1] - theta_ref) > thr_theta_av2 ) { #threshold theta_ref_appr
 ## 2.interactive generation of theta average 
 # weighted average of theta-angle (theta_av)
 
-#call of function
-setwd(home_dir2)
-source("func_w_av.R") #contained in func_loadLib_jh.R
+#function
+w_av <- function(ang,len) { #contained in func_loadLib_jh.R
+  x <- length(ang)
+  y <- 1 : x
+  pw <- len/max(len) #weights
+  sp <- sum(pw)
+  theta <- rep(0,x)
+  
+  for (i in y) {
+    theta[i] <- (ang[i]*pw[i])/sp
+  }
+  
+  theta_av <- sum(theta)
+  return(theta_av)
+} #end of function 'w_av(ang,len)'
 
-#settings
-options(digits = 10)
-setwd(home_dir)
+#data: ortholines of b11 (ISPRS1)
+ang_mod <- c(9.4953,5.3238,5.0244,4.8934,4.4975,5.2969)
+len <-  c(33,244,179,84,100, 218)
 
-#see examples of buildings in spObj_intersect_corner_points.R
+#calculation
+theta_average <- w_av(ang_mod,len) #call of function
+cat("theta_average= ",theta_average,"degrees","\n")
+
 #end of script 2
 ################################################################################
 
 
-## 3.automated solution for theta average 
+## 3.automated solution for theta average
+#example b11 (ISPRS1)
+
+setwd(home_dir)
+options(digits=7)
+
+##input of table with theta_adj, ro_adj
+fname9 <- paste("./data/",Img_name,"/param_adj_b",bnr2,".txt",sep="")
+B6_seq <- read.table(fname9)
+B6_seq 
+
 B6_seq[,8] <- 0
 names(B6_seq)[8] <- "ortho"
 n_B6_seq <- nrow(B6_seq)
@@ -91,13 +120,10 @@ for (i in vec1) {
 ang1 <- theta_vec_red2
 np_vec_red <- subset(np_vec, np_vec != 0)
 len1 <- np_vec_red
-theta_average <- w_av(ang1,len1)
 
-#output of weighted average of angle (theta_av)
-setwd(home_dir)
-f <- paste("./data/",Img_name,"/theta_av_b", bnr2,".txt",sep="")
-write.table(theta_average,file=f)
-#
+#call of function
+theta_average <- w_av(ang1,len1) #function contained in 'func_loadLib_jh.R'
+cat("theta_average= ",theta_average,"degrees","\n")
 
 ##automated solution for theta_average2
 B6_seq[,8] <- 0
@@ -115,9 +141,8 @@ for (i in z) {
   }
   
 } #end loop i
-#
 
-##automated solution for second main direction
+##automated solution for a second direction
 
 if (bnr2 == 18) { #line number must be adopted
   theta_vec2 <- rep(0, n_B6_seq)
@@ -138,13 +163,13 @@ if (bnr2 == 18) { #line number must be adopted
   np_vec2_red <- subset(np_vec2, np_vec2 != 0)
   len2 <- np_vec2_red
   #
-  theta_average2 <- w_av(ang2,len2) #call of function (contained in 'func_loadLib_jh.R')
+  
+  #call of function
+  theta_average2 <- w_av(ang2,len2) #function contained in 'func_loadLib_jh.R'
 
-#output of weighted average of angle (theta_av2)
-  setwd(home_dir)
-  f <- paste("./data/",Img_name,"/theta_av2_b", bnr2,".txt",sep="")
-  write.table(theta_average2,file=f)
 } #end if (bnr2 == 18)
+
+cat("theta_average2= ",theta_average2,"degrees","\n")
 
 #end of script 3
 #####################################################################
@@ -154,12 +179,12 @@ if (bnr2 == 18) { #line number must be adopted
 
 #input
 
-#ISPRS1_b36
-ang1 <- c(79.9345,81.9270,171.2564-90) #theta angles (must be adopted)
+#example: b36 (ISPRS1)
+ang1 <- c(79.9345,81.9270,(171.2564-90)) #theta angles (must be adapted)
 len1 <- c(176,56,28) #length of lines
 theta_average <- w_av(ang1,len1)
 
-ang1 <- c(161.7411-90,70.0149,72.7405) #theta angles (must be adopted)
+ang1 <- c((161.7411-90),70.0149,72.7405) #theta angles (must be adapted)
 len1 <- c(176,56,28) #length of lines
 theta_average2 <- w_av(ang1,len1)
 #end of script 4 (manual generation of theta average)
@@ -167,8 +192,9 @@ theta_average2 <- w_av(ang1,len1)
 
 
 ## 5.intersection of two lines
+#instruction: change values for other examples
 
-#instruction: change values  
+#data
 theta_1 <- 89.9684 #input of theta_angle of line 1
 theta_1_arc <- theta_1/omega
 ro_1 <- 904.94 # input of ro_distance of line 1
@@ -176,6 +202,8 @@ theta_2 <- 2.5080 #input of theta_angle of line 2
 theta_2_arc <- theta_2/omega
 ro_2 <- 673.54 #input of ro_distance of line 2
 #
+
+#calculation
 N <- (sin(theta_2_arc) - tan(theta_2_arc) * cos(theta_1_arc)) * sin(theta_1_arc)
 x <- ((ro_2 * sin(theta_1_arc) - ro_1 * sin(theta_2_arc)) * tan(theta_2_arc))/N
 y <- (-1/tan(theta_1_arc)) * x + ro_1 / sin(theta_1_arc)
@@ -190,16 +218,19 @@ y <- (-1/tan(theta_1_arc)) * x + ro_1 / sin(theta_1_arc)
 
 #call of function
 setwd(home_dir2)
-source(func_dist_PC.R) #function contained in 'func_loadLib_jh.R' 
+source("func_dist_PC.R") #function contained in 'func_loadLib_jh.R' 
 y4 <- B7$lnr
 n_pts <- length(y4)
 distance <- matrix(nrow=n_pts, ncol=2)
 distance[,] <- 0
+
+#plot
 plot(xc,-yc, pch=3, cex=2, col="red", asp=1, xlim=c(xc-r_max2,xc+r_max2), ylim=c(-yc-r_max2,
   -yc+r_max2), xlab="col", ylab="row",main=paste("building",bnr2))
-#
-i=0
+
 #loop
+i=0
+
 for (n in y4) {
   setwd(home_dir)
   fname=paste("./data/",Img_name,"/b",bnr2,"_",n,".txt", sep="")#)
@@ -218,10 +249,11 @@ for (n in y4) {
   distance[i,1:2] <- c(n,dist)
 } #end of loop
 
-cat("distance=",distance,"\n")
+#result
+print(distance)
 #
 
-#end script 6 (calculation of line-segment-lengths) 
+#end script 6 
 ################################################################################
 
 ## end of 'support_intersect_corner_points.R'
