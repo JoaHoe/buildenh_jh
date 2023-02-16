@@ -1,6 +1,8 @@
-## script:'func_w_av.R'
+##name of script:'func_w_av.R'
+cat("version_number= ",v_nr,"\n")
 #purpose: weighted average of theta-angle (theta_av)
 #used in: intersect_corner_points.R
+#author: Joachim Höhle
 #GNU General Public License (GPL)
 
 #function
