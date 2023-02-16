@@ -130,7 +130,7 @@ for (i in y2) {
     j <- j + 1
     x <- all_PC[[i]]$x[j]
     y <- all_PC[[i]]$y[j]
-    points(x, -y, pch=16, cex=0.4, col="red", asp=1)
+    points(x, -y, pch=16, cex=0.4, col="blue", asp=1)
   }
   
   x_dat <- all_PC[[i]]$x
@@ -168,8 +168,9 @@ for (i in y2) {
     }
     
     B6[i,5] <- th1_img #solution 1
+    
+    B6[i,7] <- "1" #label of solution 1
     names(B6)[7] <- "solution"
-    B6[i,7] <- "1"
     
     #calculation of ro_test (img-system)
     ys_img <- (-ys)
@@ -205,16 +206,16 @@ for (i in y2) {
     #update of table B6
     if (th2_img < 0) {
       th2_img <- 180 + th2_img 
-      B6[i,5] <- th2_img 
+      B6$theta_adj[i] <- th2_img 
     } else {
-      B6[i,5] <- th2_img
+      B6$theta_adj[i] <- th2_img 
     }
     
-    if (B6[i,5] > 180) {
-      B6[i,5] <- B6[i,5] - 180
+    if (B6$theta_adj[i] > 180) {
+      B6$theta_adj[i] <- B6$theta_adj[i] - 180
     }
     
-    B6[i,7] <- "2"
+    B6[i,7] <- "2" #label of solution 2
     
     #calculation of ro
     ys_img <- (-ys)
@@ -223,8 +224,8 @@ for (i in y2) {
     cat("ro_test_img= ", ro_test_img,"\n")
     
     #update of table B6
-    B6[i,6] <- ro_test_img
-    
+    #B6[i,6] <- ro_test_img
+    B6$ro_adj[i] <- ro_test_img
     #B6 #agreement with the results of Hough-trans? 
     #see at script-line 442:B4 in 'line_detection.R') 
    
@@ -271,16 +272,18 @@ for (i in y2) {
   #browser()
   PC_number <- B6[i,1]
   cat("i= ",i,"PC_nr= ",PC_number, "\n")
-  phi3 <- phi_all[i]
+  phi3_calc <- phi_all[i]
   xs <- xs_all[i]
   ys <- ys_all[i]
   
-  if (B6$theta_ang[i] > 90) { 
-    phi3 <- phi3 + 90 #solution 2
-  } else {
-    phi3 <- phi3 #solution 1
-  }
-
+  if(B6$solution[i] == "1") {
+    phi3 <- 90 - B6$theta_adj[i]
+  } 
+  
+  if(B6$solution[i] == "2") {
+    phi3 <- 90 - B6$theta_adj[i]
+  } 
+   
   cat("phi3= ",phi3,"\n")
   phi3_arc <- phi3/omega
   a_adj3 <- ys - xs*tan(phi3_arc) #calculation of unknown
