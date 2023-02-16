@@ -1,7 +1,9 @@
-#script: func_detect_meas1.R
+##name of script: func_detect_meas1.R
+cat("version_number= ",v_nr,"\n")
 #purpose: detect lines by measurement of one pixel for rectangular objects
 #function used in: support_line_detection.R
 #instructions: to be used after locator2()
+#author: Joachim Höhle
 #GNU General Public License (GPL)
 
 detect_meas1 <- function() { 
@@ -56,12 +58,14 @@ detect_meas1 <- function() {
   i <- 1
   while (i <= k30) {
     dif_orth <- abs(ro_meas - B5_4_ord$ro_pixel[i])
+    
     if (dif_orth <= 10)  {
       cat("line number=", B5_4_ord$lnr[i],"\n")
       k31 <- i
       print(B5_4_ord[k31,])
       n_line <- n_line + 1
     } #end if
+    
     i <- i+1
   } #end while-loop
   #
