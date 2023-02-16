@@ -1,6 +1,8 @@
-## name of script: func_loadLib_jh.R
-## purpose: collection of all functions for package 'buildenh'
-##GNU General Public License (GPL)
+##name of script: func_loadLib_jh.R
+cat("version_number= ",v_nr,"\n")
+#purpose: collection of all functions for package 'buildenh'
+#author: Joachim Höhle
+#GNU General Public License (GPL)
 
 loadLib_jh <- function() { 
   source("func_adjust_coord.R")
