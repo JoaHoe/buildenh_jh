@@ -1,7 +1,9 @@
-#name of script: func_reduce_pointset.R
+##name of script: func_reduce_pointset.R
+cat("version_number= ",v_nr,"\n")
 #purpose: eliminating of pixels which do not belong to PC
 #function used in: script 'sequence_of_lines.R'
-##GNU General Public License (GPL)
+#author: Joachim Höhle
+#GNU General Public License (GPL)
 
 reduce_pointset <- function(P) {
   xgaps <- test_gaps_onedirection(hist(P$x,plot=FALSE)) #modified
