@@ -19,7 +19,7 @@ setwd(home_dir)
 
 ##input
 
-##input of Hough-trans result
+#input of Hough-trans result
 H_param <- load(paste("./data/",Img_name,"/H_par",sep = ""))
 H_param
 
@@ -28,7 +28,7 @@ load(paste("./data/tt_prior_sek.RData",sep = ""))
 accSample3_new2 <- accSample3_train
 accSample3_new3 <- accSample3_new2[1,]
 
-##input of plot-parameter
+#input of plot-parameter
 setwd(home_dir)
 f<-paste("./data/",Img_name,"/param_b_",bnr2, sep="")
 load(f)
@@ -631,7 +631,7 @@ if (sek == "bdr_follow") {
   plot(b_im)
   Z18 <- connected(b_im, background = 0, method="C")
   nc <- length(levels(Z18))
-  nc #number of levels
+  #nc #number of levels
   #browser() #test
   W <- tiles(tess(image=Z18)) #separation of images
   #plot(W$'1', col="black") #axis
@@ -862,7 +862,7 @@ if (sek == "bdr_follow") {
   plot(out_poly)
   
   for (i in y4) {
-    cat("midpt_nr=", midpoints[i,1],"\n")
+    #cat("midpt_nr=", midpoints[i,1],"\n")
     #browser()
     points(midpoints[i,2], midpoints[i,3], pch=16, col="blue", cex=1.0, asp=1)
   }
@@ -875,6 +875,7 @@ if (sek == "bdr_follow") {
 
   #loop
   n <- 1
+  
   for (i in y3) {
     points(x_v[i], y_v[i], pch=16, col="green", cex=0.1, asp=1) #points from edge
     for (j in y4) { #loop j
@@ -1050,6 +1051,49 @@ if (sek == "bdr_follow") {
   } else {
     cat ("sequence = ",sequence_seg, "\n")   
   } #end if-else
+  
+  #plot of line sequence
+  b13_angle_df3 <- b13_angle_df2
+  b13_angle_df3[,] <- 0
+  sequence_seg
+  vec2 <- 1 : length(sequence_seg)
+  b13_angle_df3$nr_center <- sequence_seg
+  b13_angle_df3
+  vec2
+  b13_angle_df2[,5] <- "new"
+  names(b13_angle_df2)[5] <- "status"
+  
+  for (n1 in vec2) {
+    i=1
+    
+    while (i <= 10) {
+      
+       
+      if (b13_angle_df3[n1,1] == b13_angle_df2[i,1] && b13_angle_df2[i,5] != "done") {
+         b13_angle_df3[n1,2:4] <- b13_angle_df2[i,2:4]
+         b13_angle_df2[i,5] <- "done"
+         cat("n1= ",n1,"i= ",i, "\n")
+         break
+      } 
+      
+      i <- i+1
+    }
+    
+  }
+  
+  b13_angle_df3
+  #
+  plot(xc,-yc, pch=3, cex=2, col="blue", asp=1, xlim=c(xc - r_max2,xc + r_max2), ylim=c(-(yc + r_max2),-(yc - r_max2)),
+       main=paste("b ",bnr2, sep=(""))) #large scale
+  points(pc3$col, -pc3$row, pch=20, asp=1, cex=0.3, col="black") # original pixel cloud for building
+  
+  for (n1 in vec2) {
+    browser()
+    print(b13_angle_df3$nr_center[n1])
+    points(b13_angle_df3$x_centre[n1],-b13_angle_df3$y_centre[n1], asp=1, pch=20,col="green", cex=1.5)
+  }
+  
+  points(b13_angle_df3$x_centre,-b13_angle_df3$y_centre, asp=1, pch=20,col="blue", cex=1.5)
   
   cat("is the sequence of lines correct?","\n")
   cat("if demo -> type Y")
