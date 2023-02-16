@@ -1,7 +1,11 @@
 ##name of script: spObj_adjustment_of_line.R
-#GNU General Public License (GPL)
-cat("start of spObj_adjustment of line ","\n")
 cat("version_number= ",v_nr,"\n")
+#author: Joachim Höhle
+#GNU General Public License (GPL)
+
+
+cat("start of spObj_adjustment of line ","\n")
+
 
 ##buildings of orthoimage ISPRS_#7
 
@@ -21,19 +25,19 @@ if (Img_name == "ISPRS7") {
 
   #b24
   if (bnr2 == 24 && p_pos == "cor_adj_line") {   
-    B6$ro_adj[5] <- B6$ro_pixel[5] #correction of ro (line315)
-    B6$theta_adj[5] <- B6$theta_ang[5] #correction of theta (line315)
+    B6$theta_adj[5] <- B6$theta_ang[5] #correction of theta (line 315)
+    B6$ro_adj[5] <- B6$ro_pixel[5] #correction of ro (line 315)
   } 
 
-} #end of Img_name = "ISPRS7"
+} #end of ISPRS7
 
 
-##buildings of orthoimage ISPRS_#1
+##buildings of orthoimage ISPRS1
 
 if (Img_name == "ISPRS1") {
   
   #b21
-  if (bnr2 == 21 && p_pos == "cor_adj_line") {   
+  if (bnr2 == 21 && p_pos == "cor_adj_line") { 
     B6$ro_adj[2] <- B6$ro_pixel[2] #correction of ro (line 524)
     B6$theta_adj[2] <- B6$theta_ang[2] #correction of theta (line 524)
   } 
@@ -85,7 +89,7 @@ if (Img_name == "ISPRS1") {
     #start again adjustment of line
     setwd(home_dir2)
     source(paste("adjustment_of_line_v",v_nr,".R",sep="")) 
-   } #end of bnr2=36
+   } #end of b36
   
   #b372
   if (bnr2==372 && p_pos == "cor_adj_line") {
@@ -106,7 +110,7 @@ if (Img_name == "ISPRS1") {
     B6 <- B6 #(dummy line) 
   } #end of b46
   
-} #end of Img_name = "ISPRS1"
+} #end of ISPRS1
 
 ##end of script 'spObj_adjustment_of_line.R' 
 
