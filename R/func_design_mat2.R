@@ -1,5 +1,8 @@
+##name of script: func_design_mat2.R
+cat("version_number= ",v_nr,"\n")
 ##function for generation of a design matrix
 #solution for open polygon
+#author: Joachim Höhle
 #GNU General Public License (GPL)
 
 design_mat2 <- function(m,phi) { 
