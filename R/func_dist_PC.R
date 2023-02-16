@@ -1,6 +1,8 @@
-#name of script: func_dist_PC.R
+##name of script: func_dist_PC.R
+cat("version_number= ",v_nr,"\n")
 #purpose: derivation of lengths from coordinates of intersected points
 #used in: intersect_corner_points.R
+#author: Joachim Höhle
 #GNU General Public License (GPL)
 
 dist_PC <- function(P_red) {
