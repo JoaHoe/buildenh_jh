@@ -115,7 +115,7 @@ n_theta <- length(theta)
 #ro_rg=3: range with Dis_min2...Dis_max, selectable value for Dis_min2
 
 #setting of ro_range
-ro_rg = 3 #default (ISPRS1)
+ro_rg = 1 #default (ISPRS1)
 #ro_rg = 1 #default (ISPRS7)
 
 ro_rg <- as.integer(ro_rg)
