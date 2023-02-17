@@ -23,10 +23,10 @@ cat("first program/script 'startup_buildenh.R' ","\n")
 old_dir <- setwd("./")
 getwd()
 #
-#home_dir <- "C:/Users/Joachim/R_programs/buildenh_jh/clone1"
-#home_dir2 <- "C:/Users/Joachim/R_programs/buildenh_jh/clone1/R"
-home_dir <- "C:/Users/Joachim/R_programs/buildenh_jh/clone2/buildenh_jh"
-home_dir2 <- "C:/Users/Joachim/R_programs/buildenh_jh/clone2/buildenh_jh/R"
+home_dir <- "C:/Users/Joachim/R_programs/buildenh_jh/clone1"
+home_dir2 <- "C:/Users/Joachim/R_programs/buildenh_jh/clone1/R"
+#home_dir <- "C:/Users/Joachim/R_programs/buildenh_jh/clone2/buildenh_jh"
+#home_dir2 <- "C:/Users/Joachim/R_programs/buildenh_jh/clone2/buildenh_jh/R"
 ###################################################################################
 
 ## title of project (select manually)
@@ -43,8 +43,8 @@ cat("project title is = ", prj_title,"\n")
 setwd(home_dir)
 
 #select orthoimage (activate manually)
-Img_name <- "ISPRS7" #name of orthoimage to be processed, change for other image
-#Img_name <- "ISPRS1" #name of orthoimage to be processed, change for other image
+#Img_name <- "ISPRS7" #name of orthoimage to be processed, change for other image
+Img_name <- "ISPRS1" #name of orthoimage to be processed, change for other image
 
 if (Img_name == "ISPRS7") {
 ##setting of path- & file-name for original data:
