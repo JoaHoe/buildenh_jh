@@ -3,9 +3,9 @@ R/.Rhistory
 data/.Rhistory
 data/ISPRS1/images/
 data/ISPRS1/
-!dummy4.txt
-#results/ISPRS1/
+results/ISPRS1/
 !/data/ISPRS1/b_all.txt
+!/results/ISPRS1/b_all_nrs.txt
 data/ISPRS7/images/
 data/ISPRS7/
 results/ISPRS7
