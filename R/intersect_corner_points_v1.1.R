@@ -9,7 +9,7 @@ cat("version_number= ",v_nr,"\n")
 ##author: Joachim Höhle
 ##GNU General Public License (GPL)
 cat("##############################################","\n")
-#stop("manual operation")
+
 cat("start of program 'intersect_corner_points.R'","\n")
 setwd(home_dir)
 
