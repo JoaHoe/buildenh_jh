@@ -1067,7 +1067,6 @@ if (sek == "bdr_follow") {
     i=1
     
     while (i <= 10) {
-      
        
       if (b13_angle_df3[n1,1] == b13_angle_df2[i,1] && b13_angle_df2[i,5] != "done") {
          b13_angle_df3[n1,2:4] <- b13_angle_df2[i,2:4]
