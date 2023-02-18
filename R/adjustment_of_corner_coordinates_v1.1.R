@@ -12,7 +12,7 @@ cat("##################################################################","\n")
 cat("start of program 'adjustment_of_corner_coordinates.R'","\n")
 
 ##inputs
-#stop("checking")
+
 #input of plot-parameter
 n_pts # number of corners/lines
 xc <- plotPar[1]
