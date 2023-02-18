@@ -31,11 +31,11 @@ home_dir2 <- "C:/Users/Joachim/R_programs/buildenh_jh/clone1/R"
 
 ## title of project (select manually)
 
-prj_title <- "ISPRS7_LCM1" 
+#prj_title <- "ISPRS7_LCM1" 
 #orthoimage ISPRS7, classification method: DT/LCM1 by 17 attributes
 #training by orthoimage #7
 
-#prj_title <- "ISPRS1_LCM2" 
+prj_title <- "ISPRS1_LCM2" 
 #orthoimage ISPRS1, classification method: DT/LCM2 by 5 attributes
 #training by orthoimage #26
 
