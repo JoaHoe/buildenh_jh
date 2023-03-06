@@ -269,7 +269,7 @@ if (part == "2parts_1" || part == "2parts_2") {
 
 if(part != "no_part" && p_pos == "cor_sep") {
   setwd(home_dir2)
-  source(paste("spObj_extract_single_building_v",v_nr,".R",sep="")) #special object
+  source(paste("./spObj/spObj_extract_single_building_v",v_nr,".R",sep="")) #special object
 }
 
 ##output of file with PC-coordinates (required in program 'line_detection.R')
