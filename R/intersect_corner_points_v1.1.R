@@ -107,7 +107,7 @@ for (i9 in z) {
   if (B8$theta_adj[i9] == 90) {
     p_pos <- "cor_corner_pts"
     setwd(home_dir2)
-    source(paste("spObj_intersect_corner_points_v",v_nr,".R",sep = "")) 
+    source(paste("./spObj/spObj_intersect_corner_points_v",v_nr,".R",sep = "")) 
   } 
   
 } #end loop i9
@@ -438,7 +438,7 @@ if (cas == "100_all+nonortho") {
     cat("theta_av deviates too much from theta_ref:", dev_theta, "degree", "\n")
     p_pos = "cor_theta_av"
     setwd(home_dir2)
-    source(paste("spObj_intersect_corner_points_v",v_nr,".R",sep=""))
+    source(paste("./spObj/spObj_intersect_corner_points_v",v_nr,".R",sep=""))
     theta_av_mod
   } #end if
   
@@ -487,7 +487,7 @@ if (cas == "100_all+nonortho") {
   if (n_nonortholines == 2) {
     p_pos = "cor_theta_av2"
     setwd(home_dir2)
-    source(paste("spObj_intersect_corner_points_v",v_nr,".R",sep=""))
+    source(paste("./spObj/spObj_intersect_corner_points_v",v_nr,".R",sep=""))
     theta_av2_mod
     
     #output theta_av2
@@ -510,7 +510,7 @@ if (cas == "100_all+nonortho") {
       } #end for-loop
       
       setwd(home_dir2)
-      source(paste("spObj_intersect_corner_points_v",v_nr,".R",sep=""))
+      source(paste("./spObj/spObj_intersect_corner_points_v",v_nr,".R",sep=""))
       theta_av2_mod
       
       #output theta_av2
