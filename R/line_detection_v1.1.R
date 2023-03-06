@@ -1273,7 +1273,7 @@ if (cas == "4_long") {
     B5_4e_4long
     setwd(home_dir2)
     p_pos <- "cor_det" #correction of detected lines for "cas="4_long"
-    source(paste("spObj_line_detection_v",v_nr,".R",sep=""))
+    source(paste("./spObj/spObj_line_detection_v",v_nr,".R",sep=""))
     B5_4e_4long2
   } else {
     B5_4e_4long2 <- B5_4e_4long  
@@ -1402,7 +1402,7 @@ if (cas == "100_all") {
   if (answ == "Y") {
     p_pos <- "cor_det" #correction of detected lines for cas = "100_all" 
     setwd(home_dir2) 
-    source(paste("spObj_line_detection_v",v_nr,".R",sep = "")) #special object: correction of detected lines
+    source(paste("./spObj/spObj_line_detection_v",v_nr,".R",sep = "")) #special object: correction of detected lines
   } else {
     B5_6R4 <- B5_6
   } #end if-else
@@ -1622,7 +1622,7 @@ if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
         lnr_det3 <- B5_6$lnr
         p_pos <- "cor_det"
         setwd(home_dir2)
-        source(paste("spObj_line_detection_v",v_nr,".R",sep = ""))
+        source(paste("./spObj/spObj_line_detection_v",v_nr,".R",sep = ""))
         lnr_det5
     } #end if
     
