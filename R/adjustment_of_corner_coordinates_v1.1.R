@@ -135,7 +135,7 @@ n_nonortholines2
 if (n_nonortholines2 > 1 && n_ortholines2 != 1) { #used at special object
   p_pos <- "cor_adj_coco"
   setwd(home_dir2)
-  source(paste("spObj_adjustment_of_corner_coordinates_v",v_nr,".R",sep = "")) 
+  source(paste("./spObj/spObj_adjustment_of_corner_coordinates_v",v_nr,".R",sep = "")) 
 } #end if
 
 B8S
