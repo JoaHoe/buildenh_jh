@@ -201,7 +201,7 @@ if (sek == "Mpts") {
   if (answ == "N") { 
     b13_angle_df2
     setwd(home_dir2)
-    source(paste("spObj_sequence_of_lines_v",v_nr,".R",sep="")) #correction of position
+    source(paste("./spObj/spObj_sequence_of_lines_v",v_nr,".R",sep="")) #correction of position
     b13_angle_df3
   } else { #no correction
     b13_angle_df3 <- b13_angle_df2
@@ -302,7 +302,7 @@ if (sek == "Mpts+dist") {
   
   b13_angle_df2
   setwd(home_dir2)
-  source(paste("spObj_sequence_of_lines_v",v_nr,".R",sep="")) #corrections for "Mpts+dist"
+  source(paste("./spObj/spObj_sequence_of_lines_v",v_nr,".R",sep="")) #corrections for "Mpts+dist"
   b13_angle_df2
 } #end if
 
@@ -781,7 +781,7 @@ if (sek == "bdr_follow") {
       bnr2_part <- bnr2
       p_pos <- "cor_pos" #correction of position
       setwd(home_dir2)
-      source(paste("spObj_sequence_of_lines_v",v_nr,".R",sep="")) #sek="bdr_follow"
+      source(paste("./spObj/spObj_sequence_of_lines_v",v_nr,".R",sep="")) #sek="bdr_follow"
     } 
     
     if (part == "2parts_2") {
@@ -789,7 +789,7 @@ if (sek == "bdr_follow") {
       bnr2_part <- bnr2
       p_pos <- "cor_pos" #correction of position
       setwd(home_dir2)
-      source(paste("spObj_sequence_of_lines_v",v_nr,".R",sep="")) 
+      source(paste("./spObj/spObj_sequence_of_lines_v",v_nr,".R",sep="")) 
     } 
   } #end if answ
   
@@ -804,7 +804,7 @@ if (sek == "bdr_follow") {
       answ == "N" && proc_mode == "demo") {
       p_pos <- "cor_pos" #correction of position
       setwd(home_dir2)
-      source(paste("spObj_sequence_of_lines_v",v_nr,".R",sep="")) #sek="bdr_follow" 
+      source(paste("./spObj/spObj_sequence_of_lines_v",v_nr,".R",sep="")) #sek="bdr_follow" 
   } else {
       b13_angle_df2 <- b13_angle_df 
   } #end if-else 
@@ -1046,7 +1046,7 @@ if (sek == "bdr_follow") {
     cat("lines are not correctly detected -> correct sequence manually","\n") 
     p_pos <- "cor_sek" #correction of sequence
     setwd(home_dir2)
-    source(paste("spObj_sequence_of_lines_v",v_nr,".R",sep=""))
+    source(paste("./spObj/spObj_sequence_of_lines_v",v_nr,".R",sep=""))
     sequence_seg2
   } else {
     cat ("sequence = ",sequence_seg, "\n")   
@@ -1101,7 +1101,7 @@ if (sek == "bdr_follow") {
   if (answ == "N") {
     p_pos <- "cor_sek" #correction of sequence
     setwd(home_dir2)
-    source(paste("spObj_sequence_of_lines_v",v_nr,".R",sep=""))
+    source(paste("./spObj/spObj_sequence_of_lines_v",v_nr,".R",sep=""))
     sequence_seg2  
   } else {
     sequence_seg2 <- sequence_seg #sequence is correct
