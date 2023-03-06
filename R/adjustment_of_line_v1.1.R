@@ -354,7 +354,7 @@ answ4 <- readline("type Y or N: ") #interaction required
 if (answ4 == "Y") {
   p_pos <- "cor_adj_line" #correction of adjustment parameter
   setwd(home_dir2)
-  source(paste("spObj_adjustment_of_line_v",v_nr,".R",sep=""))
+  source(paste("./spObj/spObj_adjustment_of_line_v",v_nr,".R",sep=""))
 } #end if
 
 print(B6) #final result of line adjustment
