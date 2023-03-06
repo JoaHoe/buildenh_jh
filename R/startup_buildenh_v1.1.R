@@ -1,6 +1,6 @@
 ##name of program: startup_buildenh.R
 #description: program(script) starts the package 'buildenh'
-v_nr = "1.1" #version number of the program pckage
+v_nr = "1.1" #version number of the program package
 cat("version_number= ",v_nr,"\n")
 #examples: extracted buildings from land cover maps derived by classification programs
 #data: ISPRS test "Vaihingen": orthoimages of area #1, #7, #26
