@@ -76,7 +76,7 @@ answ = "Y" #remove this line for other projects than "ISPRS1" and "ISPRS7"
 
 if (answ == "Y") {
   setwd(home_dir2)
-  source(paste("spObj_enhance_image_v",v_nr,".R",sep="")) #solution in 'spObj_enhance_image.R' 
+  source(paste("./spObj/spObj_enhance_image_v",v_nr,".R",sep="")) #solution in 'spObj_enhance_image.R' 
 }
 
 #display(LCM_b_2,"raster")
