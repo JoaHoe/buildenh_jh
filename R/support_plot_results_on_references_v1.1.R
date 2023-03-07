@@ -287,7 +287,7 @@ for (k in b_all_nr) {
   while(i < k1) {
     i <- i+1
     lines(b$Points_x, -b$Points_y, col="white", asp=1, 
-          type="l", lwd=3, lty=1)
+          type="l", lwd=5, lty=1)
   } #end while
   
 } #end loop
