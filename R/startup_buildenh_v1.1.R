@@ -12,7 +12,8 @@ cat("version_number= ",v_nr,"\n")
 #instructions: select orthoimage: ISPRS1 or ISPRS7
 #instructions: type 'Ctrl+A'(select all) and 'Source'
 #instructions: new users may start by examples (processing mode = demo)
-#depends: R-4.2.1
+#instructions: find supporting software in directory '/support'
+#depends: R-4.2.1; EBImage; spatstat 2.3-4; tiff; rpart;
 #Copyright(C) 2022 Joachim Höhle
 #GNU General Public License (GPL)
 ###################################################################################
@@ -81,8 +82,8 @@ proc_mode <- "NA" #mode of processing
 
 ##loading of libraries 
 setwd(home_dir2)
-source("func_loadLib_op.R") #load of other R-packages, v1.1
-source("func_loadLib_jh.R") #load of functions for the R-package 'buildenh', v1.1
+source("./func/func_loadLib_op.R") #load of other R-packages, v1.1
+source("./func/func_loadLib_jh.R") #load of functions for the R-package 'buildenh', v1.1
 #
 loadLib_op() #call of function
 loadLib_jh() #call of function
