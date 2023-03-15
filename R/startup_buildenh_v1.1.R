@@ -13,9 +13,10 @@ cat("version_number= ",v_nr,"\n")
 #instructions: type 'Ctrl+A'(select all) and 'Source'
 #instructions: new users may start by examples (processing mode = demo)
 #instructions: find supporting software in directory '/support'
-#depends: R-4.2.1; EBImage; spatstat 2.3-4; tiff; rpart;
+#depends: R 4.2.1; BiocManager 1.78.0-0 (EBImage); spatstat 2.3-4; tiff 01-11; rpart 4.1.19; nlme 3.1-162;
 #Copyright(C) 2022 Joachim Höhle
 #GNU General Public License (GPL)
+
 ###################################################################################
 cat("start of software package 'buildenh_jh' ","\n")
 cat("first program/script 'startup_buildenh.R' ","\n")
