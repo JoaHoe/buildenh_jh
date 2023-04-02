@@ -454,10 +454,10 @@ points(pc3$col, -pc3$row, pch=20, asp=1, cex=0.5, col="green")
 
 ##plot of first 10 point clouds (PC) of Hough-transform
 cat("choose a reference line from the 10 longest lines","\n") 
-cat("press continue to display next line","\n")
+#cat("press continue to display next line","\n")
 vec <- 1 : 10
 for (n1 in vec) {
-  browser()
+  readline("press 'enter' to display next line ")
   points(pc3$col, -pc3$row, pch=20, asp=1, cex=0.5, col="green")
   cat("lnr=",n1 ,"\n")
   fname <- paste("./data/",Img_name,"/b",bnr2,"_",n1,".txt", sep="")
@@ -661,7 +661,6 @@ n_lnr <- lnr_ref
 #loop
 lnr <- lnr_ref
 while (lnr <= n_lnr) { #plot of lnr_ref
-  #browser() #to be used for editing
   cat("lnr= ", lnr, "\n")
   L_new  <- PC_segment_4(lnr) #change to 'PC_segment_4(i)' if several lines must be plotted
   P <- L_new[[1]]
@@ -742,7 +741,6 @@ n_lnr <- lnr_ref
 lnr=lnr_ref
 
 while (lnr <= n_lnr) { #plot of lnr_ref
-  #browser() #to be used for editing
   display(img_uds, "raster")
   points(pc3$col-orig_x, pc3$row-orig_y, pch=20, asp=1, cex=0.2, col="white")
   points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.5, col="red")
@@ -1327,7 +1325,6 @@ if (cas == "100_all") {
   
   #loop
   for (n in vec3) {
-    #browser() #with interaction?
     lnr <- lnr_det3[n]
     cat("lnr= ",lnr,"\n")
     PC_seg_P_nP <- PC_segment_4(lnr) #call of function
@@ -1352,7 +1349,6 @@ if (cas == "100_all") {
   
   for (i in vec3) {
     cat("i=",i,"\n")
-    #browser()
     points((pc3$col - orig_x),(pc3$row - orig_y), pch='.', asp=1, cex=2, col = "green")
     points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.3, col="red")
     x <- centers_PC[i,2]
@@ -1364,7 +1360,6 @@ if (cas == "100_all") {
   #loop for approximate lines
   for (n1 in vec3) {
     cat("PC_nr=", B5_6$lnr[n1], "\n")
-    #browser()
     theta_angle <- B5_6$theta_angle[n1]
     theta_math <- (180 - theta_angle) #theta of oriented line
     x <- centers_PC[n1,2]
@@ -1548,7 +1543,6 @@ if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
     #loop
     
     for (n in vec3) {
-      #browser() #with interaction?
       lnr <- lnr_det3[n]
       cat("lnr= ",lnr,"\n")
       PC_seg_P_nP <- PC_segment_4(lnr) #call of function
@@ -1569,7 +1563,6 @@ if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
     #loop
     for (i in vec3) {
       cat("i=",i,"\n")
-      #browser()
       points((pc3$col - orig_x),(pc3$row - orig_y), pch='.', asp=1, cex=2, col = "green")
       points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.3, col="red")
       x <- centers_PC[i,2]
@@ -1582,7 +1575,6 @@ if (cas == "100_all+nonortho") { #solution for lines parallel to ref line
     #loop for plotting approximate lines
     for (n1 in vec3) {
       cat("PC_nr=", B5_6$lnr[n1], "\n")
-      #browser()
       theta_angle <- B5_6$theta_angle[n1]
       theta_math <- (180 - theta_angle) #theta of oriented line
       x <- centers_PC[n1,2]
@@ -1798,7 +1790,6 @@ vec <- 1 : n_lnr7
 
 #loop
 for (n in vec) {
-  #browser() #with interaction?
   lnr <- lnr_det7[n]
   cat("lnr= ",lnr,"\n")
   PC_seg_P_nP <- PC_segment_4(lnr) #call of function
@@ -1843,7 +1834,6 @@ B5_6
 
 for (n1 in len) {
   cat("PC_nr=", B5_6$lnr[n1], "\n")
-  #browser()
   theta_angle <- B5_6$theta_angle[n1]
   theta_math <- (180 - theta_angle) #theta of oriented line
   x <- centers_PC[n1,2]
@@ -1901,7 +1891,6 @@ lines(fr, type="l", asp=1, lwd=2, lty=1, col="yellow")
 len
 for (n1 in len) {
   cat("PC_nr=", B5_6$lnr[n1], "\n")
-  #browser()
   theta_angle <- B5_6$theta_angle[n1]
   theta_math <- (180 - theta_angle) #theta of oriented line
   x <- centers_PC[n1,2]
@@ -1933,7 +1922,6 @@ points(as.integer(pc3$col-orig_x), as.integer(pc3$row-orig_y), pch=20, asp=1, ce
 len
 for (n1 in len) {
   cat("PC_nr=", B5_6$lnr[n1], "\n")
-  #browser()
   theta_angle <- B5_6$theta_angle[n1]
   theta_math <- (180 - theta_angle) #theta of oriented line
   x <- centers_PC[n1,2]
@@ -2015,7 +2003,6 @@ k=1
 #loop
 for (i in PC_nr){
   lnr <- i
-  #browser()
   cat("lnr=",lnr,"\n")
   fname=paste("./data/",Img_name,"/b",bnr2,"_",lnr,".txt", sep="")
   P0 <- read.table(fname, col.names=c("idx","x","y"))
@@ -2060,7 +2047,6 @@ vec_y <- 1 : n_x
 #loop
 for (i in vec_y) {
   cat("i=",i,"\n")
-  #browser()
   points((all_PC[[i]]$x - orig_x),(all_PC[[i]]$y - orig_y), 
          pch='.', asp=1, cex=2, col = "green")
   points(xc-orig_x,yc-orig_y,pch=3, asp=1, cex=1.3, col="red")
