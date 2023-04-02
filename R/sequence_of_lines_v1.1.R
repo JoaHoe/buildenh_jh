@@ -531,7 +531,6 @@ b13_angle_df2
     #all_lines[[k]] <- P0
     k <- k + 1
     cat("lnr=",lnr,"\n")
-    #browser() 
     points(P0_red[,2],-P0_red[,3], pch='.', asp=1, cex=2, col="blue")
     #points(P0[,2],-P0[,3], pch='.', asp=1, cex=2, col="blue")
   } #end loop
@@ -566,8 +565,6 @@ b13_angle_df2
   
   #check of PCs
   for (i in vec_y) {
-    #browser()
-    #cat("name of PC is= ", names(all_PC)[i],"\n")
     x1 <- (all_PC[[i]]$x - orig_x)
     y1 <- (all_PC[[i]]$y - orig_y)
     points(x1, y1, pch='.', asp=1, cex=2, col="green")
@@ -587,7 +584,6 @@ b13_angle_df2
   
   all_PC
   length(all_PC)
-  #browser()
 
   n_PC <- length(all_PC)
 
@@ -630,9 +626,7 @@ if (sek == "bdr_follow") {
   b_im <- as.im(b) #class image with other indexing
   plot(b_im)
   Z18 <- connected(b_im, background = 0, method="C")
-  nc <- length(levels(Z18))
-  #nc #number of levels
-  #browser() #test
+  nc <- length(levels(Z18)) #nc=number of levels
   W <- tiles(tess(image=Z18)) #separation of images
   #plot(W$'1', col="black") #axis
   plot(W$'2', col="black")  #white building
@@ -745,7 +739,6 @@ if (sek == "bdr_follow") {
 
   for (i in vec_y) {
     cat("nr_center= ",b13_angle_df2$nr_center[i],"\n")
-    #browser()
     points(b13_angle_df2$x_centre[i],-b13_angle_df2$y_centre[i], asp=1, pch=20,col="blue", cex=1.5)
   }
   
@@ -862,8 +855,6 @@ if (sek == "bdr_follow") {
   plot(out_poly)
   
   for (i in y4) {
-    #cat("midpt_nr=", midpoints[i,1],"\n")
-    #browser()
     points(midpoints[i,2], midpoints[i,3], pch=16, col="blue", cex=1.0, asp=1)
   }
   #
@@ -879,8 +870,6 @@ if (sek == "bdr_follow") {
   for (i in y3) {
     points(x_v[i], y_v[i], pch=16, col="green", cex=0.1, asp=1) #points from edge
     for (j in y4) { #loop j
-      #cat("midpt_nr= ", midpoints[j,1],"\n")
-      #browser()
       X <- midpoints[j,2]
       Y <- midpoints[j,3]
       X <- as.integer(X)
@@ -1087,7 +1076,7 @@ if (sek == "bdr_follow") {
   points(pc3$col, -pc3$row, pch=20, asp=1, cex=0.3, col="black") # original pixel cloud for building
   
   for (n1 in vec2) {
-    browser()
+    readline("press 'enter' to display next point ")
     print(b13_angle_df3$nr_center[n1])
     points(b13_angle_df3$x_centre[n1],-b13_angle_df3$y_centre[n1], asp=1, pch=20,col="green", cex=1.5)
   }
