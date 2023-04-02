@@ -7,7 +7,6 @@
 #GNU General Public License (GPL)
 
 line_reduce <- function() { 
-  browser()
   B5_4
   k14 <- length(B5_4$lnr)
   B5_4
