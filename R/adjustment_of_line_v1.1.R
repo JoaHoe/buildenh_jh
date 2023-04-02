@@ -64,7 +64,6 @@ palette2 <- c("brown", "red", "gray",  "darkgreen", "blue", "magenta", "black", 
 
 for (i in y2) {
   cat("i=", i, "\n")
-  #browser()
   points(all_PC[[i]]$x,(-all_PC[[i]]$y), pch='.', asp=1, cex=2.5, col="red") #change to math-system
 } # end of input PCs
 
@@ -119,7 +118,6 @@ len_phi_all <- rep(0,x)
 #loop i
 for (i in y2) {
   cat("i= ",i,"\n")
-  #browser()
   k4 <- nrow(all_PC[[i]])
   all_PC[[i]][1 : k4,]
   len_phi_all[i] <- k4
@@ -269,7 +267,6 @@ cat("PC_numbers= ", PC_numb,"\n")
 
 #loop i (line_number index)
 for (i in y2) {
-  #browser()
   PC_number <- B6[i,1]
   cat("i= ",i,"PC_nr= ",PC_number, "\n")
   phi3_calc <- phi_all[i]
