@@ -58,7 +58,6 @@ points(pc3$col-orig_x,pc3$row-orig_y,pch=20,asp=1,cex=0.3,col="green")
 #loop
 for (i in vec_y) {
   cat("i=",i,"\n")
-  #browser()
   b$Points_x_red[i] <- b$Points_x[i]-orig_x
   b$Points_x_red[i+1] <- b$Points_x[i+1]-orig_x
   b$Points_y_red[i] <- b$Points_y[i]-orig_y
