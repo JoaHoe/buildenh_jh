@@ -79,7 +79,6 @@ for (n in y4) {
  fname=paste("./data/",Img_name,"/b",bnr2,"_",n,".txt", sep="")
  P_orig <- read.table(fname, col.names=c("idx","x","y")) #point cloud
  P_red <- reduce_pointset(P_orig)
- #browser()
  cat("point cluster nr=", n,"\n")
  #points(P_orig[,2],-P_orig[,3], pch=20, asp=3, cex=0.5, col="blue")
  points(P_red[,2],-P_red[,3], pch=20, asp=3, cex=0.5, col="red") #corrected pixel cluster (PC)
@@ -195,7 +194,6 @@ i <- 0
 while(i < k1) {
   i <- i + 1
   cat("ptnr=",i,"\n")
-  #browser()
   x <- Points_x[i]
   y <- Points_y[i]
   points(x, y, pch=20, cex=2.0, col="green", asp=1)
@@ -260,7 +258,6 @@ for (n in y4) {
   fname <- paste("./data/",Img_name,"/b",bnr2,"_",n,".txt", sep="")
   P <- read.table(fname, col.names=c("idx","x","y")) #point cloud
   P_red <- reduce_pointset(P) #call of function
-  #browser()
   points(P_red[,2],-P_red[,3], pch=20, asp=3, cex=1.0, col="red") #reduced PC
   #points(P[,2],-P[,3], pch=20, asp=3, cex=1.0, col="blue") #original PC
   P_red2 <- P_red
