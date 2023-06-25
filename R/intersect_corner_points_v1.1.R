@@ -132,7 +132,7 @@ i=1
 while(i <= n_r_1) {
   x <- idxy$x[i]
   y <- idxy$y[i]
-  points(x, -y, pch=20, cex=0.7, col="blue", asp=1) 
+  points(x, -y, pch=20, cex=0.5, col="blue", asp=1) 
   i <- i+1 
 }
 
